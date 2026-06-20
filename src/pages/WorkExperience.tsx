@@ -3,11 +3,10 @@ import { VerticalTimeline, VerticalTimelineElement } from 'react-vertical-timeli
 import 'react-vertical-timeline-component/style.min.css';
 import { MdOutlineWork as WorkIcon } from 'react-icons/md';
 import { IoSchool as SchoolIcon } from 'react-icons/io5';
-import { FaStar as StarIcon } from 'react-icons/fa';
+import { FaStar as StarIcon, FaLinkedin } from 'react-icons/fa';
 import './WorkExperience.css';
 import { TimelineItem } from '../types';
 import { getTimeline } from '../queries/getTimeline';
-
 
 const WorkExperience: React.FC = () => {
 
@@ -21,14 +20,21 @@ const WorkExperience: React.FC = () => {
     fetchTimelineItem();
   }, []);
 
-
   if (!timeLineData) return <div>Loading...</div>;
-  console.log("🚀 ~ timeLineData:", timeLineData)
 
   return (
     <>
       <div className="timeline-container">
         <h2 className="timeline-title">📅 Work Experience & Education Timeline</h2>
+        <a
+          href="https://linkedin.com/in/anilkumardevandla"
+          target="_blank"
+          rel="noopener noreferrer"
+          className="linkedin-btn"
+        >
+          <FaLinkedin style={{ marginRight: '8px', fontSize: '1.2rem' }} />
+          View LinkedIn Profile
+        </a>
       </div>
       <VerticalTimeline>
         {timeLineData.map((item, index) => (
@@ -40,7 +46,7 @@ const WorkExperience: React.FC = () => {
                 ? index === 0
                   ? { background: 'rgb(33, 150, 243)', color: '#fff' }
                   : { background: 'rgb(240, 240, 240)', color: '#fff' }
-                : { background: 'rgb(255, 224, 230)', color: '#fff' } // Lighter red for education
+                : { background: 'rgb(255, 224, 230)', color: '#fff' }
             }
             contentArrowStyle={
               item.timelineType === "work"
@@ -51,20 +57,46 @@ const WorkExperience: React.FC = () => {
             iconStyle={
               item.timelineType === "work"
                 ? { background: 'rgb(33, 150, 243)', color: '#fff' }
-                : { background: 'rgb(255, 160, 200)', color: '#fff' } // Softer red for education icon
+                : { background: 'rgb(255, 160, 200)', color: '#fff' }
             }
             icon={item.timelineType === "work" ? <WorkIcon /> : <SchoolIcon />}
           >
             {item.timelineType === "work" ? (
               <div style={{ color: 'black' }}>
                 <h3 className="vertical-timeline-element-title">{item.title}</h3>
-                <h4 className="vertical-timeline-element-subtitle">{item.name}</h4>
+                <h4 className="vertical-timeline-element-subtitle">
+                  {item.websiteUrl ? (
+                    <a
+                      href={item.websiteUrl}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="company-link"
+                    >
+                      {item.name} ↗
+                    </a>
+                  ) : (
+                    item.name
+                  )}
+                </h4>
                 <p className="vertical-timeline-element-tech">🔧 {item.techStack}</p>
                 <p>{item.summaryPoints}</p>
               </div>
             ) : (
               <div style={{ color: 'black' }}>
-                <h3 className="vertical-timeline-element-title">{item.name}</h3>
+                <h3 className="vertical-timeline-element-title">
+                  {item.websiteUrl ? (
+                    <a
+                      href={item.websiteUrl}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="company-link"
+                    >
+                      {item.name} ↗
+                    </a>
+                  ) : (
+                    item.name
+                  )}
+                </h3>
                 <h4 className="vertical-timeline-element-subtitle">{item.title}</h4>
                 <p>{item.summaryPoints}</p>
               </div>
