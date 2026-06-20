@@ -22,9 +22,10 @@
   position: relative;
   z-index: 3;
   display: flex;
-  align-items: center;
+  align-items: flex-end;
   justify-content: center;
-  gap: 1px;
+  gap: 2px;
+  padding-bottom: 40px;
 }
 
 .letter {
@@ -41,27 +42,30 @@
     0 0 8px rgba(229,9,20,0.25);
 }
 
-/* Arc: "ANIL KUMAR DEVANDLA" - 19 chars, spaces at index 4 and 10
-   Center of arc at index ~8-9 (A,R in KUMAR), ends drop down */
-/* A(0) */ .l-0  { transform: translateY(26px); }
-/* N(1) */ .l-1  { transform: translateY(18px); }
-/* I(2) */ .l-2  { transform: translateY(11px); }
-/* L(3) */ .l-3  { transform: translateY(5px); }
-/* ' '(4) */ .l-4 { width: 16px; transform: translateY(2px); }
-/* K(5) */ .l-5  { transform: translateY(-2px); }
-/* U(6) */ .l-6  { transform: translateY(-6px); }
-/* M(7) */ .l-7  { transform: translateY(-9px); }
-/* A(8) */ .l-8  { transform: translateY(-10px); }
-/* R(9) */ .l-9  { transform: translateY(-9px); }
-/* ' '(10) */ .l-10 { width: 16px; transform: translateY(-5px); }
-/* D(11) */ .l-11 { transform: translateY(-3px); }
-/* E(12) */ .l-12 { transform: translateY(1px); }
-/* V(13) */ .l-13 { transform: translateY(6px); }
-/* A(14) */ .l-14 { transform: translateY(11px); }
-/* N(15) */ .l-15 { transform: translateY(16px); }
-/* D(16) */ .l-16 { transform: translateY(21px); }
-/* L(17) */ .l-17 { transform: translateY(24px); }
-/* A(18) */ .l-18 { transform: translateY(26px); }
+/* Arc: "ANIL KUMAR DEVANDLA"
+   Using align-items: flex-end as baseline, each letter's bottom aligns.
+   Positive translateY = letter drops DOWN (base moves further from baseline).
+   We want ENDS to drop and CENTER to rise = ends have LARGER positive Y relative to center.
+   Center letters: 0px offset. End letters: +45px offset (appear lower). */
+/* A(0)  */ .l-0  { transform: translateY(0px); }
+/* N(1)  */ .l-1  { transform: translateY(-8px); }
+/* I(2)  */ .l-2  { transform: translateY(-16px); }
+/* L(3)  */ .l-3  { transform: translateY(-24px); }
+/* ' '(4)*/ .l-4  { width: 16px; transform: translateY(-28px); }
+/* K(5)  */ .l-5  { transform: translateY(-32px); }
+/* U(6)  */ .l-6  { transform: translateY(-37px); }
+/* M(7)  */ .l-7  { transform: translateY(-40px); }
+/* A(8)  */ .l-8  { transform: translateY(-41px); }
+/* R(9)  */ .l-9  { transform: translateY(-40px); }
+/* ' '(10)*/ .l-10 { width: 16px; transform: translateY(-36px); }
+/* D(11) */ .l-11 { transform: translateY(-30px); }
+/* E(12) */ .l-12 { transform: translateY(-22px); }
+/* V(13) */ .l-13 { transform: translateY(-15px); }
+/* A(14) */ .l-14 { transform: translateY(-9px); }
+/* N(15) */ .l-15 { transform: translateY(-5px); }
+/* D(16) */ .l-16 { transform: translateY(-2px); }
+/* L(17) */ .l-17 { transform: translateY(-1px); }
+/* A(18) */ .l-18 { transform: translateY(0px); }
 
 .animate-title {
   animation: netflix-zoom 3.5s cubic-bezier(.13,.92,.18,1) forwards;
