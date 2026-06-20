@@ -20,6 +20,7 @@ export interface WorkPermit {
 export interface TimelineItem {
   timelineType: 'work' | 'education';
   name: string;
+  websiteUrl?: string;
   title: string;
   techStack: string;
   summaryPoints: string[];
@@ -52,7 +53,7 @@ export interface ContactMe {
   phoneNumber: string;
 }
 
-export interface Skill { 
+export interface Skill {
   name: string;
   category: string;
   description: string;
