@@ -44,7 +44,7 @@ const ProfileBanner: React.FC = () => {
         </p>
 
         <div className="banner-buttons">
-          <PlayButton onClick={handlePlayClick} label="⬇ Resume" />
+          <PlayButton onClick={handlePlayClick} label="Resume" />
           <MoreInfoButton onClick={handleLinkedinClick} label="LinkedIn" />
         </div>
       </div>
