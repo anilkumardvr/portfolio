@@ -1,7 +1,7 @@
 {
   "files": {
-    "main.css": "/portfolio/static/css/main.7f71ddc2.css",
-    "main.js": "/portfolio/static/js/main.fd0e4e85.js",
+    "main.css": "/portfolio/static/css/main.034a5d66.css",
+    "main.js": "/portfolio/static/js/main.b194c494.js",
     "static/js/453.b0cd7502.chunk.js": "/portfolio/static/js/453.b0cd7502.chunk.js",
     "static/media/anil.jpg": "/portfolio/static/media/anil.0eed916f789acfdef595.jpg",
     "static/media/blue.png": "/portfolio/static/media/blue.9c433318cb378e4a634e.png",
@@ -17,12 +17,12 @@
     "static/media/vijayaniki_aidu_metlu.jpg": "/portfolio/static/media/vijayaniki_aidu_metlu.2261ef74787f0c33960a.jpg",
     "static/media/ac-dc.jpg": "/portfolio/static/media/ac-dc.44867f491e8e97894eff.jpg",
     "index.html": "/portfolio/index.html",
-    "main.7f71ddc2.css.map": "/portfolio/static/css/main.7f71ddc2.css.map",
-    "main.fd0e4e85.js.map": "/portfolio/static/js/main.fd0e4e85.js.map",
+    "main.034a5d66.css.map": "/portfolio/static/css/main.034a5d66.css.map",
+    "main.b194c494.js.map": "/portfolio/static/js/main.b194c494.js.map",
     "453.b0cd7502.chunk.js.map": "/portfolio/static/js/453.b0cd7502.chunk.js.map"
   },
   "entrypoints": [
-    "static/css/main.7f71ddc2.css",
-    "static/js/main.fd0e4e85.js"
+    "static/css/main.034a5d66.css",
+    "static/js/main.b194c494.js"
   ]
 }
