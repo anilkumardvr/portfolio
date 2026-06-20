@@ -3,7 +3,7 @@ import './NetflixTitle.css';
 import netflixSound from './netflix-sound.mp3';
 import { useNavigate } from 'react-router-dom';
 
-const letters = "ANIL KUMAR DEVANDLA".split("");
+const letters = "ANIL DEVANDLA".split("");
 
 const NetflixTitle: React.FC = () => {
   const [isClicked, setIsClicked] = useState(false);
