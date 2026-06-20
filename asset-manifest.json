@@ -1,25 +1,19 @@
 {
   "files": {
     "main.css": "/portfolio/static/css/main.ef2814ec.css",
-    "main.js": "/portfolio/static/js/main.e6600e53.js",
+    "main.js": "/portfolio/static/js/main.f7ffd763.js",
     "static/js/453.b0cd7502.chunk.js": "/portfolio/static/js/453.b0cd7502.chunk.js",
     "static/media/anil.jpg": "/portfolio/static/media/anil.0eed916f789acfdef595.jpg",
     "static/media/blue.png": "/portfolio/static/media/blue.9c433318cb378e4a634e.png",
-    "static/media/eat_that_frog.jpg": "/portfolio/static/media/eat_that_frog.813c8f47ac052b6d620c.jpg",
     "static/media/netflix-sound.mp3": "/portfolio/static/media/netflix-sound.85eb0b77826cf4ad94f3.mp3",
-    "static/media/alchemist.jpg": "/portfolio/static/media/alchemist.9c7b8d90f87afb9eb1f9.jpg",
-    "static/media/atomic_habits.jpg": "/portfolio/static/media/atomic_habits.1e9739efe6a8eca8240a.jpg",
-    "static/media/rich_dad_poor_dad.jpg": "/portfolio/static/media/rich_dad_poor_dad.3e652088b5ec2c6f8709.jpg",
-    "static/media/vennelo_adapilla.jpeg": "/portfolio/static/media/vennelo_adapilla.967e77b93c4bf3f04209.jpeg",
     "static/media/grey.png": "/portfolio/static/media/grey.32a9d8dc64ca06d6c502.png",
-    "static/media/vijayaniki_aidu_metlu.jpg": "/portfolio/static/media/vijayaniki_aidu_metlu.2261ef74787f0c33960a.jpg",
     "index.html": "/portfolio/index.html",
     "main.ef2814ec.css.map": "/portfolio/static/css/main.ef2814ec.css.map",
-    "main.e6600e53.js.map": "/portfolio/static/js/main.e6600e53.js.map",
+    "main.f7ffd763.js.map": "/portfolio/static/js/main.f7ffd763.js.map",
     "453.b0cd7502.chunk.js.map": "/portfolio/static/js/453.b0cd7502.chunk.js.map"
   },
   "entrypoints": [
     "static/css/main.ef2814ec.css",
-    "static/js/main.e6600e53.js"
+    "static/js/main.f7ffd763.js"
   ]
 }
