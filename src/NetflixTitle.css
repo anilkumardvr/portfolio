@@ -14,7 +14,7 @@
   content: "";
   position: absolute;
   inset: 0;
-  background: radial-gradient(ellipse at center, transparent 40%, rgba(0,0,0,0.55) 100%);
+  background: radial-gradient(ellipse at center, transparent 40%, rgba(0,0,0,0.5) 100%);
   pointer-events: none;
 }
 
@@ -22,46 +22,46 @@
   position: relative;
   z-index: 3;
   display: flex;
-  align-items: flex-end;
+  align-items: center;
   justify-content: center;
-  gap: 0px;
+  gap: 1px;
 }
 
 .letter {
   display: inline-block;
   color: #e50914;
   font-family: 'Arial Black', Impact, Haettenschweiler, 'Arial Narrow Bold', sans-serif;
-  font-size: clamp(3.5rem, 5.8vw, 6.5rem);
+  font-size: clamp(2.8rem, 4.5vw, 5.2rem);
   font-weight: 900;
-  letter-spacing: 2px;
+  letter-spacing: 1px;
   line-height: 1;
   text-transform: uppercase;
   text-shadow:
-    0 0 2px rgba(229,9,20,0.6),
-    0 0 8px rgba(229,9,20,0.2);
+    0 0 2px rgba(229,9,20,0.7),
+    0 0 8px rgba(229,9,20,0.25);
 }
 
-/* Arc shape - "ANIL KUMAR DEVANDLA" (19 chars, spaces at index 4 and 11)
-   Center is at index 9 (U in KUMAR), arc rises toward center */
-/* A */ .l-0  { transform: translateY(28px); }
-/* N */ .l-1  { transform: translateY(18px); }
-/* I */ .l-2  { transform: translateY(11px); }
-/* L */ .l-3  { transform: translateY(5px); }
-/* space */ .l-4 { width: 18px; transform: translateY(2px); }
-/* K */ .l-5  { transform: translateY(0px); }
-/* U */ .l-6  { transform: translateY(-4px); }
-/* M */ .l-7  { transform: translateY(-6px); }
-/* A */ .l-8  { transform: translateY(-6px); }
-/* R */ .l-9  { transform: translateY(-5px); }
-/* space */ .l-10 { width: 18px; transform: translateY(-2px); }
-/* D */ .l-11 { transform: translateY(1px); }
-/* E */ .l-12 { transform: translateY(4px); }
-/* V */ .l-13 { transform: translateY(8px); }
-/* A */ .l-14 { transform: translateY(12px); }
-/* N */ .l-15 { transform: translateY(17px); }
-/* D */ .l-16 { transform: translateY(22px); }
-/* L */ .l-17 { transform: translateY(26px); }
-/* A */ .l-18 { transform: translateY(28px); }
+/* Arc: "ANIL KUMAR DEVANDLA" - 19 chars, spaces at index 4 and 10
+   Center of arc at index ~8-9 (A,R in KUMAR), ends drop down */
+/* A(0) */ .l-0  { transform: translateY(26px); }
+/* N(1) */ .l-1  { transform: translateY(18px); }
+/* I(2) */ .l-2  { transform: translateY(11px); }
+/* L(3) */ .l-3  { transform: translateY(5px); }
+/* ' '(4) */ .l-4 { width: 16px; transform: translateY(2px); }
+/* K(5) */ .l-5  { transform: translateY(-2px); }
+/* U(6) */ .l-6  { transform: translateY(-6px); }
+/* M(7) */ .l-7  { transform: translateY(-9px); }
+/* A(8) */ .l-8  { transform: translateY(-10px); }
+/* R(9) */ .l-9  { transform: translateY(-9px); }
+/* ' '(10) */ .l-10 { width: 16px; transform: translateY(-5px); }
+/* D(11) */ .l-11 { transform: translateY(-3px); }
+/* E(12) */ .l-12 { transform: translateY(1px); }
+/* V(13) */ .l-13 { transform: translateY(6px); }
+/* A(14) */ .l-14 { transform: translateY(11px); }
+/* N(15) */ .l-15 { transform: translateY(16px); }
+/* D(16) */ .l-16 { transform: translateY(21px); }
+/* L(17) */ .l-17 { transform: translateY(24px); }
+/* A(18) */ .l-18 { transform: translateY(26px); }
 
 .animate-title {
   animation: netflix-zoom 3.5s cubic-bezier(.13,.92,.18,1) forwards;
