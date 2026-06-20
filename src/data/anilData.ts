@@ -6,7 +6,7 @@ export const anilProfile = {
   email: "anilkumardevandla21@gmail.com",
   github: "https://github.com/anilkumardvr",
   linkedin: "https://linkedin.com/in/anilkumardevandla",
-  resumeUrl: "/static/media/Anil_Kumar_Devandla_Resume.pdf",
+  resumeUrl: process.env.PUBLIC_URL + "/Anil_Kumar_Devandla_Resume.pdf",
   summary:
     "Senior Platform Engineer with 7+ years of experience designing, automating, and operating enterprise-scale cloud infrastructure, CI/CD platforms, and Kubernetes environments. Proven expertise in developer platforms, GitOps workflows, reusable deployment patterns, and infrastructure automation. Strong hands-on experience with Azure, Kubernetes (AKS), Terraform, Jenkins, GitHub Actions, Helm, ArgoCD, and distributed systems.",
 };
@@ -27,6 +27,7 @@ export const anilSkills = [
 export const anilTimeline = [
   {
     name: "Kyndryl",
+    websiteUrl: "https://www.kyndryl.com",
     timelineType: "Work",
     title: "Platform Engineer",
     techStack: "AKS, Kubernetes, GitHub Actions, Azure DevOps, Jenkins, Terraform, ArgoCD, Helm, RabbitMQ, ActiveMQ Artemis, Couchbase, MinIO, Memcached, Prometheus, Grafana, Azure Monitor, Log Analytics, Azure Key Vault",
@@ -42,6 +43,7 @@ export const anilTimeline = [
   },
   {
     name: "First National Financial",
+    websiteUrl: "https://www.firstnational.ca",
     timelineType: "Work",
     title: "Azure Cloud Infrastructure Engineer",
     techStack: "Azure, AKS, Kubernetes, Terraform, GitOps, CI/CD, Azure Monitor, Prometheus, Grafana, Elasticsearch, Log Analytics, Velero",
@@ -57,6 +59,7 @@ export const anilTimeline = [
   },
   {
     name: "ADP",
+    websiteUrl: "https://www.adp.com",
     timelineType: "Work",
     title: "DevOps Engineer / Azure Engineer",
     techStack: "Linux, RHEL, Ubuntu, Windows Server, IIS, Cloud Storage, Backup Automation, Monitoring, Troubleshooting",
@@ -71,6 +74,7 @@ export const anilTimeline = [
   },
   {
     name: "Gemini Consulting",
+    websiteUrl: "https://www.geminiconsulting.com",
     timelineType: "Work",
     title: "Software Engineer",
     techStack: "Linux, Unix, Nagios, AWS EC2, Auto Scaling, Load Balancers, Firewalls, Compliance Monitoring",
@@ -85,6 +89,7 @@ export const anilTimeline = [
   },
   {
     name: "Northeastern University",
+    websiteUrl: "https://www.northeastern.edu",
     timelineType: "Education",
     title: "Master of Science in Agile Project Management",
     techStack: "Agile, Project Management, Delivery, Leadership",
@@ -93,6 +98,7 @@ export const anilTimeline = [
   },
   {
     name: "Acharya Nagarjuna University",
+    websiteUrl: "https://nagarjunauniversity.ac.in",
     timelineType: "Education",
     title: "Bachelor of Technology in Computer Science",
     techStack: "Computer Science, Software Engineering, Infrastructure",
@@ -139,7 +145,7 @@ export const anilProfileBanner = {
     url: "https://media.giphy.com/media/v1.Y2lkPTc5MGI3NjExOTZ5eWwwbjRpdWM1amxyd3VueHhteTVzajVjeGZtZGJ1dDc4MXMyNCZlcD12MV9pbnRlcm5hbF9naWZfYnlfaWQmY3Q9dg/16u7Ifl2T4zYfQ932F/giphy.gif"
   },
   headline: "Anil Kumar Devandla - Senior DevOps Engineer",
-  resumeLink: { url: "/static/media/Anil_Kumar_Devandla_Resume.pdf" },
+  resumeLink: { url: process.env.PUBLIC_URL + "/Anil_Kumar_Devandla_Resume.pdf" },
   linkedinLink: "https://linkedin.com/in/anilkumardevandla",
   profileSummary: anilProfile.summary
 };
