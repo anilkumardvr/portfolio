@@ -111,3 +111,46 @@
     transform: translateY(10);
   }
 }
+
+.skill-card h1,
+.skill-card h2,
+.skill-card .skill-title{
+
+  font-family:
+    Inter,
+    "SF Pro Display",
+    -apple-system,
+    BlinkMacSystemFont,
+    "Segoe UI",
+    sans-serif !important;
+
+  font-size:3.2rem !important;
+
+  font-weight:700 !important;
+
+  letter-spacing:-1px !important;
+
+  text-transform:none !important;
+
+  text-shadow:none !important;
+
+  color:#ffffff !important;
+
+}
+
+.skill-card{
+
+  border:1px solid rgba(255,255,255,.08);
+
+  box-shadow:none !important;
+
+}
+
+.skill-card:hover{
+
+  transform:translateY(-4px);
+
+  transition:.3s ease;
+
+}
+

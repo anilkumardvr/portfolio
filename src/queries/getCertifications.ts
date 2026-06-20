@@ -1,20 +1,5 @@
-// queries/getCertifications.ts
-import datoCMSClient from './datoCMSClient';
-import { Certification } from '../types';
+import { anilCertifications } from '../data/anilData';
 
-const GET_CERTIFICATIONS = `
-  query {
-    allCertifications {
-      title
-      issuer
-      issuedDate
-      link
-      iconName
-    }
-  }
-`;
-
-export async function getCertifications(): Promise<Certification[]> {
-  const data = await datoCMSClient.request<{ allCertifications: Certification[] }>(GET_CERTIFICATIONS);
-  return data.allCertifications;
+export async function getCertifications(): Promise<any[]> {
+  return anilCertifications.map((title) => ({ title, description: title, issuer: title }));
 }

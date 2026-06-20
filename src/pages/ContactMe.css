@@ -1,153 +1,171 @@
 .contact-container {
-  padding: 100px 20px;
-  background-color: #141414;
-  color: #e6e6e6;
-  text-align: center;
-  animation: fadeIn 0.8s ease-in-out;
+
+  min-height: 100vh;
+
+  display: flex;
+
+  justify-content: center;
+
+  align-items: center;
+
+  padding: 120px 30px;
+
+  position: relative;
+
+  overflow: hidden;
+
 }
 
-.linkedin-badge-custom {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  background: #222;
-  border-radius: 8px;
-  padding: 15px 20px;
-  margin-bottom: 20px;
-  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.3);
-  color: #e6e6e6;
-  max-width: 350px;
-  margin: 0 auto;
+/* Background image */
+
+.contact-container::before {
+
+  content: "";
+
+  position: absolute;
+
+  inset: 0;
+
+  background: url('../images/anil.jpg') center center/cover no-repeat;
+
+  filter: blur(10px) brightness(.18);
+
+  transform: scale(1.08);
+
+}
+
+/* Dark overlay */
+
+.contact-container::after {
+
+  content: "";
+
+  position: absolute;
+
+  inset: 0;
+
+  background: rgba(0,0,0,.55);
+
+}
+
+.contact-card {
+
+  position: relative;
+
+  z-index: 2;
+
+  max-width: 900px;
+
+  width: 100%;
+
+  text-align: center;
+
 }
 
 .badge-avatar {
-  width: 60px;
-  height: 60px;
+
+  width: 130px;
+
+  height: 130px;
+
   border-radius: 50%;
-  margin-right: 15px;
-  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.3);
+
+  object-fit: cover;
+
+  border: 3px solid #e50914;
+
+  margin-bottom: 30px;
+
 }
 
-.badge-content {
-  text-align: left;
-}
+.contact-card h1 {
 
-.badge-name {
-  font-size: 1.1rem;
-  font-weight: bold;
-  margin: 0;
+  font-size: 4rem;
+
+  font-weight: 700;
+
   color: #fff;
+
+  margin-bottom: 20px;
+
 }
 
-.badge-title {
-  font-size: 0.9rem;
-  margin: 0;
-  color: #aaa;
+.contact-card p {
+
+  color: #d0d0d0;
+
+  font-size: 1.3rem;
+
+  line-height: 1.8;
+
 }
 
-.badge-description {
-  font-size: 0.85rem;
-  margin: 5px 0;
-  color: #ccc;
-}
+/* CONTACT LINKS */
 
-.badge-company {
-  font-size: 0.85rem;
-  color: #888;
-}
+.contact-actions {
 
-.badge-link {
-  display: inline-flex;
-  align-items: center;
-  background-color: #0077b5;
-  color: #fff;
-  padding: 8px 12px;
-  border-radius: 5px;
-  font-weight: bold;
-  text-decoration: none;
-  margin-top: 10px;
-  transition: background-color 0.3s ease;
-}
-
-.badge-link:hover {
-  background-color: #005983;
-}
-
-.linkedin-icon {
-  margin-right: 5px;
-}
-
-.contact-header p {
-  font-size: 1.2rem;
-  color: #ccc;
-  margin: 20px 0 30px;
-}
-
-.contact-details {
   display: flex;
-  flex-direction: column;
-  align-items: center;
-  gap: 20px;
+
+  justify-content: center;
+
+  gap: 35px;
+
+  flex-wrap: wrap;
+
+  margin: 40px 0;
+
 }
 
-.contact-item {
+.contact-actions a {
+
+  color: #ffffff !important;
+
+  text-decoration: none !important;
+
+  font-size: 1.15rem;
+
+  font-weight: 500;
+
   display: flex;
+
   align-items: center;
+
   gap: 10px;
-  background: #1e1e1e;
-  padding: 10px 20px;
-  border-radius: 25px;
-  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.5);
-  transition: transform 0.3s ease, box-shadow 0.3s ease;
-  cursor: pointer;
+
 }
 
-.contact-item:hover {
-  transform: scale(1.05);
-  box-shadow: 0 8px 20px rgba(214, 43, 43, 0.6);
+.contact-actions a:hover {
+
+  color: #e50914 !important;
+
+  transform: translateY(-2px);
+
+  transition: all .25s ease;
+
 }
 
-.contact-icon {
-  font-size: 1.5rem;
-  color: #d62b2b;
-}
+.coffee-line {
 
-.contact-link {
-  color: #fff;
-  font-size: 1.1rem;
-  text-decoration: none;
-}
+  color: #d0d0d0;
 
-.contact-link:hover {
-  text-decoration: underline;
-}
-
-.contact-fun {
-  margin-top: 30px;
   font-size: 1.2rem;
-  display: flex;
-  align-items: center;
-  gap: 10px;
-  color: #e6e6e6;
+
 }
 
-.coffee-icon {
-  font-size: 2rem;
-  color: #ff9900;
-  animation: swing 1s infinite ease-in-out;
-}
+@media (max-width:768px){
 
-/* Animations */
-@keyframes fadeIn {
-  0% { opacity: 0; }
-  100% { opacity: 1; }
-}
+  .contact-card h1{
 
-@keyframes swing {
-  0%, 100% {
-    transform: rotate(0deg);
+    font-size:2.5rem;
+
   }
-  50% {
-    transform: rotate(30deg);
+
+  .contact-actions{
+
+    flex-direction:column;
+
+    gap:20px;
+
   }
+
 }

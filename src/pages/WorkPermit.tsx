@@ -1,31 +1,45 @@
-import React, { useEffect, useState } from 'react';
 import './WorkPermit.css';
-import { getWorkPermit } from '../queries/getWorkPermit';
-import { WorkPermit as IWorkPermit } from '../types';
-const WorkPermit: React.FC = () => {
 
-  const [workPermitData, setWorkPermitData] = useState<IWorkPermit | null>(null);
-  useEffect(() => {
-    async function fetchWorkPermitData() {
-      const data = await getWorkPermit();
-      setWorkPermitData(data);
-    }
-    fetchWorkPermitData();
-  }, []);
-
-  if (!workPermitData) return <div>Loading...</div>;
-
+export default function WorkPermit() {
   return (
     <div className="work-permit-container">
-      <div className="work-permit-card">
-        <h2 className="work-permit-headline">🎓 Work Permit</h2>
-        <p className="work-permit-summary">
-          I'm currently on a <strong>{workPermitData.visaStatus}</strong> 🛂, which allows me to work in the UK! 🇬🇧 My visa is valid until <strong>{new Date(workPermitData.expiryDate).toLocaleDateString()}</strong> 📅, giving me the opportunity to build valuable experience and grow my career here. 🌟
+      <div className="permit-card">
+        <p className="permit-eyebrow">Canada Employment Eligibility</p>
+
+        <h2>Work Authorization</h2>
+
+        <p className="permit-summary">
+          I am currently residing in Canada and hold an Open Work Permit. I am legally authorized
+          to work for eligible employers across Canada without employer sponsorship or LMIA support.
         </p>
-        <p className="additional-info">{workPermitData.additionalInfo}</p>
+
+        <div className="permit-grid">
+          <div>
+            <span>Status</span>
+            <strong>Open Work Permit Holder</strong>
+          </div>
+
+          <div>
+            <span>Location</span>
+            <strong>Toronto, Ontario, Canada</strong>
+          </div>
+
+          <div>
+            <span>Employer Requirement</span>
+            <strong>No sponsorship required</strong>
+          </div>
+
+          <div>
+            <span>Role Availability</span>
+            <strong>Contract, full-time, hybrid, remote, or onsite</strong>
+          </div>
+        </div>
+
+        <p className="note">
+          Open to DevOps, Cloud Engineering, Platform Engineering, SRE, and Infrastructure
+          Automation opportunities across Canada.
+        </p>
       </div>
     </div>
   );
-};
-
-export default WorkPermit;
+}

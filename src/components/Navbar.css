@@ -176,3 +176,30 @@
     justify-content: center;
   }
 }
+
+.anil-logo-text {
+  color: #e50914 !important;
+  font-size: 1.7rem;
+  font-weight: 900;
+  letter-spacing: 1px;
+  text-transform: uppercase;
+  text-decoration: none !important;
+  font-family: Arial, Helvetica, sans-serif;
+  text-shadow:
+    0 0 5px rgba(229, 9, 20, .9),
+    0 0 15px rgba(229, 9, 20, .7),
+    0 0 25px rgba(229, 9, 20, .5);
+}
+
+.anil-logo-text:hover {
+  color: #ff1f1f !important;
+  text-shadow:
+    0 0 8px rgba(255, 0, 0, .95),
+    0 0 18px rgba(255, 0, 0, .8),
+    0 0 30px rgba(255, 0, 0, .6);
+}
+
+.navbar-logo.anil-logo-text {
+  margin-right: 30px;
+  margin-left: 10px;
+}
