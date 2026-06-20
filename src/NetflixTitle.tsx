@@ -26,7 +26,7 @@ const NetflixTitle: React.FC = () => {
     <div className="netflix-intro-page" onClick={handleStart}>
       <div className={`title-letter-wrap ${isClicked ? 'animate-title' : ''}`}>
         {letters.map((letter, index) => (
-          <span key={index} className={`letter l-${index}`}>
+          <span key={index} className={`intro-letter l-${index}`}>
             {letter === " " ? "\u00A0" : letter}
           </span>
         ))}
