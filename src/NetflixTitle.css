@@ -22,7 +22,7 @@
   position: relative;
   z-index: 3;
   display: flex;
-  align-items: flex-end;
+  align-items: center;
   justify-content: center;
   gap: 2px;
 }
@@ -41,27 +41,28 @@
     0 0 8px rgba(229,9,20,0.25);
 }
 
-/* Gentle symmetric arc: ANIL KUMAR DEVANDLA (19 chars, center = index 9 = R)
-   Upward arc: edges drop (positive Y = down), center stays at 0 */
-/* A(0)   */ .l-0  { transform: translateY(28px) rotate(-5deg); }
-/* N(1)   */ .l-1  { transform: translateY(18px) rotate(-4deg); }
-/* I(2)   */ .l-2  { transform: translateY(11px) rotate(-3deg); }
-/* L(3)   */ .l-3  { transform: translateY(5px)  rotate(-2deg); }
-/* spc(4) */ .l-4  { width: 16px; transform: translateY(2px); }
-/* K(5)   */ .l-5  { transform: translateY(1px)  rotate(-1deg); }
-/* U(6)   */ .l-6  { transform: translateY(0px)  rotate(0deg); }
-/* M(7)   */ .l-7  { transform: translateY(0px)  rotate(0deg); }
-/* A(8)   */ .l-8  { transform: translateY(0px)  rotate(0deg); }
-/* R(9)   */ .l-9  { transform: translateY(0px)  rotate(0deg); }
-/* spc(10)*/ .l-10 { width: 16px; transform: translateY(1px); }
-/* D(11)  */ .l-11 { transform: translateY(1px)  rotate(1deg); }
-/* E(12)  */ .l-12 { transform: translateY(5px)  rotate(2deg); }
-/* V(13)  */ .l-13 { transform: translateY(11px) rotate(3deg); }
-/* A(14)  */ .l-14 { transform: translateY(16px) rotate(4deg); }
-/* N(15)  */ .l-15 { transform: translateY(20px) rotate(4deg); }
-/* D(16)  */ .l-16 { transform: translateY(23px) rotate(5deg); }
-/* L(17)  */ .l-17 { transform: translateY(26px) rotate(5deg); }
-/* A(18)  */ .l-18 { transform: translateY(28px) rotate(5deg); }
+/* Upward arc: center letters go UP (negative Y), edge letters stay at 0
+   ANIL KUMAR DEVANDLA - 19 chars, center at index 9 (R in KUMAR)
+   Arc formula: y = -maxRise * (1 - ((i-9)/9)^2) */
+/* A(0)   */ .l-0  { transform: translateY(0px);   }
+/* N(1)   */ .l-1  { transform: translateY(-6px);  }
+/* I(2)   */ .l-2  { transform: translateY(-11px); }
+/* L(3)   */ .l-3  { transform: translateY(-15px); }
+/* spc(4) */ .l-4  { width: 16px; transform: translateY(-17px); }
+/* K(5)   */ .l-5  { transform: translateY(-19px); }
+/* U(6)   */ .l-6  { transform: translateY(-21px); }
+/* M(7)   */ .l-7  { transform: translateY(-22px); }
+/* A(8)   */ .l-8  { transform: translateY(-23px); }
+/* R(9)   */ .l-9  { transform: translateY(-23px); }
+/* spc(10)*/ .l-10 { width: 16px; transform: translateY(-22px); }
+/* D(11)  */ .l-11 { transform: translateY(-21px); }
+/* E(12)  */ .l-12 { transform: translateY(-19px); }
+/* V(13)  */ .l-13 { transform: translateY(-15px); }
+/* A(14)  */ .l-14 { transform: translateY(-11px); }
+/* N(15)  */ .l-15 { transform: translateY(-7px);  }
+/* D(16)  */ .l-16 { transform: translateY(-4px);  }
+/* L(17)  */ .l-17 { transform: translateY(-2px);  }
+/* A(18)  */ .l-18 { transform: translateY(0px);   }
 
 .animate-title {
   animation: netflix-zoom 3.5s cubic-bezier(.13,.92,.18,1) forwards;
