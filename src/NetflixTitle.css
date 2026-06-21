@@ -18,44 +18,28 @@
   pointer-events: none;
 }
 
-.title-letter-wrap {
+.title-name-wrap {
   position: relative;
   z-index: 3;
   display: flex;
   align-items: center;
   justify-content: center;
-  gap: 3px;
 }
 
-.intro-letter {
-  display: inline-block;
+.intro-name {
+  display: block;
   color: #e50914;
   font-family: 'Arial Black', Impact, Haettenschweiler, 'Arial Narrow Bold', sans-serif;
-  font-size: clamp(2.2rem, 3.8vw, 4.5rem);
+  font-size: clamp(2.8rem, 5vw, 6rem);
   font-weight: 900;
-  letter-spacing: 2px;
+  letter-spacing: 4px;
   line-height: 1;
   text-transform: uppercase;
   text-shadow:
-    0 0 2px rgba(229,9,20,0.7),
-    0 0 8px rgba(229,9,20,0.25);
+    0 2px 8px rgba(229,9,20,0.4),
+    0 0 2px rgba(229,9,20,0.6);
+  white-space: nowrap;
 }
-
-/* Upward arc: "ANIL DEVANDLA" (13 chars, center = index 6 = E)
-   Edges at translateY(0), center rises to translateY(-22px) */
-/* A(0)   */ .l-0  { transform: translateY(0px); }
-/* N(1)   */ .l-1  { transform: translateY(-6px); }
-/* I(2)   */ .l-2  { transform: translateY(-12px); }
-/* L(3)   */ .l-3  { transform: translateY(-17px); }
-/* spc(4) */ .l-4  { width: 18px; transform: translateY(-20px); }
-/* D(5)   */ .l-5  { transform: translateY(-22px); }
-/* E(6)   */ .l-6  { transform: translateY(-22px); }
-/* V(7)   */ .l-7  { transform: translateY(-20px); }
-/* A(8)   */ .l-8  { transform: translateY(-17px); }
-/* N(9)   */ .l-9  { transform: translateY(-12px); }
-/* D(10)  */ .l-10 { transform: translateY(-7px); }
-/* L(11)  */ .l-11 { transform: translateY(-3px); }
-/* A(12)  */ .l-12 { transform: translateY(0px); }
 
 .animate-title {
   animation: netflix-zoom 3.5s cubic-bezier(.13,.92,.18,1) forwards;
@@ -112,11 +96,8 @@
 
 /* Mobile responsive */
 @media (max-width: 768px) {
-  .intro-letter {
-    font-size: clamp(1.8rem, 7vw, 3rem);
-    letter-spacing: 1px;
-  }
-  .title-letter-wrap {
-    gap: 1px;
+  .intro-name {
+    font-size: clamp(2rem, 8vw, 3.5rem);
+    letter-spacing: 2px;
   }
 }
