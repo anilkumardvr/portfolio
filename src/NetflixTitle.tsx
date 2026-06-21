@@ -3,8 +3,6 @@ import './NetflixTitle.css';
 import netflixSound from './netflix-sound.mp3';
 import { useNavigate } from 'react-router-dom';
 
-const letters = "ANIL DEVANDLA".split("");
-
 const NetflixTitle: React.FC = () => {
   const [isClicked, setIsClicked] = useState(false);
   const navigate = useNavigate();
@@ -24,12 +22,8 @@ const NetflixTitle: React.FC = () => {
 
   return (
     <div className="netflix-intro-page" onClick={handleStart}>
-      <div className={`title-letter-wrap ${isClicked ? 'animate-title' : ''}`}>
-        {letters.map((letter, index) => (
-          <span key={index} className={`intro-letter l-${index}`}>
-            {letter === " " ? "\u00A0" : letter}
-          </span>
-        ))}
+      <div className={`title-name-wrap ${isClicked ? 'animate-title' : ''}`}>
+        <span className="intro-name">ANIL DEVANDLA</span>
       </div>
 
       {!isClicked && (
