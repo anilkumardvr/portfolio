@@ -1,4 +1,4 @@
-export const anilProfile = {
+––––––––––export const anilProfile = {
     name: "Anil Kumar Devandla",
     role: "DevOps Engineer | Platform Engineer | Cloud Engineer | Kubernetes Specialist",
     location: "Toronto, Ontario, Canada",
