@@ -40,11 +40,7 @@ const WorkExperience: React.FC = () => {
                   const observer = new IntersectionObserver(
                             ([entry]) => {
                                         if (entry.isIntersecting) {
-                                                      setVisibleItems(prev => {
-                                                                      const next = new Set(prev);
-                                                                      next.add(idx);
-                                                                      return next;
-                                                      });
+                                                      setVisibleItems(prev => { const n = new Set(prev); n.add(idx); return n; });
                                         }
                             },
                     { threshold: 0.1 }
@@ -66,10 +62,10 @@ const WorkExperience: React.FC = () => {
     let eduIdx = 0;
   
     return (
-          <>
+          <React.Fragment>
                 <div className="timeline-container">
-                        <h2 className="timeline-title">Work Experience &amp; Education Timeline</h2>h2>
-                        <p className="timeline-subtitle">8+ Years of IT Experience | Senior DevOps &amp; Cloud Engineer</p>p>
+                        <h2 className="timeline-title">Work Experience and Education Timeline</h2>h2>
+                        <p className="timeline-subtitle">8+ Years of IT Experience | Senior DevOps and Cloud Engineer</p>p>
                         <a
                                     href="https://linkedin.com/in/anilkumardevandla"
                                     target="_blank"
@@ -86,29 +82,32 @@ const WorkExperience: React.FC = () => {
                       const color = isWork
                                     ? WORK_COLORS[workIdx++ % WORK_COLORS.length]
                                     : EDU_COLORS[eduIdx++ % EDU_COLORS.length];
+                      const cardStyle = {
+                                    background: '#1a1a1a',
+                                    color: '#fff',
+                                    border: '2px solid ' + color.bg,
+                                    borderRadius: '12px',
+                                    boxShadow: '0 4px 24px ' + color.bg + '33',
+                      };
+                      const arrowStyle = { borderRight: '7px solid ' + color.arrow };
+                      const iconStyle = { background: color.bg, color: '#fff' };
             
                       return (
                                     <VerticalTimelineElement
                                                     key={index}
-                                                    className={`vertical-timeline-element--${isWork ? 'work' : 'education'}`}
-                                                    contentStyle={{
-                                                                      background: '#1a1a1a',
-                                                                      color: '#fff',
-                                                                      border: `2px solid ${color.bg}`,
-                                                                      borderRadius: '12px',
-                                                                      boxShadow: `0 4px 24px ${color.bg}33`,
-                                                    }}
-                                                    contentArrowStyle={{ borderRight: `7px solid ${color.arrow}` }}
+                                                    className={'vertical-timeline-element--' + (isWork ? 'work' : 'education')}
+                                                    contentStyle={cardStyle}
+                                                    contentArrowStyle={arrowStyle}
                                                     date={item.dateRange}
-                                                    iconStyle={{ background: color.bg, color: '#fff' }}
+                                                    iconStyle={iconStyle}
                                                     icon={isWork ? <WorkIcon /> : <SchoolIcon />}
                                                   >
                                                   <div
                                                                     ref={el => { itemRefs.current[index] = el; }}
-                                                                    className={`timeline-card ${visibleItems.has(index) ? 'timeline-card--visible' : ''}`}
+                                                                    className={'timeline-card' + (visibleItems.has(index) ? ' timeline-card--visible' : '')}
                                                                   >
                                                     {isWork ? (
-                                                                                      <>
+                                                                                      <React.Fragment>
                                                                                                           <div className="timeline-card-header">
                                                                                                                                 <h3 className="vertical-timeline-element-title">{item.title}</h3>h3>
                                                                                                                                 <span className="timeline-badge timeline-badge--work">Work</span>span>
@@ -118,37 +117,33 @@ const WorkExperience: React.FC = () => {
                                                                                                                 <a href={item.websiteUrl} target="_blank" rel="noopener noreferrer" className="company-link">
                                                                                                                   {item.name} <FaExternalLinkAlt style={{ fontSize: '0.7rem', verticalAlign: 'middle' }} />
                                                                                                                   </a>a>
-                                                                                                              ) : (
-                                                                                                                item.name
-                                                                                                              )}
+                                                                                                              ) : item.name}
                                                                                                             </h4>h4>
                                                                                                           <div className="tech-stack-wrap">
                                                                                                             {item.techStack.split(',').map((tech, i) => (
-                                                                                                                <span key={i} className="tech-chip" style={{ animationDelay: `${i * 0.05}s` }}>
+                                                                                                                <span key={i} className="tech-chip" style={{ animationDelay: (i * 0.05) + 's' }}>
                                                                                                                   {tech.trim()}
                                                                                                                   </span>span>
                                                                                                               ))}
                                                                                                             </div>div>
                                                                                                           <ul className="timeline-bullets">
                                                                                                             {item.summaryPoints.map((point, i) => (
-                                                                                                                <li key={i} className="timeline-bullet-item" style={{ animationDelay: `${i * 0.08}s` }}>
+                                                                                                                <li key={i} className="timeline-bullet-item" style={{ animationDelay: (i * 0.08) + 's' }}>
                                                                                                                                           <span className="bullet-dot" style={{ background: color.bg }} />
                                                                                                                   {point}
                                                                                                                   </li>li>
                                                                                                               ))}
                                                                                                             </ul>ul>
-                                                                                        </>>
+                                                                                        </React.Fragment>React.Fragment>
                                                                                     ) : (
-                                                                                      <>
+                                                                                      <React.Fragment>
                                                                                                           <div className="timeline-card-header">
                                                                                                                                 <h3 className="vertical-timeline-element-title">
                                                                                                                                   {item.websiteUrl ? (
                                                                                                                   <a href={item.websiteUrl} target="_blank" rel="noopener noreferrer" className="company-link">
                                                                                                                     {item.name} <FaExternalLinkAlt style={{ fontSize: '0.7rem', verticalAlign: 'middle' }} />
                                                                                                                     </a>a>
-                                                                                                                ) : (
-                                                                                                                  item.name
-                                                                                                                )}
+                                                                                                                ) : item.name}
                                                                                                                                   </h3>h3>
                                                                                                                                 <span className="timeline-badge timeline-badge--edu">Education</span>span>
                                                                                                             </div>div>
@@ -156,7 +151,7 @@ const WorkExperience: React.FC = () => {
                                                                                         {item.techStack && (
                                                                                                               <div className="tech-stack-wrap">
                                                                                                                 {item.techStack.split(',').map((tech, i) => (
-                                                                                                                                          <span key={i} className="tech-chip tech-chip--edu" style={{ animationDelay: `${i * 0.05}s` }}>
+                                                                                                                                          <span key={i} className="tech-chip tech-chip--edu" style={{ animationDelay: (i * 0.05) + 's' }}>
                                                                                                                                             {tech.trim()}
                                                                                                                                             </span>span>
                                                                                                                                         ))}
@@ -164,13 +159,13 @@ const WorkExperience: React.FC = () => {
                                                                                                           )}
                                                                                                           <ul className="timeline-bullets">
                                                                                                             {item.summaryPoints.map((point, i) => (
-                                                                                                                <li key={i} className="timeline-bullet-item" style={{ animationDelay: `${i * 0.08}s` }}>
+                                                                                                                <li key={i} className="timeline-bullet-item" style={{ animationDelay: (i * 0.08) + 's' }}>
                                                                                                                                           <span className="bullet-dot" style={{ background: color.bg }} />
                                                                                                                   {point}
                                                                                                                   </li>li>
                                                                                                               ))}
                                                                                                             </ul>ul>
-                                                                                        </>>
+                                                                                        </React.Fragment>React.Fragment>
                                                                                     )}
                                                   </div>div>
                                     </VerticalTimelineElement>VerticalTimelineElement>
@@ -181,8 +176,8 @@ const WorkExperience: React.FC = () => {
                                     icon={<StarIcon />}
                                   />
                 </VerticalTimeline>VerticalTimeline>
-          </>>
+          </React.Fragment>React.Fragment>
         );
 };
 
-export default WorkExperience;</></></></div>
+export default WorkExperience;</div>
