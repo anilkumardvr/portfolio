@@ -1,156 +1,268 @@
-.skills-container {
-  padding: 40px;
-  text-align: center;
-  color: #fff;
-  max-width: 1000px;
-  margin: auto;
+/* ===================================================
+   SKILLS — Netflix Cinematic CSS
+   =================================================== */
+
+:root {
+  --nf-red: #e50914;
+  --nf-red-dark: #b00710;
+  --nf-bg: #141414;
+  --nf-card-bg: #1a1a1a;
+  --nf-text: #e5e5e5;
+  --nf-muted: #999;
+  --nf-ease: cubic-bezier(0.16, 1, 0.3, 1);
 }
 
-.skills-title {
-  font-size: 2.5rem;
-  color: #e50914; /* Netflix red */
-  margin-bottom: 30px;
-}
-
-.skills-grid {
-  display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
-  gap: 20px;
-  margin-top: 20px;
-}
-
-.skill-card {
-  background-color: #1e1e1e;
-  border-radius: 10px;
-  padding: 20px;
-  text-align: center;
-  color: #e6e6e6;
-  transition: transform 0.3s ease, box-shadow 0.3s ease;
-  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.3);
-}
-
-.skill-card:hover {
-  transform: scale(1.05);
-  box-shadow: 0 8px 20px rgba(255, 0, 0, 0.5); /* Netflix red glow on hover */
-  cursor: pointer;
-}
-
-.icon {
-  font-size: 2rem;
-  color: #e50914; /* Netflix red */
-  margin-bottom: 10px;
-}
-
-.skill-name {
+/* ─── Loading ───────────────────────────────────── */
+.nf-skills-loading {
   display: flex;
+  flex-direction: column;
+  align-items: center;
   justify-content: center;
+  min-height: 60vh;
+  background: var(--nf-bg);
+  gap: 1.5rem;
+}
+.nf-loading-n {
+  font-size: 5rem;
+  font-weight: 900;
+  color: var(--nf-red);
+  animation: nfLogoPulse 1.4s ease-in-out infinite;
+  letter-spacing: -2px;
+  font-family: 'Arial Black', sans-serif;
+}
+.nf-loading-bar {
+  width: 200px;
+  height: 3px;
+  background: rgba(255,255,255,0.1);
+  border-radius: 2px;
+  overflow: hidden;
+}
+.nf-loading-fill {
+  height: 100%;
+  background: var(--nf-red);
+  animation: nfLoadFill 1.4s var(--nf-ease) infinite;
+}
+@keyframes nfLogoPulse {
+  0%, 100% { opacity: 1; transform: scale(1); }
+  50%       { opacity: 0.6; transform: scale(0.95); }
+}
+@keyframes nfLoadFill {
+  0%   { width: 0%; }
+  60%  { width: 100%; }
+  100% { width: 100%; opacity: 0; }
 }
 
-.letter {
-  display: inline-block;
+/* ─── Container ────────────────────────────────── */
+.nf-skills-container {
+  padding: 7rem 3rem 4rem;
+  background: var(--nf-bg);
+  min-height: 100vh;
+  max-width: 1200px;
+  margin: 0 auto;
+}
+
+/* ─── Page Header ──────────────────────────────── */
+.nf-skills-page-header {
+  margin-bottom: 3rem;
   opacity: 0;
-  transform: translateY(-20px);
-  animation: dropIn 0.5s forwards ease-out;
+  transform: translateY(30px);
+  animation: nfHeaderReveal 0.8s var(--nf-ease) 0.2s forwards;
+}
+@keyframes nfHeaderReveal {
+  to { opacity: 1; transform: translateY(0); }
+}
+.nf-skills-page-bar {
+  width: 50px;
+  height: 4px;
+  background: var(--nf-red);
+  margin-bottom: 1rem;
+  animation: nfBarExpand 0.7s var(--nf-ease) 0.4s both;
+}
+@keyframes nfBarExpand {
+  from { width: 0; }
+  to   { width: 50px; }
+}
+.nf-skills-page-title {
+  font-size: 2.4rem;
+  font-weight: 800;
+  color: #fff;
+  margin: 0 0 0.4rem;
+  letter-spacing: -0.5px;
+}
+.nf-skills-page-sub {
+  font-size: 1rem;
+  color: var(--nf-muted);
+  margin: 0;
 }
 
-@keyframes dropIn {
-  to {
-    opacity: 1;
-    transform: translateY(0);
-  }
-}
-
-.skill-description {
-  font-size: 0.9rem;
-  color: #999;
-}
-
-
-.skills-title {
-  font-size: 2.5rem;
-  color: #da8185; /* Netflix red */
-  margin-bottom: 30px;
+/* ─── Category Block ───────────────────────────── */
+.nf-skill-category {
+  margin-bottom: 3.5rem;
   opacity: 0;
-  transform: translateY(20px);
-  animation: fadeSlideIn 1s ease forwards;
+  transform: translateY(40px);
+  transition: opacity 0.7s var(--nf-ease), transform 0.7s var(--nf-ease);
+  transition-delay: var(--cat-delay, 0s);
+}
+.nf-skill-category--visible {
+  opacity: 1;
+  transform: translateY(0);
+}
+.nf-cat-header {
+  display: flex;
+  align-items: center;
+  gap: 0.8rem;
+  margin-bottom: 1.2rem;
+}
+.nf-cat-bar {
+  width: 4px;
+  height: 28px;
+  background: var(--nf-red);
+  border-radius: 2px;
+  flex-shrink: 0;
+  animation: nfCatBarGrow 0.5s var(--nf-ease) both;
+  animation-delay: var(--cat-delay, 0s);
+}
+@keyframes nfCatBarGrow {
+  from { height: 0; }
+  to   { height: 28px; }
+}
+.nf-cat-title {
+  font-size: 1.15rem;
+  font-weight: 700;
+  color: var(--nf-text);
+  text-transform: uppercase;
+  letter-spacing: 1.5px;
+  margin: 0;
 }
 
-/* Category Animation */
-.category-title {
-  font-size: 1.8rem;
-  color: #e6e6e6;
-  margin: 30px 0 20px;
-  border-bottom: 2px solid #e50914;
-  padding-bottom: 5px;
-  display: inline-block;
+/* ─── Skills Grid ──────────────────────────────── */
+.nf-skills-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+  gap: 1rem;
+}
+
+/* ─── Skill Card ───────────────────────────────── */
+.nf-skill-card {
+  position: relative;
+  background: var(--nf-card-bg);
+  border: 1px solid rgba(255,255,255,0.06);
+  border-radius: 8px;
+  overflow: hidden;
+  cursor: pointer;
   opacity: 0;
-  transform: translateY(20px);
-  animation: fadeSlideIn 0.8s ease forwards;
+  transform: scale(0.88) translateY(20px);
+  transition: opacity 0.55s var(--nf-ease), transform 0.55s var(--nf-ease);
+  transition-delay: var(--card-delay, 0s);
+}
+.nf-skill-card--visible {
+  opacity: 1;
+  transform: scale(1) translateY(0);
+}
+.nf-skill-card:hover {
+  transform: translateY(-6px) scale(1.03);
+  border-color: rgba(229,9,20,0.35);
+  box-shadow: 0 16px 40px rgba(229,9,20,0.25);
+  z-index: 2;
+  transition: transform 0.3s var(--nf-ease), border-color 0.3s ease, box-shadow 0.3s ease;
 }
 
-.category-title:nth-child(1) {
-  animation-delay: 0.2s;
+/* Letterbox bars */
+.nf-skill-letterbox {
+  position: absolute;
+  left: 0; right: 0;
+  height: 100%;
+  background: #000;
+  z-index: 1;
+  transition: transform 0.6s var(--nf-ease);
 }
-.category-title:nth-child(2) {
-  animation-delay: 0.4s;
+.nf-skill-letterbox--top {
+  top: 0;
+  transform-origin: top;
+  transform: scaleY(1);
 }
-.category-title:nth-child(3) {
-  animation-delay: 0.6s;
+.nf-skill-letterbox--bot {
+  bottom: 0;
+  transform-origin: bottom;
+  transform: scaleY(1);
 }
-.category-title:nth-child(4) {
-  animation-delay: 0.8s;
+.nf-skill-card--visible .nf-skill-letterbox--top {
+  transform: scaleY(0);
+  transition-delay: calc(var(--card-delay, 0s) + 0.05s);
 }
-.category-title:nth-child(5) {
-  animation-delay: 1s;
-}
-
-/* Keyframe for Slide and Fade-in Animation */
-@keyframes fadeSlideIn {
-  to {
-    opacity: 1;
-    transform: translateY(10);
-  }
-}
-
-.skill-card h1,
-.skill-card h2,
-.skill-card .skill-title{
-
-  font-family:
-    Inter,
-    "SF Pro Display",
-    -apple-system,
-    BlinkMacSystemFont,
-    "Segoe UI",
-    sans-serif !important;
-
-  font-size:3.2rem !important;
-
-  font-weight:700 !important;
-
-  letter-spacing:-1px !important;
-
-  text-transform:none !important;
-
-  text-shadow:none !important;
-
-  color:#ffffff !important;
-
+.nf-skill-card--visible .nf-skill-letterbox--bot {
+  transform: scaleY(0);
+  transition-delay: calc(var(--card-delay, 0s) + 0.12s);
 }
 
-.skill-card{
-
-  border:1px solid rgba(255,255,255,.08);
-
-  box-shadow:none !important;
-
+/* Red accent strip */
+.nf-skill-accent {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 3px;
+  height: 0%;
+  background: var(--nf-red);
+  z-index: 3;
+  transition: height 0.5s var(--nf-ease);
+  transition-delay: calc(var(--card-delay, 0s) + 0.2s);
+}
+.nf-skill-card--visible .nf-skill-accent {
+  height: 100%;
 }
 
-.skill-card:hover{
-
-  transform:translateY(-4px);
-
-  transition:.3s ease;
-
+/* Spotlight sweep */
+.nf-skill-spotlight {
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(125deg, rgba(255,255,255,0.04) 0%, transparent 60%);
+  opacity: 0;
+  z-index: 2;
+  transition: opacity 0.3s ease;
+  pointer-events: none;
+}
+.nf-skill-card:hover .nf-skill-spotlight {
+  opacity: 1;
 }
 
+/* Inner content */
+.nf-skill-inner {
+  position: relative;
+  z-index: 4;
+  padding: 1.4rem 1rem 1rem;
+  text-align: center;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0.5rem;
+}
+.nf-skill-icon {
+  font-size: 2.2rem;
+  color: var(--nf-red);
+  animation: nfIconPulse 3s ease-in-out infinite;
+}
+@keyframes nfIconPulse {
+  0%, 100% { filter: drop-shadow(0 0 3px rgba(229,9,20,0.3)); }
+  50%       { filter: drop-shadow(0 0 10px rgba(229,9,20,0.7)); }
+}
+.nf-skill-name {
+  font-size: 0.85rem;
+  font-weight: 700;
+  color: #fff;
+  margin: 0;
+  letter-spacing: 0.3px;
+  line-height: 1.2;
+}
+.nf-skill-desc {
+  font-size: 0.72rem;
+  color: var(--nf-muted);
+  margin: 0;
+  line-height: 1.4;
+}
+
+/* ─── Responsive ────────────────────────────────── */
+@media (max-width: 768px) {
+  .nf-skills-container { padding: 6rem 1.2rem 3rem; }
+  .nf-skills-grid { grid-template-columns: repeat(auto-fill, minmax(140px, 1fr)); gap: 0.8rem; }
+  .nf-skills-page-title { font-size: 1.8rem; }
+}
