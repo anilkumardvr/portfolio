@@ -1,151 +1,122 @@
 export const anilProfile = {
-  name: "Anil Kumar Devandla",
-  role: "Senior DevOps Engineer | SRE | Kubernetes | Terraform | CI/CD | Cloud Infrastructure | Platform Engineering",
-  location: "Toronto, ON, Canada",
-  phone: "437-663-4554",
-  email: "anilkumardevandla21@gmail.com",
-  github: "https://github.com/anilkumardvr",
-  linkedin: "https://linkedin.com/in/anilkumardevandla",
-  resumeUrl: process.env.PUBLIC_URL + "/Anil_Kumar_Devandla_Resume.pdf",
-  summary:
-    "Senior Platform Engineer with 7+ years of experience designing, automating, and operating enterprise-scale cloud infrastructure, CI/CD platforms, and Kubernetes environments. Proven expertise in developer platforms, GitOps workflows, reusable deployment patterns, and infrastructure automation. Strong hands-on experience with Azure, Kubernetes (AKS), Terraform, Jenkins, GitHub Actions, Helm, ArgoCD, and distributed systems.",
+    name: "Anil Kumar Devandla",
+    role: "DevOps Engineer | Platform Engineer | Cloud Engineer | Kubernetes Specialist",
+    location: "Toronto, Ontario, Canada",
+    phone: "437-663-4554",
+    email: "anilkumardevandla21@gmail.com",
+    github: "https://github.com/anilkumardvr",
+    linkedin: "https://linkedin.com/in/anilkumardevandla",
+    resumeUrl: process.env.PUBLIC_URL + "/Anil_Kumar_Devandla_Resume.pdf",
+    summary:
+          "Senior DevOps Engineer with 8+ years of IT experience and 5+ years specializing in Cloud Infrastructure, Platform Engineering, Kubernetes, CI/CD Automation, Site Reliability Engineering, and Cloud-Native Technologies. Experienced in designing, deploying, automating, and operating scalable platforms across Azure environments while supporting modern application delivery, middleware platforms, developer enablement, and infrastructure modernization initiatives. Strong expertise in Kubernetes (AKS), Terraform, GitHub Actions, Jenkins, ArgoCD, Infrastructure as Code, observability platforms, security automation, and cloud-native architecture. Proven track record delivering enterprise-scale migrations, platform modernization projects, middleware deployments, automation frameworks, and production support for mission-critical systems. Passionate about platform engineering, developer productivity, cloud automation, AI-assisted engineering, and building reliable systems that scale.",
 };
 
 export const anilSkills = [
-  { name: "AKS / Kubernetes", category: "Kubernetes & Container Orchestration", description: "AKS, Docker, Helm, Workload Identity, Gateway API, StatefulSets, Deployments, Services, namespaces, and cluster troubleshooting.", icon: "SiKubernetes" },
-  { name: "Terraform", category: "Infrastructure as Code", description: "Reusable IaC, infrastructure provisioning, ARM Templates, automation modules, and cloud environment standardization.", icon: "SiTerraform" },
-  { name: "GitHub Actions", category: "CI/CD Platform Engineering", description: "Reusable workflows, pipeline automation, release engineering, golden paths, self-service deployment patterns, and CI/CD platforms.", icon: "FaGithub" },
-  { name: "Jenkins", category: "CI/CD Platform Engineering", description: "Jenkins administration, pipeline automation, release workflows, and platform integration.", icon: "FaJenkins" },
-  { name: "ArgoCD / GitOps", category: "Platform Engineering & GitOps", description: "GitOps deployment patterns, ArgoCD, ApplicationSets, Helm templates, developer experience, and standardized deployment patterns.", icon: "SiArgo" },
-  { name: "Azure", category: "Cloud Platforms", description: "Microsoft Azure, Azure Key Vault, Azure Monitor, Log Analytics, RBAC, workload identity, and cloud infrastructure.", icon: "FaCloud" },
-  { name: "AWS", category: "Cloud Platforms", description: "AWS exposure including EC2, Auto Scaling, Load Balancers, and cloud infrastructure concepts.", icon: "FaAws" },
-  { name: "Observability", category: "Monitoring & Observability", description: "Prometheus, Grafana, Azure Monitor, Datadog concepts, Elasticsearch, Log Analytics, alerting, incident response, RCA, and runbooks.", icon: "FaChartLine" },
-  { name: "Security & Identity", category: "Security & Identity", description: "Azure Key Vault, RBAC, IAM concepts, secrets management, TLS/SSL, access control, and workload identity.", icon: "FaShieldAlt" },
-  { name: "Automation", category: "Programming & Automation", description: "Python, Bash, PowerShell, YAML, JSON, AI-assisted development, troubleshooting scripts, and platform automation workflows.", icon: "FaTerminal" },
-];
+  { name: "AKS / Kubernetes", category: "Kubernetes & Containers", description: "Kubernetes (AKS), Docker, Helm, Gateway API, StatefulSets, Deployments, Services, Ingress Controllers, Namespace Management, Kubernetes Workload Identity, and Cluster Troubleshooting.", icon: "SiKubernetes" },
+  { name: "Terraform", category: "Infrastructure as Code", description: "Terraform, ARM Templates, Infrastructure as Code (IaC), and Infrastructure Automation for cloud environment provisioning and standardization.", icon: "SiTerraform" },
+  { name: "GitHub Actions", category: "CI/CD & Automation", description: "GitHub Actions, GitHub Enterprise, Reusable Workflows, Pipeline Automation, Release Engineering, and Self-Hosted Runner Concepts.", icon: "FaGithub" },
+  { name: "Jenkins", category: "CI/CD & Automation", description: "Jenkins administration, pipeline automation, release workflows, and CI/CD platform integration.", icon: "FaJenkins" },
+  { name: "ArgoCD / GitOps", category: "Platform Engineering & GitOps", description: "GitOps, ArgoCD, ApplicationSets, Golden Paths, Self-Service Tooling, Developer Experience (DevEx), and standardized deployment patterns.", icon: "SiArgo" },
+  { name: "Azure", category: "Cloud Platforms", description: "Microsoft Azure, Azure Key Vault, Azure Monitor, Log Analytics, RBAC, Workload Identity, Hybrid Cloud Architecture, and Multi-Cloud Infrastructure.", icon: "FaCloud" },
+  { name: "AWS / GCP", category: "Cloud Platforms", description: "Amazon Web Services (AWS – Exposure) and Google Cloud Platform (GCP – Exposure) including cloud infrastructure concepts.", icon: "FaAws" },
+  { name: "Observability", category: "Monitoring & Observability", description: "Prometheus, Grafana, Azure Monitor, Elasticsearch, Log Analytics, Datadog (Exposure), Alerting, Incident Response, Root Cause Analysis, and Runbooks.", icon: "FaChartLine" },
+  { name: "Security & Identity", category: "Security & Identity", description: "Azure Key Vault, RBAC, IAM Concepts, Secrets Management, TLS/SSL, Access Control, Workload Identity, and DevSecOps Practices.", icon: "FaShieldAlt" },
+  { name: "Middleware Platforms", category: "Middleware & Data Platforms", description: "RabbitMQ, ActiveMQ Artemis, MinIO, Couchbase, Memcached, Event-Driven Architecture, and Data Platform Infrastructure.", icon: "FaServer" },
+  { name: "Python / Bash / PowerShell", category: "Programming & Scripting", description: "Python, Bash, PowerShell, YAML, JSON for automation workflows, troubleshooting scripts, and platform automation.", icon: "FaTerminal" },
+  { name: "AI & GitHub Copilot", category: "AI & Modern Engineering", description: "GitHub Copilot, AI-Assisted Development, LLM Concepts, AI Developer Tooling, Automation Workflows, and AI Infrastructure Enablement.", icon: "FaBrain" },
+  { name: "Azure DevOps", category: "CI/CD & Automation", description: "Azure DevOps pipelines, release engineering, and platform integration for enterprise software delivery.", icon: "FaCloud" },
+  { name: "Internal Developer Platforms", category: "Platform Engineering & GitOps", description: "Internal Developer Platforms (IDP), Platform Engineering, Self-Service Tooling, Developer Experience (DevEx), and Golden Paths for engineering teams.", icon: "FaCode" },
+  ];
 
 export const anilTimeline = [
   {
-    name: "Kyndryl",
-    websiteUrl: "https://www.kyndryl.com",
-    timelineType: "Work",
-    title: "Platform Engineer",
-    techStack: "AKS, Kubernetes, GitHub Actions, Azure DevOps, Jenkins, Terraform, ArgoCD, Helm, RabbitMQ, ActiveMQ Artemis, Couchbase, MinIO, Memcached, Prometheus, Grafana, Azure Monitor, Log Analytics, Azure Key Vault",
-    summaryPoints: [
-      "Designed and operated Kubernetes-based platform infrastructure supporting enterprise middleware and distributed applications.",
-      "Built reusable CI/CD workflows and deployment automation using GitHub Actions, Azure DevOps, Jenkins, and Infrastructure as Code practices.",
-      "Implemented GitOps deployment patterns using ArgoCD and standardized Helm-based deployment templates.",
-      "Managed highly available middleware platforms including RabbitMQ, ActiveMQ Artemis, Couchbase, MinIO, and Memcached.",
-      "Automated infrastructure provisioning, secrets management, and workload identity integrations using Terraform and Azure Key Vault.",
-      "Improved platform reliability through incident response, root cause analysis, monitoring, and proactive infrastructure optimization."
-    ],
-    dateRange: "April 2026 – Present"
+        name: "Kyndryl",
+        websiteUrl: "https://www.kyndryl.com",
+        timelineType: "Work",
+        title: "Senior DevOps Engineer",
+        techStack: "AKS, Kubernetes, GitHub Actions, Azure DevOps, Jenkins, Terraform, ArgoCD, Helm, RabbitMQ, ActiveMQ Artemis, Couchbase, MinIO, Memcached, Prometheus, Grafana, Azure Monitor, Log Analytics, Azure Key Vault, Python, Bash",
+        summaryPoints: [
+                "Leading cloud modernization and platform engineering initiatives for enterprise workloads running on Azure Kubernetes Service (AKS).",
+                "Designed and deployed middleware platforms including RabbitMQ, ActiveMQ Artemis, MinIO, Couchbase, and Memcached in Kubernetes environments.",
+                "Built secure cloud-native architectures using Azure Key Vault, Workload Identity, RBAC, and Infrastructure as Code.",
+                "Automated infrastructure provisioning and deployment workflows using Terraform, GitHub Actions, Jenkins, Bash, and Python.",
+                "Implemented GitOps deployment patterns using ArgoCD and Helm for standardized, repeatable application delivery.",
+                "Created reusable deployment templates, operational runbooks, and troubleshooting guides for engineering teams.",
+                "Supported production environments through incident management, root cause analysis, and proactive monitoring.",
+                "Built observability solutions using Prometheus, Grafana, Azure Monitor, and centralized logging platforms.",
+                "Worked closely with development teams to improve CI/CD adoption, deployment reliability, and developer productivity.",
+                "Supported platform migrations from legacy infrastructure into cloud-native Azure environments.",
+                "Leveraged AI-assisted engineering tools (GitHub Copilot) to improve automation, troubleshooting, and documentation workflows."
+              ],
+        dateRange: "2025 – Present"
   },
   {
-    name: "First National Financial",
-    websiteUrl: "https://www.firstnational.ca",
-    timelineType: "Work",
-    title: "Azure Cloud Infrastructure Engineer",
-    techStack: "Azure, AKS, Kubernetes, Terraform, GitOps, CI/CD, Azure Monitor, Prometheus, Grafana, Elasticsearch, Log Analytics, Velero",
-    summaryPoints: [
-      "Designed and maintained Kubernetes-based cloud platforms supporting application modernization initiatives and developer enablement.",
-      "Built reusable CI/CD pipelines and standardized deployment patterns to accelerate software delivery across multiple environments.",
-      "Managed Kubernetes resources including namespaces, ingress configurations, secrets, ConfigMaps, and workload identity integrations.",
-      "Implemented GitOps deployment patterns and automated infrastructure provisioning using Terraform.",
-      "Implemented observability solutions using Azure Monitor, Prometheus, Grafana, Elasticsearch, and Log Analytics.",
-      "Implemented backup and disaster recovery strategies using Velero."
-    ],
-    dateRange: "February 2023 – April 2026"
+        name: "Previous DevOps Roles",
+        websiteUrl: "",
+        timelineType: "Work",
+        title: "DevOps Engineer",
+        techStack: "Azure, Kubernetes, Jenkins, Terraform, CI/CD, Infrastructure as Code, Monitoring, Alerting, Incident Response",
+        summaryPoints: [
+                "Managed cloud infrastructure and application deployment pipelines across Azure and hybrid environments.",
+                "Automated build, release, and deployment processes using Jenkins and Infrastructure as Code.",
+                "Supported Kubernetes-based application deployments and operational excellence initiatives.",
+                "Collaborated with development, QA, security, and infrastructure teams to improve software delivery.",
+                "Implemented monitoring, alerting, and incident response procedures.",
+                "Participated in infrastructure modernization and cloud migration programs."
+              ],
+        dateRange: "2017 – 2025"
   },
   {
-    name: "ADP",
-    websiteUrl: "https://www.adp.com",
-    timelineType: "Work",
-    title: "DevOps Engineer / Azure Engineer",
-    techStack: "Linux, RHEL, Ubuntu, Windows Server, IIS, Cloud Storage, Backup Automation, Monitoring, Troubleshooting",
-    summaryPoints: [
-      "Administered Linux servers including user management, package management, system hardening, and troubleshooting.",
-      "Managed Windows Server environments including IIS hosting, services, and application deployments.",
-      "Troubleshot Linux/Unix servers and application infrastructure, resolving system issues and improving stability.",
-      "Provided hands-on support for cloud storage, backup automation, and efficient object storage usage.",
-      "Collaborated with cross-functional teams to improve operational efficiency, documentation, and knowledge transfer."
-    ],
-    dateRange: "October 2019 – February 2023"
-  },
-  {
-    name: "Gemini Consulting",
-    websiteUrl: "https://www.geminiconsulting.com",
-    timelineType: "Work",
-    title: "Software Engineer",
-    techStack: "Linux, Unix, Nagios, AWS EC2, Auto Scaling, Load Balancers, Firewalls, Compliance Monitoring",
-    summaryPoints: [
-      "Administered Linux and Unix servers, performing installation, configuration, and monitoring.",
-      "Configured Nagios monitoring and alerting for infrastructure performance management.",
-      "Implemented AWS infrastructure solutions including EC2, Auto Scaling, and Load Balancers.",
-      "Maintained system security using firewall configurations and compliance monitoring tools.",
-      "Collaborated with cross-functional teams and communicated project updates to stakeholders."
-    ],
-    dateRange: "December 2017 – October 2019"
-  },
-  {
-    name: "Northeastern University",
-    websiteUrl: "https://www.northeastern.edu",
-    timelineType: "Education",
-    title: "Master of Science in Agile Project Management",
-    techStack: "Agile, Project Management, Delivery, Leadership",
-    summaryPoints: ["Graduate studies focused on Agile project management, delivery practices, and team collaboration."],
-    dateRange: "Toronto, Canada"
-  },
-  {
-    name: "Acharya Nagarjuna University",
-    websiteUrl: "https://nagarjunauniversity.ac.in",
-    timelineType: "Education",
-    title: "Bachelor of Technology in Computer Science",
-    techStack: "Computer Science, Software Engineering, Infrastructure",
-    summaryPoints: ["Bachelor's degree foundation in computer science and software engineering."],
-    dateRange: "Andhra Pradesh, India"
+        name: "Northeastern University",
+        websiteUrl: "https://www.northeastern.edu",
+        timelineType: "Education",
+        title: "Master of Science (M.S.) – Project Management",
+        techStack: "Project Management, Agile, Delivery, Leadership",
+        summaryPoints: ["Graduate studies in Project Management with focus on Agile methodologies, delivery practices, and team leadership. Toronto campus."],
+        dateRange: "Toronto, Canada"
   }
-];
+  ];
 
 export const anilProjects = [
   {
-    title: "AKS Middleware Modernization",
-    description: "Migrated and standardized enterprise middleware workloads on AKS, including RabbitMQ, ActiveMQ Artemis, Couchbase, MinIO, and Memcached. Built reusable manifests, services, routes, health checks, storage, and validation patterns.",
-    techUsed: "AKS, Kubernetes, Helm, YAML, Azure Key Vault, Workload Identity, Gateway API, StatefulSets",
-    image: { url: "https://images.unsplash.com/photo-1558494949-ef010cbdcc31?auto=format&fit=crop&w=900&q=80" }
+        title: "JetStream Migration & Modernization Program",
+        description: "Migrated legacy on-premise middleware platforms into Azure Kubernetes Service. Designed deployment architecture for RabbitMQ, ActiveMQ Artemis, MinIO, Couchbase, and Memcached. Implemented secure secret management using Azure Key Vault and Workload Identity. Built scalable and repeatable deployment frameworks using Helm and Infrastructure as Code. Reduced operational complexity through automation and standardized deployment patterns.",
+        techUsed: "AKS, Kubernetes, Helm, Azure Key Vault, Workload Identity, RabbitMQ, ActiveMQ Artemis, MinIO, Couchbase, Memcached, Terraform, YAML",
+        image: { url: "https://images.unsplash.com/photo-1558494949-ef010cbdcc31?auto=format&fit=crop&w=900&q=80" }
   },
   {
-    title: "GitOps Deployment Patterns",
-    description: "Implemented GitOps deployment patterns using ArgoCD and Helm-based templates to standardize application delivery and improve developer experience.",
-    techUsed: "ArgoCD, Helm, GitHub Actions, Kubernetes, GitOps, CI/CD",
-    image: { url: "https://images.unsplash.com/photo-1556075798-4825dfaaf498?auto=format&fit=crop&w=900&q=80" }
+        title: "Platform Engineering & Developer Enablement",
+        description: "Implemented GitOps workflows using ArgoCD to standardize deployment processes across multiple engineering teams. Created reusable templates, automation scripts, and developer onboarding documentation. Established golden paths and self-service tooling to improve developer experience and productivity.",
+        techUsed: "ArgoCD, Helm, GitHub Actions, Kubernetes, GitOps, CI/CD, Internal Developer Platforms, Self-Service Tooling",
+        image: { url: "https://images.unsplash.com/photo-1556075798-4825dfaaf498?auto=format&fit=crop&w=900&q=80" }
   },
   {
-    title: "Cloud Infrastructure Automation",
-    description: "Automated infrastructure provisioning, secrets management, workload identity, and platform components using Terraform, Azure Key Vault, and reusable deployment patterns.",
-    techUsed: "Terraform, Azure, AKS, Azure Key Vault, RBAC, Workload Identity",
-    image: { url: "https://images.unsplash.com/photo-1451187580459-43490279c0fa?auto=format&fit=crop&w=900&q=80" }
+        title: "Cloud-Native Infrastructure Automation",
+        description: "Automated provisioning and configuration of cloud resources using Terraform. Developed CI/CD pipelines using GitHub Actions and Jenkins. Improved deployment consistency, reliability, and recovery processes across Azure environments.",
+        techUsed: "Terraform, Azure, AKS, GitHub Actions, Jenkins, Azure Key Vault, RBAC, Workload Identity, ARM Templates",
+        image: { url: "https://images.unsplash.com/photo-1451187580459-43490279c0fa?auto=format&fit=crop&w=900&q=80" }
   },
   {
-    title: "Observability and Reliability",
-    description: "Implemented monitoring, alerting, incident response, RCA, and runbooks using Prometheus, Grafana, Azure Monitor, Elasticsearch, and Log Analytics.",
-    techUsed: "Prometheus, Grafana, Azure Monitor, Elasticsearch, Log Analytics, SRE",
-    image: { url: "https://images.unsplash.com/photo-1516321318423-f06f85e504b3?auto=format&fit=crop&w=900&q=80" }
+        title: "Observability & Site Reliability Engineering",
+        description: "Implemented comprehensive monitoring, alerting, incident response, RCA, and runbooks using Prometheus, Grafana, Azure Monitor, Elasticsearch, and Log Analytics. Improved production reliability and mean time to recovery (MTTR).",
+        techUsed: "Prometheus, Grafana, Azure Monitor, Elasticsearch, Log Analytics, Datadog, SRE, Incident Management, Root Cause Analysis",
+        image: { url: "https://images.unsplash.com/photo-1516321318423-f06f85e504b3?auto=format&fit=crop&w=900&q=80" }
   }
-];
+  ];
 
 export const anilCertifications = [
-  "Microsoft Azure Fundamentals (AZ-900)",
-  "Microsoft Azure Administrator Associate",
-  "Certified Kubernetes Administrator (CKA)"
-];
+    "Terraform Certification",
+    "Microsoft Azure Fundamentals (AZ-900)",
+    "Certified Kubernetes Administrator (CKA) – In Progress",
+    "Cloud & DevOps Certifications – Ongoing"
+  ];
 
 export const anilProfileBanner = {
-  backgroundImage: {
-    url: "https://media.giphy.com/media/v1.Y2lkPTc5MGI3NjExOTZ5eWwwbjRpdWM1amxyd3VueHhteTVzajVjeGZtZGJ1dDc4MXMyNCZlcD12MV9pbnRlcm5hbF9naWZfYnlfaWQmY3Q9dg/16u7Ifl2T4zYfQ932F/giphy.gif"
-  },
-  headline: "Anil Kumar Devandla - Senior DevOps Engineer",
-  resumeLink: { url: process.env.PUBLIC_URL + "/Anil_Kumar_Devandla_Resume.pdf" },
-  linkedinLink: "https://linkedin.com/in/anilkumardevandla",
-  profileSummary: anilProfile.summary
+    backgroundImage: {
+          url: "https://media.giphy.com/media/v1.Y2lkPTc5MGI3NjExOTZ5eWwwbjRpdWM1amxyd3VueHhteTVzajVjeGZtZGJ1dDc4MXMyNCZlcD12MV9pbnRlcm5hbF9naWZfYnlfaWQmY3Q9dg/16u7Ifl2T4zYfQ932F/giphy.gif"
+    },
+    headline: "Anil Kumar Devandla - Senior DevOps Engineer | Platform Engineer | Kubernetes Specialist",
+    resumeLink: { url: process.env.PUBLIC_URL + "/Anil_Kumar_Devandla_Resume.pdf" },
+    linkedinLink: "https://linkedin.com/in/anilkumardevandla",
+    profileSummary: anilProfile.summary
 };
