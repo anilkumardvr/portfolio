@@ -1,5 +1,5 @@
 // Reading.tsx
-import React from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 import './Reading.css';
 
 const books = [
@@ -35,7 +35,7 @@ const books = [
     title: "Rich Dad Poor Dad",
     author: "Robert T. Kiyosaki",
     imgSrc: "https://m.media-amazon.com/images/I/81bsw6fnUiL._AC_UF1000,1000_QL80_.jpg",
-    description: "What the rich teach their kids about money — that the poor and middle class do not.",
+    description: "What the rich teach their kids about money that the poor and middle class do not.",
     link: "https://www.amazon.com/Rich-Dad-Poor-Teach-Middle/dp/1612681131",
   },
   {
@@ -49,7 +49,7 @@ const books = [
     title: "Deep Work",
     author: "Cal Newport",
     imgSrc: "https://m.media-amazon.com/images/I/71QKQ9mwV7L._AC_UF1000,1000_QL80_.jpg",
-    description: "Rules for focused success in a distracted world — how to master the art of deep concentration.",
+    description: "Rules for focused success in a distracted world and how to master deep concentration.",
     link: "https://www.amazon.com/Deep-Work-Focused-Success-Distracted/dp/1455586692",
   },
   {
@@ -61,29 +61,59 @@ const books = [
   },
 ];
 
+function useInView(threshold = 0.1) {
+  const ref = useRef<HTMLDivElement>(null);
+  const [visible, setVisible] = useState(false);
+  useEffect(() => {
+    const el = ref.current;
+    if (!el) return;
+    const obs = new IntersectionObserver(
+      ([entry]) => { if (entry.isIntersecting) { setVisible(true); obs.disconnect(); } },
+      { threshold }
+    );
+    obs.observe(el);
+    return () => obs.disconnect();
+  }, [threshold]);
+  return { ref, visible };
+}
+
+interface BookCardProps { book: typeof books[0]; index: number; }
+
+const BookCard: React.FC<BookCardProps> = ({ book, index }) => {
+  const { ref, visible } = useInView(0.08);
+  return (
+    <div ref={ref} className={`nf-book-card-wrap ${visible ? 'nf-book-card-wrap--visible' : ''}`} style={{ '--book-delay': `${index * 0.1}s` } as React.CSSProperties}>
+      <a href={book.link} target="_blank" rel="noopener noreferrer" className="nf-book-card">
+        <div className="nf-book-letterbox nf-book-letterbox--top" />
+        <div className="nf-book-letterbox nf-book-letterbox--bot" />
+        <div className="nf-book-spotlight" />
+        <div className="nf-book-cover-wrap">
+          <img src={book.imgSrc} alt={book.title} className="nf-book-cover" />
+          <div className="nf-book-cover-overlay" />
+          <div className="nf-book-read-label">View on Amazon</div>
+        </div>
+        <div className="nf-book-info">
+          <div className="nf-book-accent" />
+          <h3 className="nf-book-title">{book.title}</h3>
+          <h4 className="nf-book-author">{book.author}</h4>
+          <p className="nf-book-desc">{book.description}</p>
+        </div>
+      </a>
+    </div>
+  );
+};
+
 const Reading: React.FC = () => {
   return (
-    <div className="reading-container">
-      <h2 className="reading-title">📚 Life-Changing Books</h2>
-      <p className="reading-intro">Books that shaped my thinking, habits, and perspective on life.</p>
-      <div className="books-grid">
+    <div className="nf-reading-container">
+      <div className="nf-reading-header">
+        <div className="nf-reading-page-bar" />
+        <h2 className="nf-reading-title">Life-Changing Books</h2>
+        <p className="nf-reading-intro">Books that shaped my thinking, habits, and perspective on life.</p>
+      </div>
+      <div className="nf-books-grid">
         {books.map((book, index) => (
-          <a
-            key={index}
-            href={book.link}
-            target="_blank"
-            rel="noopener noreferrer"
-            className="book-card"
-            style={{ '--delay': `${index * 0.1}s` } as React.CSSProperties}
-          >
-            <img src={book.imgSrc} alt={book.title} className="book-cover" />
-            <div className="book-info">
-              <h3 className="book-title">{book.title}</h3>
-              <h4 className="book-author">{book.author}</h4>
-              <p className="book-description">{book.description}</p>
-              <span className="book-link-label">View on Amazon ↗</span>
-            </div>
-          </a>
+          <BookCard key={index} book={book} index={index} />
         ))}
       </div>
     </div>
