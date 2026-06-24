@@ -1,89 +1,269 @@
-.projects-container {
-  padding: 120px 20px;
-  background-color: #141414;
-  color: #fff;
+/* ===================================================
+   PROJECTS — Netflix Cinematic CSS
+   =================================================== */
+
+:root {
+  --nf-red: #e50914;
+  --nf-bg: #141414;
+  --nf-card-bg: #1a1a1a;
+  --nf-text: #e5e5e5;
+  --nf-muted: #999;
+  --nf-ease: cubic-bezier(0.16, 1, 0.3, 1);
 }
 
-.projects-grid {
-  display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
-  gap: 20px;
+/* ─── Loading ───────────────────────────────────── */
+.nf-proj-loading {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
   justify-content: center;
+  min-height: 60vh;
+  background: var(--nf-bg);
+  gap: 1.5rem;
 }
-
-.project-card {
-  background: #1e1e1e;
-  border-radius: 12px;
+.nf-loading-n {
+  font-size: 5rem;
+  font-weight: 900;
+  color: var(--nf-red);
+  animation: nfLogoPulse 1.4s ease-in-out infinite;
+  font-family: 'Arial Black', sans-serif;
+}
+.nf-loading-bar {
+  width: 200px;
+  height: 3px;
+  background: rgba(255,255,255,0.1);
+  border-radius: 2px;
   overflow: hidden;
-  box-shadow: 0 6px 15px rgba(160, 16, 16, 0.6); /* Base shadow */
+}
+.nf-loading-fill {
+  height: 100%;
+  background: var(--nf-red);
+  animation: nfLoadFill 1.4s var(--nf-ease) infinite;
+}
+@keyframes nfLogoPulse {
+  0%, 100% { opacity: 1; transform: scale(1); }
+  50%       { opacity: 0.6; transform: scale(0.95); }
+}
+@keyframes nfLoadFill {
+  0%   { width: 0%; }
+  60%  { width: 100%; }
+  100% { width: 100%; opacity: 0; }
+}
+
+/* ─── Container ─────────────────────────────────── */
+.nf-projects-container {
+  padding: 7rem 3rem 4rem;
+  background: var(--nf-bg);
+  min-height: 100vh;
+  max-width: 1300px;
+  margin: 0 auto;
+}
+
+/* ─── Page Header ───────────────────────────────── */
+.nf-proj-page-header {
+  margin-bottom: 3rem;
   opacity: 0;
-  animation: fadeInUp 0.5s forwards ease-in-out;
-  animation-delay: var(--delay);
-  transition: transform 0.3s ease, box-shadow 0.3s ease;
+  transform: translateY(30px);
+  animation: nfProjHeaderReveal 0.8s var(--nf-ease) 0.2s forwards;
+}
+@keyframes nfProjHeaderReveal {
+  to { opacity: 1; transform: translateY(0); }
+}
+.nf-proj-page-bar {
+  width: 50px;
+  height: 4px;
+  background: var(--nf-red);
+  margin-bottom: 1rem;
+  animation: nfProjBarExpand 0.7s var(--nf-ease) 0.4s both;
+}
+@keyframes nfProjBarExpand {
+  from { width: 0; }
+  to   { width: 50px; }
+}
+.nf-proj-page-title {
+  font-size: 2.4rem;
+  font-weight: 800;
+  color: #fff;
+  margin: 0 0 0.4rem;
+  letter-spacing: -0.5px;
+}
+.nf-proj-page-sub {
+  font-size: 1rem;
+  color: var(--nf-muted);
+  margin: 0;
 }
 
-.project-card:hover {
-  transform: scale(1.05);
-  box-shadow: 0 10px 20px rgba(244, 0, 13, 0.6); /* Netflix shadow */
-  cursor: pointer;
+/* ─── Grid ──────────────────────────────────────── */
+.nf-projects-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
+  gap: 1.6rem;
 }
 
-.project-image {
-  width: 100%;
+/* ─── Project Card ──────────────────────────────── */
+.nf-project-card {
+  position: relative;
+  background: var(--nf-card-bg);
+  border: 1px solid rgba(255,255,255,0.06);
+  border-radius: 10px;
+  overflow: hidden;
+  opacity: 0;
+  transform: translateY(40px) scale(0.96);
+  transition: opacity 0.65s var(--nf-ease), transform 0.65s var(--nf-ease);
+  transition-delay: var(--proj-delay, 0s);
+}
+.nf-project-card--visible {
+  opacity: 1;
+  transform: translateY(0) scale(1);
+}
+.nf-project-card:hover {
+  transform: translateY(-8px) scale(1.02);
+  border-color: rgba(229,9,20,0.4);
+  box-shadow: 0 20px 50px rgba(229,9,20,0.25);
+  z-index: 2;
+  transition: transform 0.3s var(--nf-ease), border-color 0.3s ease, box-shadow 0.3s ease;
+}
+
+/* Letterbox */
+.nf-proj-letterbox {
+  position: absolute;
+  left: 0; right: 0;
+  height: 100%;
+  background: #000;
+  z-index: 2;
+  transition: transform 0.7s var(--nf-ease);
+  pointer-events: none;
+}
+.nf-proj-letterbox--top {
+  top: 0;
+  transform-origin: top;
+  transform: scaleY(1);
+}
+.nf-proj-letterbox--bot {
+  bottom: 0;
+  transform-origin: bottom;
+  transform: scaleY(1);
+}
+.nf-project-card--visible .nf-proj-letterbox--top {
+  transform: scaleY(0);
+  transition-delay: calc(var(--proj-delay, 0s) + 0.05s);
+}
+.nf-project-card--visible .nf-proj-letterbox--bot {
+  transform: scaleY(0);
+  transition-delay: calc(var(--proj-delay, 0s) + 0.15s);
+}
+
+/* Spotlight */
+.nf-proj-spotlight {
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(130deg, rgba(255,255,255,0.05) 0%, transparent 55%);
+  opacity: 0;
+  z-index: 4;
+  pointer-events: none;
+  transition: opacity 0.3s ease;
+}
+.nf-project-card:hover .nf-proj-spotlight {
+  opacity: 1;
+}
+
+/* Image */
+.nf-proj-img-wrap {
+  position: relative;
   height: 200px;
+  overflow: hidden;
+}
+.nf-proj-img {
+  width: 100%;
+  height: 100%;
   object-fit: cover;
-  border-bottom: 2px solid #e50914;
-  transition: transform 0.3s ease;
+  display: block;
+  transition: transform 0.5s var(--nf-ease);
+}
+.nf-project-card:hover .nf-proj-img {
+  transform: scale(1.07);
+}
+.nf-proj-img-overlay {
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(to bottom, transparent 50%, var(--nf-card-bg) 100%);
 }
 
-.project-card:hover .project-image {
-  transform: scale(1.05);
+/* Body */
+.nf-proj-body {
+  position: relative;
+  z-index: 3;
+  padding: 1.2rem 1.3rem 1.3rem;
 }
-
-.project-details {
-  padding: 20px;
+.nf-proj-accent {
+  position: absolute;
+  top: 0; left: 1.3rem;
+  width: 35px;
+  height: 3px;
+  background: var(--nf-red);
+  transform-origin: left;
+  transform: scaleX(0);
+  transition: transform 0.5s var(--nf-ease);
+  transition-delay: calc(var(--proj-delay, 0s) + 0.3s);
 }
-
-.project-details h3 {
-  font-size: 1.2rem;
-  color: #e74e56;
-  margin-bottom: 10px;
-  color: #e50914;
+.nf-project-card--visible .nf-proj-accent {
+  transform: scaleX(1);
 }
-
-.project-details p {
+.nf-proj-title {
+  font-size: 1.05rem;
+  font-weight: 800;
+  color: #fff;
+  margin: 0.7rem 0 0.5rem;
+  letter-spacing: 0.2px;
+  line-height: 1.25;
+}
+.nf-proj-desc {
   font-size: 0.8rem;
-  margin-bottom: 15px;
-  line-height: 1.2rem;
+  color: var(--nf-muted);
+  line-height: 1.5;
+  margin: 0 0 0.9rem;
 }
-
-.tech-used {
+.nf-proj-tech {
   display: flex;
   flex-wrap: wrap;
-  gap: 15px;
-  margin-top: 20px;
+  gap: 0.4rem;
 }
-
-.tech-badge {
+.nf-proj-badge {
   display: inline-flex;
   align-items: center;
-  padding: 5px 10px;
-  border-radius: 12px;
-  background: #2c2c2c;
+  gap: 0.3rem;
+  padding: 0.28rem 0.6rem;
+  background: rgba(255,255,255,0.06);
+  border: 1px solid rgba(255,255,255,0.09);
+  border-radius: 4px;
+  font-size: 0.72rem;
+  color: var(--nf-text);
+  opacity: 0;
+  transform: translateY(8px);
+  animation: nfBadgePop 0.4s var(--nf-ease) var(--badge-delay, 0s) forwards;
+  transition: background 0.2s ease, border-color 0.2s ease;
+}
+.nf-project-card--visible .nf-proj-badge {
+  animation-play-state: running;
+}
+@keyframes nfBadgePop {
+  to { opacity: 1; transform: translateY(0); }
+}
+.nf-proj-badge:hover {
+  background: rgba(229,9,20,0.15);
+  border-color: rgba(229,9,20,0.4);
   color: #fff;
-  font-size: 0.8rem;
-  transition: transform 0.2s ease, box-shadow 0.2s ease;
-  box-shadow: 0px 2px 5px rgba(0, 0, 0, 0.3);
+}
+.nf-proj-badge-icon {
+  font-size: 0.85rem;
+  color: var(--nf-red);
+  display: flex;
+  align-items: center;
 }
 
-.tech-badge:hover {
-  transform: scale(1.1);
-  background-color: #e50914;
-  color: #fff;
-  box-shadow: 0 4px 10px rgba(229, 9, 20, 0.6); /* Netflix shadow */
-}
-
-.tech-badge svg {
-  margin-right: 5px;
-  font-size: 1.2rem;
+/* ─── Responsive ────────────────────────────────── */
+@media (max-width: 768px) {
+  .nf-projects-container { padding: 6rem 1.2rem 3rem; }
+  .nf-projects-grid { grid-template-columns: 1fr; gap: 1.2rem; }
+  .nf-proj-page-title { font-size: 1.8rem; }
 }
