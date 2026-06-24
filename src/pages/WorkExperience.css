@@ -1,330 +1,633 @@
-/* ============================================================
-   Netflix-style Work Experience Animations
-   ============================================================ */
+/* ================================================================
+   NETFLIX-STYLE WORK EXPERIENCE — CINEMATIC CSS
+   ================================================================ */
 
-/* ---- Timeline Container & Header ---- */
-.timeline-container {
-      text-align: center;
-      padding: 20px;
-      margin-top: 5rem;
-      /* starts invisible; JS adds --visible when scrolled into view */
+/* ── Custom properties ── */
+:root {
+     --nf-red:      #e50914;
+     --nf-bg:       #0a0a0a;
+     --nf-surface:  #141414;
+     --nf-border:   #2a2a2a;
+     --nf-text:     #e5e5e5;
+     --nf-muted:    rgba(255,255,255,0.5);
+     --nf-ease-out: cubic-bezier(0.16, 1, 0.3, 1);   /* expo ease-out — Netflix feel */
+  --nf-ease-in:  cubic-bezier(0.7, 0, 0.84, 0);
+}
+
+/* ================================================================
+   PAGE WRAPPER
+   ================================================================ */
+.nf-page {
+     min-height: 100vh;
+     background: var(--nf-bg);
+     padding: 0 0 120px;
+     font-family: 'Netflix Sans', 'Helvetica Neue', Helvetica, Arial, sans-serif;
+}
+
+/* ================================================================
+   NETFLIX-STYLE LOADING SCREEN
+   ================================================================ */
+.nf-loading {
+     display: flex;
+     flex-direction: column;
+     align-items: center;
+     justify-content: center;
+     min-height: 100vh;
+     gap: 32px;
+     background: #000;
+}
+
+/* Big red "N" that pulses like the Netflix intro */
+.nf-loading-logo {
+     font-size: 8rem;
+     font-weight: 900;
+     color: var(--nf-red);
+     letter-spacing: -4px;
+     animation: nfLogoPulse 1.2s var(--nf-ease-out) infinite alternate;
+     text-shadow: 0 0 60px rgba(229,9,20,0.8), 0 0 120px rgba(229,9,20,0.4);
+     font-style: italic;
+     font-family: 'Arial Black', sans-serif;
+}
+
+@keyframes nfLogoPulse {
+     0%   { transform: scale(0.92); opacity: 0.7; text-shadow: 0 0 30px rgba(229,9,20,0.6); }
+     100% { transform: scale(1.04); opacity: 1;   text-shadow: 0 0 80px rgba(229,9,20,1), 0 0 160px rgba(229,9,20,0.5); }
+}
+
+/* Progress bar below the N */
+.nf-loading-bar {
+     width: 200px;
+     height: 3px;
+     background: rgba(255,255,255,0.1);
+     border-radius: 2px;
+     overflow: hidden;
+}
+.nf-loading-fill {
+     height: 100%;
+     background: var(--nf-red);
+     animation: nfLoadFill 1.4s var(--nf-ease-out) infinite;
+}
+@keyframes nfLoadFill {
+     0%   { width: 0%;    transform: translateX(0); }
+     60%  { width: 100%;  transform: translateX(0); }
+     100% { width: 100%;  transform: translateX(110%); }
+}
+
+/* ================================================================
+   HERO HEADER — cinematic reveal like a Netflix title card
+   ================================================================ */
+.nf-header {
+     position: relative;
+     text-align: center;
+     padding: 100px 24px 70px;
+     overflow: hidden;
+}
+
+/* Radial spotlight behind the title */
+.nf-header::before {
+     content: '';
+     position: absolute;
+     inset: 0;
+     background: radial-gradient(ellipse 70% 60% at 50% 40%, rgba(229,9,20,0.12) 0%, transparent 70%);
+     opacity: 0;
+     transition: opacity 1.2s ease;
+}
+.nf-header--visible::before { opacity: 1; }
+
+.nf-header-eyebrow {
+     font-size: 0.72rem;
+     letter-spacing: 0.28em;
+     color: var(--nf-red);
+     text-transform: uppercase;
+     font-weight: 700;
+     margin-bottom: 16px;
+     opacity: 0;
+     transform: translateY(10px);
+     transition: opacity 0.6s ease 0.1s, transform 0.6s var(--nf-ease-out) 0.1s;
+}
+.nf-header--visible .nf-header-eyebrow {
+     opacity: 1;
+     transform: translateY(0);
+}
+
+/* Title: each word slams in from below like a Netflix show title */
+.nf-header-title {
+     font-size: clamp(2.4rem, 6vw, 4.4rem);
+     font-weight: 900;
+     color: #fff;
+     line-height: 1.05;
+     letter-spacing: -0.02em;
+     margin: 0 0 18px;
+     opacity: 0;
+     transform: translateY(40px) scaleY(1.08);
+     transition: opacity 0.75s ease 0.25s, transform 0.75s var(--nf-ease-out) 0.25s;
+}
+.nf-header--visible .nf-header-title {
+     opacity: 1;
+     transform: translateY(0) scaleY(1);
+}
+
+.nf-header-sub {
+     font-size: 1rem;
+     color: var(--nf-muted);
+     margin-bottom: 32px;
+     letter-spacing: 0.04em;
+     opacity: 0;
+     transform: translateY(16px);
+     transition: opacity 0.6s ease 0.45s, transform 0.6s var(--nf-ease-out) 0.45s;
+}
+.nf-header--visible .nf-header-sub {
+     opacity: 1;
+     transform: translateY(0);
+}
+
+.nf-linkedin-btn {
+     display: inline-flex;
+     align-items: center;
+     gap: 9px;
+     background: #0077b5;
+     color: #fff;
+     padding: 12px 26px;
+     border-radius: 4px;
+     font-size: 0.9rem;
+     font-weight: 700;
+     text-decoration: none;
+     letter-spacing: 0.04em;
+     opacity: 0;
+     transform: translateY(16px);
+     transition: opacity 0.6s ease 0.6s, transform 0.6s var(--nf-ease-out) 0.6s,
+                      background 0.2s, box-shadow 0.2s;
+     box-shadow: 0 4px 20px rgba(0,119,181,0.35);
+}
+.nf-header--visible .nf-linkedin-btn {
+     opacity: 1;
+     transform: translateY(0);
+}
+.nf-linkedin-btn:hover {
+     background: #005f8f;
+     box-shadow: 0 8px 32px rgba(0,119,181,0.55);
+     transform: translateY(-3px) scale(1.03) !important;
+}
+
+/* ================================================================
+   TIMELINE TRACK
+   ================================================================ */
+.nf-timeline {
+     position: relative;
+     max-width: 980px;
+     margin: 0 auto;
+     padding: 0 24px;
+}
+
+/* The glowing vertical spine */
+.nf-track-line {
+     position: absolute;
+     left: 50%;
+     top: 0;
+     bottom: 0;
+     width: 2px;
+     transform: translateX(-50%);
+     background: linear-gradient(
+            to bottom,
+            transparent 0%,
+            var(--nf-red) 8%,
+            rgba(229,9,20,0.6) 50%,
+            var(--nf-red) 92%,
+            transparent 100%
+          );
+     animation: nfSpineGlow 3s ease-in-out infinite alternate;
+}
+@keyframes nfSpineGlow {
+     0%   { opacity: 0.5; filter: blur(0px); }
+     100% { opacity: 1;   filter: blur(0.5px) drop-shadow(0 0 6px var(--nf-red)); }
+}
+
+/* ── Row: node + card ── */
+.nf-track-row {
+     display: flex;
+     align-items: flex-start;
+     gap: 0;
+     margin-bottom: 64px;
+     position: relative;
+}
+
+/* ── Timeline node (icon circle) ── */
+.nf-node-wrap {
+     position: absolute;
+     left: 50%;
+     transform: translateX(-50%);
+     top: 28px;
+     z-index: 10;
+}
+
+.nf-node {
+     width: 44px;
+     height: 44px;
+     border-radius: 50%;
+     display: flex;
+     align-items: center;
+     justify-content: center;
+     font-size: 1.3rem;
+     color: #fff;
+     position: relative;
+     z-index: 2;
+     transition: transform 0.35s var(--nf-ease-out), box-shadow 0.35s ease;
+     cursor: default;
+}
+.nf-node:hover {
+     transform: scale(1.25);
+}
+
+/* Pulsing ring around the node */
+.nf-node-pulse {
+     position: absolute;
+     inset: -8px;
+     border-radius: 50%;
+     border: 2px solid;
+     opacity: 0;
+     animation: nfNodePulse 2.2s ease-out infinite;
+}
+@keyframes nfNodePulse {
+     0%   { transform: scale(1);   opacity: 0.8; }
+     100% { transform: scale(2.2); opacity: 0;   }
+}
+
+/* ── CARDS: alternating left/right ── */
+.nf-track-row:nth-child(odd)  .nf-card { margin-left: 0;    margin-right: calc(50% + 44px); }
+.nf-track-row:nth-child(even) .nf-card { margin-left: calc(50% + 44px); margin-right: 0; }
+
+/* ================================================================
+   EXPERIENCE CARD — the main cinematic element
+   ================================================================ */
+.nf-card {
+     position: relative;
+     background: var(--nf-surface);
+     border: 1px solid var(--nf-border);
+     border-radius: 6px;
+     overflow: hidden;
+     flex: 1;
+
+  /* Start state: off-screen + invisible */
   opacity: 0;
-      transform: translateY(-30px);
-      transition: opacity 0.8s ease, transform 0.8s ease;
-}
-.timeline-container--visible {
-      opacity: 1;
-      transform: translateY(0);
-}
-
-.timeline-title {
-      font-size: 2rem;
-      color: #fff;
-      font-weight: bold;
-      margin-bottom: 8px;
-      display: inline-block;
-      opacity: 0;
-      animation: fadeInDown 0.9s ease 0.1s forwards;
-}
-.timeline-subtitle {
-      color: rgba(255,255,255,0.6);
-      font-size: 1rem;
-      margin-bottom: 18px;
-      opacity: 0;
-      animation: fadeInDown 0.9s ease 0.3s forwards;
-      letter-spacing: 0.04em;
-}
-.linkedin-btn {
-      display: inline-flex;
-      align-items: center;
-      background: #0077b5;
-      color: #fff;
-      padding: 10px 22px;
-      border-radius: 6px;
-      font-size: 0.95rem;
-      font-weight: 600;
-      text-decoration: none;
-      margin-top: 10px;
-      margin-bottom: 30px;
-      transition: background 0.2s ease, transform 0.2s ease, box-shadow 0.2s ease;
-      box-shadow: 0 2px 8px rgba(0,119,181,0.4);
-      opacity: 0;
-      animation: fadeInDown 0.9s ease 0.5s forwards;
-}
-.linkedin-btn:hover {
-      background: #005f8f;
-      transform: translateY(-3px) scale(1.04);
-      box-shadow: 0 8px 24px rgba(0,119,181,0.5);
+     will-change: transform, opacity;
+     transition:
+            opacity   0.7s var(--nf-ease-out),
+            transform 0.7s var(--nf-ease-out),
+            box-shadow 0.35s ease;
 }
 
-/* ---- Netflix Card Wrapper (scroll-reveal) ---- */
-.netflix-card-wrapper {
-      opacity: 0;
-      transform: translateX(var(--slide-dir, -40px)) translateY(16px);
-      transition: opacity 0.65s cubic-bezier(0.22, 1, 0.36, 1),
-                        transform 0.65s cubic-bezier(0.22, 1, 0.36, 1);
-      position: relative;
-      border-radius: 12px;
-      overflow: hidden;
-}
-.netflix-card-wrapper--visible {
-      opacity: 1;
-      transform: translateX(0) translateY(0);
+/* Slide-in directions */
+.nf-card--from-left  { transform: translateX(-80px) skewX(-3deg); }
+.nf-card--from-right { transform: translateX( 80px) skewX( 3deg); }
+
+/* Visible state — slam into position */
+.nf-card--visible {
+     opacity: 1;
+     transform: translateX(0) skewX(0deg);
 }
 
-/* ---- Netflix colour bar at top of every card ---- */
-.netflix-card-bar {
-      height: 4px;
-      width: 100%;
-      border-radius: 0;
-      transform: scaleX(0);
-      transform-origin: left center;
-      transition: transform 0.5s cubic-bezier(0.22, 1, 0.36, 1) 0.2s;
-}
-.netflix-card-wrapper--visible .netflix-card-bar {
-      transform: scaleX(1);
+/* Hover: lift + edge glow */
+.nf-card:hover {
+     transform: translateY(-6px) scale(1.015) !important;
+     box-shadow:
+            0 20px 60px rgba(0,0,0,0.7),
+            0 0 0 1px var(--accent, #e50914),
+            0 0 40px -8px var(--accent, #e50914);
 }
 
-/* ---- Card body padding ---- */
-.netflix-card-body {
-      padding: 20px 22px 18px 22px;
+/* ── Letterbox bars (Netflix title-card effect) ── */
+/* Top and bottom black bars that slide IN when card first appears */
+.nf-letterbox {
+     position: absolute;
+     left: 0; right: 0;
+     height: 40%;
+     background: #000;
+     z-index: 5;
+     pointer-events: none;
+     transition: transform 0.65s var(--nf-ease-out) 0.05s;
+}
+.nf-letterbox--top    { top: 0;    transform: translateY(0);    }
+.nf-letterbox--bottom { bottom: 0; transform: translateY(0);    }
+
+/* When visible: bars SLIDE OUT revealing the card — cinematic! */
+.nf-card--visible .nf-letterbox--top    { transform: translateY(-100%); }
+.nf-card--visible .nf-letterbox--bottom { transform: translateY(100%);  }
+
+/* ── Left accent colour strip ── */
+.nf-accent-strip {
+     position: absolute;
+     left: 0; top: 0; bottom: 0;
+     width: 4px;
+     background: var(--accent, #e50914);
+     transform: scaleY(0);
+     transform-origin: top center;
+     transition: transform 0.5s var(--nf-ease-out) 0.5s;
+}
+.nf-card--visible .nf-accent-strip { transform: scaleY(1); }
+
+/* ── Spotlight sweep on hover ── */
+.nf-spotlight {
+     position: absolute;
+     inset: 0;
+     pointer-events: none;
+     background: linear-gradient(
+            110deg,
+            transparent     35%,
+            rgba(255,255,255,0.055) 50%,
+            transparent     65%
+          );
+     background-size: 250% 100%;
+     background-position: -150% 0;
+     transition: background-position 0s;
+     border-radius: 6px;
+}
+.nf-card:hover .nf-spotlight {
+     background-position: 200% 0;
+     transition: background-position 0.6s ease;
 }
 
-/* ---- Netflix shimmer on hover ---- */
-.netflix-shimmer {
-      position: absolute;
-      inset: 0;
-      pointer-events: none;
-      background: linear-gradient(
-              105deg,
-              transparent 40%,
-              rgba(255,255,255,0.06) 50%,
-              transparent 60%
-            );
-      background-size: 200% 100%;
-      background-position: -200% 0;
-      transition: background-position 0s;
-      border-radius: 12px;
-}
-.netflix-card-wrapper:hover .netflix-shimmer {
-      background-position: 200% 0;
-      transition: background-position 0.55s ease;
+/* ── Card inner padding ── */
+.nf-card-inner {
+     padding: 28px 28px 24px 32px;
+     position: relative;
+     z-index: 2;
 }
 
-/* ---- Card Hover: lift + glow ---- */
-.vertical-timeline-element-content {
-      transition: transform 0.35s cubic-bezier(0.22, 1, 0.36, 1),
-                        box-shadow 0.35s cubic-bezier(0.22, 1, 0.36, 1) !important;
-      border-radius: 12px !important;
-      overflow: hidden !important;
-}
-.vertical-timeline-element-content:hover {
-      transform: scale(1.025) translateY(-6px) !important;
-      box-shadow: 0 16px 48px rgba(229,9,20,0.3), 0 4px 12px rgba(0,0,0,0.5) !important;
+/* ================================================================
+   HERO ROW: icon + company + role + tenure
+   ================================================================ */
+.nf-hero {
+     display: flex;
+     align-items: flex-start;
+     gap: 16px;
+     margin-bottom: 20px;
 }
 
-/* ---- Card Header ---- */
-.timeline-card-header {
-      display: flex;
-      align-items: flex-start;
-      justify-content: space-between;
-      gap: 10px;
-      flex-wrap: wrap;
-      margin-bottom: 4px;
+.nf-hero-icon {
+     width: 46px;
+     height: 46px;
+     border-radius: 8px;
+     background: rgba(255,255,255,0.06);
+     border: 1px solid rgba(255,255,255,0.1);
+     display: flex;
+     align-items: center;
+     justify-content: center;
+     font-size: 1.35rem;
+     color: var(--accent, #e50914);
+     flex-shrink: 0;
+     transition: background 0.25s, transform 0.25s var(--nf-ease-out);
+
+  /* Starts hidden — scales in after letterbox reveal */
+  opacity: 0;
+     transform: scale(0.6) rotate(-15deg);
+     transition: opacity 0.4s ease 0.7s, transform 0.5s var(--nf-ease-out) 0.7s,
+                      background 0.25s;
 }
-.vertical-timeline-element-title {
-      color: #fff !important;
-      font-size: 1.1rem !important;
-      font-weight: 700 !important;
-      margin: 0 !important;
-      flex: 1;
+.nf-card--visible .nf-hero-icon {
+     opacity: 1;
+     transform: scale(1) rotate(0deg);
 }
-.vertical-timeline-element-subtitle {
-      color: rgba(255,255,255,0.75) !important;
-      font-size: 0.95rem !important;
-      margin: 4px 0 10px 0 !important;
-}
-.edu-subtitle {
-      color: rgba(255,255,255,0.85) !important;
-      font-style: italic;
+.nf-card:hover .nf-hero-icon {
+     background: rgba(var(--accent, #e50914), 0.12);
+     transform: scale(1.1) rotate(0deg) !important;
 }
 
-/* ---- Badges ---- */
-.timeline-badge {
-      font-size: 0.68rem;
-      font-weight: 700;
-      letter-spacing: 0.08em;
-      text-transform: uppercase;
-      padding: 3px 9px;
-      border-radius: 20px;
-      white-space: nowrap;
-      flex-shrink: 0;
-      margin-top: 2px;
+.nf-hero-text { flex: 1; min-width: 0; }
+
+/* ── COMPANY NAME — biggest, boldest element ── */
+.nf-company-row {
+     display: flex;
+     align-items: center;
+     gap: 10px;
+     flex-wrap: wrap;
+     margin-bottom: 4px;
+
+  opacity: 0;
+     transform: translateX(-20px);
+     transition: opacity 0.55s ease 0.75s, transform 0.55s var(--nf-ease-out) 0.75s;
 }
-.timeline-badge--work {
-      background: rgba(229,9,20,0.25);
-      color: #ff6b6b;
-      border: 1px solid rgba(229,9,20,0.4);
-}
-.timeline-badge--edu {
-      background: rgba(255,152,0,0.2);
-      color: #ffb74d;
-      border: 1px solid rgba(255,152,0,0.4);
+.nf-card--visible .nf-company-row {
+     opacity: 1;
+     transform: translateX(0);
 }
 
-/* ---- Company Link ---- */
-.company-link {
-      color: #64b5f6;
-      text-decoration: none;
-      font-weight: 700;
-      transition: color 0.2s ease, text-shadow 0.2s ease;
+.nf-company-name {
+     font-size: 1.55rem;
+     font-weight: 800;
+     color: #fff;
+     text-decoration: none;
+     letter-spacing: -0.01em;
+     line-height: 1.1;
+     display: inline-flex;
+     align-items: center;
+     gap: 8px;
+     transition: color 0.2s ease;
 }
-.company-link:hover {
-      color: #e50914;
-      text-shadow: 0 0 8px rgba(229,9,20,0.5);
-      text-decoration: underline;
+.nf-company-name:hover { color: var(--accent, #e50914); }
+
+.nf-ext-icon {
+     font-size: 0.7rem;
+     opacity: 0.55;
+     flex-shrink: 0;
 }
 
-/* ---- Tech Chips ---- */
-.tech-stack-wrap {
-      display: flex;
-      flex-wrap: wrap;
-      gap: 6px;
-      margin: 10px 0 14px 0;
+.nf-type-badge {
+     font-size: 0.6rem;
+     font-weight: 800;
+     letter-spacing: 0.14em;
+     padding: 3px 8px;
+     border-radius: 3px;
+     flex-shrink: 0;
+     align-self: center;
 }
-.tech-chip {
-      font-size: 0.72rem;
-      background: rgba(255,255,255,0.08);
-      color: rgba(255,255,255,0.85);
-      border: 1px solid rgba(255,255,255,0.15);
-      border-radius: 20px;
-      padding: 3px 10px;
-      font-weight: 500;
-      opacity: 0;
-      animation: chipPopIn 0.4s cubic-bezier(0.34, 1.56, 0.64, 1) forwards;
-      transition: background 0.2s ease, border-color 0.2s ease, transform 0.2s ease;
+.nf-type-badge--work {
+     background: rgba(229,9,20,0.2);
+     color: #ff6b6b;
+     border: 1px solid rgba(229,9,20,0.45);
 }
-.tech-chip:hover {
-      background: rgba(229,9,20,0.18);
-      border-color: rgba(229,9,20,0.5);
-      transform: translateY(-2px) scale(1.06);
-}
-.tech-chip--edu {
-      background: rgba(255,152,0,0.1);
-      border-color: rgba(255,152,0,0.25);
-      color: #ffcc80;
-}
-.tech-chip--edu:hover {
-      background: rgba(255,152,0,0.25);
-      border-color: rgba(255,152,0,0.55);
+.nf-type-badge--edu {
+     background: rgba(255,152,0,0.2);
+     color: #ffb74d;
+     border: 1px solid rgba(255,152,0,0.45);
 }
 
-/* ---- Bullet Points ---- */
-.timeline-bullets {
-      list-style: none;
-      padding: 0;
-      margin: 6px 0 0 0;
+/* ── JOB TITLE ── */
+.nf-role {
+     font-size: 1rem;
+     color: rgba(255,255,255,0.72);
+     font-weight: 500;
+     margin-bottom: 8px;
+
+  opacity: 0;
+     transform: translateX(-16px);
+     transition: opacity 0.5s ease 0.88s, transform 0.5s var(--nf-ease-out) 0.88s;
 }
-.timeline-bullet-item {
-      display: flex;
-      align-items: flex-start;
-      gap: 8px;
-      color: rgba(255,255,255,0.85);
-      font-size: 0.87rem;
-      line-height: 1.55;
-      margin-bottom: 7px;
-      opacity: 0;
-      animation: bulletReveal 0.45s cubic-bezier(0.22, 1, 0.36, 1) forwards;
-      transition: color 0.2s ease, transform 0.2s ease;
-}
-.timeline-bullet-item:hover {
-      color: #fff;
-      transform: translateX(5px);
-}
-.bullet-dot {
-      width: 7px;
-      height: 7px;
-      border-radius: 50%;
-      flex-shrink: 0;
-      margin-top: 6px;
-      box-shadow: 0 0 6px currentColor;
-      animation: dotPulse 2.5s ease-in-out infinite;
+.nf-card--visible .nf-role {
+     opacity: 1;
+     transform: translateX(0);
 }
 
-/* ---- Loading State ---- */
-.timeline-loading {
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      justify-content: center;
-      min-height: 300px;
-      color: rgba(255,255,255,0.6);
-      gap: 16px;
+/* ── TENURE — the key date display ── */
+.nf-tenure {
+     display: inline-flex;
+     align-items: center;
+     gap: 8px;
+     font-size: 0.82rem;
+     font-weight: 700;
+     color: var(--accent, #e50914);
+     letter-spacing: 0.06em;
+     text-transform: uppercase;
+     background: rgba(255,255,255,0.04);
+     border: 1px solid rgba(255,255,255,0.1);
+     border-left: 3px solid var(--accent, #e50914);
+     padding: 5px 12px 5px 10px;
+     border-radius: 0 4px 4px 0;
+
+  opacity: 0;
+     transform: translateX(-12px);
+     transition: opacity 0.5s ease 0.98s, transform 0.5s var(--nf-ease-out) 0.98s;
 }
-.loading-spinner {
-      width: 40px;
-      height: 40px;
-      border: 3px solid rgba(229,9,20,0.2);
-      border-top-color: #e50914;
-      border-radius: 50%;
-      animation: spin 0.8s linear infinite;
+.nf-card--visible .nf-tenure {
+     opacity: 1;
+     transform: translateX(0);
+}
+.nf-tenure-dot {
+     width: 6px;
+     height: 6px;
+     border-radius: 50%;
+     background: var(--accent, #e50914);
+     animation: nfTenureDot 1.8s ease-in-out infinite;
+     flex-shrink: 0;
+}
+@keyframes nfTenureDot {
+     0%, 100% { transform: scale(1);   opacity: 1; }
+     50%       { transform: scale(1.6); opacity: 0.6; }
 }
 
-/* ---- Keyframe Animations ---- */
-@keyframes fadeInDown {
-      0%   { opacity: 0; transform: translateY(-20px); }
-      100% { opacity: 1; transform: translateY(0); }
+/* ── Horizontal divider ── */
+.nf-divider {
+     height: 1px;
+     background: linear-gradient(to right, var(--accent, #e50914), transparent);
+     margin: 16px 0;
+     transform: scaleX(0);
+     transform-origin: left;
+     transition: transform 0.55s var(--nf-ease-out) 1.05s;
+}
+.nf-card--visible .nf-divider { transform: scaleX(1); }
+
+/* ================================================================
+   TECH CHIPS
+   ================================================================ */
+.nf-chips {
+     display: flex;
+     flex-wrap: wrap;
+     gap: 6px;
+     margin-bottom: 18px;
 }
 
-@keyframes chipPopIn {
-      0%   { opacity: 0; transform: scale(0.7) translateY(6px); }
-      100% { opacity: 1; transform: scale(1) translateY(0); }
+.nf-chip {
+     font-size: 0.68rem;
+     font-weight: 600;
+     padding: 4px 10px;
+     border-radius: 3px;
+     border: 1px solid rgba(255,255,255,0.12);
+     background: rgba(255,255,255,0.05);
+     color: rgba(255,255,255,0.8);
+     letter-spacing: 0.03em;
+     cursor: default;
+
+  /* Starts invisible */
+  opacity: 0;
+     transform: scale(0.75) translateY(6px);
+     animation: none; /* driven by .nf-card--visible */
+  transition: background 0.2s, border-color 0.2s, transform 0.2s var(--nf-ease-out);
+}
+/* Fire animation once card is visible */
+.nf-card--visible .nf-chip {
+     animation: nfChipPop 0.4s var(--nf-ease-out) both;
+}
+@keyframes nfChipPop {
+     0%   { opacity: 0; transform: scale(0.7)  translateY(8px); }
+     70%  { opacity: 1; transform: scale(1.05) translateY(-2px); }
+     100% { opacity: 1; transform: scale(1)    translateY(0); }
+}
+.nf-chip:hover {
+     background: rgba(229,9,20,0.18);
+     border-color: rgba(229,9,20,0.5);
+     transform: translateY(-2px) scale(1.06);
+}
+.nf-chip--edu:hover {
+     background: rgba(255,152,0,0.18);
+     border-color: rgba(255,152,0,0.5);
 }
 
-@keyframes bulletReveal {
-      0%   { opacity: 0; transform: translateX(-14px); }
-      100% { opacity: 1; transform: translateX(0); }
+/* ================================================================
+   BULLETS
+   ================================================================ */
+.nf-bullets {
+     list-style: none;
+     padding: 0;
+     margin: 0;
 }
 
-@keyframes dotPulse {
-      0%, 100% { box-shadow: 0 0 4px 1px currentColor; }
-      50%       { box-shadow: 0 0 10px 3px currentColor; }
+.nf-bullet {
+     display: flex;
+     align-items: flex-start;
+     gap: 12px;
+     color: rgba(255,255,255,0.78);
+     font-size: 0.855rem;
+     line-height: 1.6;
+     margin-bottom: 9px;
+
+  /* Starts invisible */
+  opacity: 0;
+     transform: translateX(-16px);
+     transition: color 0.2s ease, transform 0.2s ease;
+}
+/* Fire animation once card is visible */
+.nf-card--visible .nf-bullet {
+     animation: nfBulletSlide 0.45s var(--nf-ease-out) both;
+}
+@keyframes nfBulletSlide {
+     0%   { opacity: 0; transform: translateX(-20px); }
+     100% { opacity: 1; transform: translateX(0); }
+}
+.nf-bullet:hover {
+     color: #fff;
+     transform: translateX(5px);
 }
 
-@keyframes spin {
-      to { transform: rotate(360deg); }
+/* Left colour bar (replaces bullet dot) */
+.nf-bullet-bar {
+     width: 3px;
+     min-width: 3px;
+     height: 1.1em;
+     margin-top: 3px;
+     border-radius: 2px;
+     background: var(--accent, #e50914);
+     flex-shrink: 0;
+     opacity: 0.8;
+     transition: height 0.2s ease, opacity 0.2s ease;
+}
+.nf-bullet:hover .nf-bullet-bar {
+     height: 100%;
+     opacity: 1;
 }
 
-/* ---- Vertical Timeline Overrides ---- */
-.vertical-timeline::before {
-      background: linear-gradient(
-              to bottom,
-              transparent,
-              rgba(229,9,20,0.5) 20%,
-              rgba(229,9,20,0.5) 80%,
-              transparent
-            ) !important;
-}
-.vertical-timeline-element-icon {
-      transition: transform 0.3s ease, box-shadow 0.3s ease !important;
-}
-.vertical-timeline-element-icon:hover {
-      transform: scale(1.2) !important;
-      box-shadow: 0 0 16px 4px rgba(229,9,20,0.5) !important;
-}
-.vertical-timeline-element-date {
-      color: rgba(255,255,255,0.7) !important;
-      font-weight: 600 !important;
-      font-size: 0.85rem !important;
-}
-
-/* ---- Responsive ---- */
+/* ================================================================
+   RESPONSIVE
+   ================================================================ */
 @media (max-width: 768px) {
-      .timeline-title           { font-size: 1.4rem; }
-      .linkedin-btn             { font-size: 0.85rem; padding: 8px 16px; }
-      .vertical-timeline-element-title { font-size: 1rem !important; }
-      .timeline-badge           { font-size: 0.62rem; }
-      .tech-chip                { font-size: 0.68rem; }
-      .timeline-bullet-item     { font-size: 0.82rem; }
-      .netflix-card-body        { padding: 14px 14px 12px 14px; }
+     .nf-track-line { left: 20px; }
+     .nf-node-wrap  { left: 20px; }
+     .nf-track-row:nth-child(odd)  .nf-card,
+     .nf-track-row:nth-child(even) .nf-card {
+            margin-left: 56px;
+            margin-right: 0;
+     }
+     .nf-card--from-left,
+     .nf-card--from-right { transform: translateX(30px) skewX(0deg); }
+     .nf-company-name { font-size: 1.2rem; }
+     .nf-header-title { font-size: 2rem; }
+     .nf-card-inner   { padding: 20px 16px 18px 20px; }
 }
