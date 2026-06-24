@@ -54,8 +54,8 @@ const WorkExperience: React.FC = () => {
     if (!timeLineData) return (
           <div className="timeline-loading">
                 <div className="loading-spinner" />
-                <p>Loading timeline...</p>p>
-          </div>div>
+                <p>Loading timeline...</p>
+          </div>
         );
   
     let workIdx = 0;
@@ -64,7 +64,7 @@ const WorkExperience: React.FC = () => {
     return (
           <React.Fragment>
                 <div className="timeline-container">
-                        <h2 className="timeline-title">Work Experience and Education Timeline</h2>h2>
+                        <h2 className="timeline-title">Work Experience and Education Timeline</h2>
                         <p className="timeline-subtitle">8+ Years of IT Experience | Senior DevOps and Cloud Engineer</p>p>
                         <a
                                     href="https://linkedin.com/in/anilkumardevandla"
