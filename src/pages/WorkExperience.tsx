@@ -97,7 +97,7 @@ const WorkExperience: React.FC = () => {
       <div className="nf-timeline">
         <div className="nf-track-line" />
         {data.map((item, index) => {
-          const isWork = item.timelineType === 'Work' || item.timelineType === 'work';
+          const isWork = item.timelineType === 'work';
           const color = isWork ? WORK_COLORS[wi++ % WORK_COLORS.length] : EDU_COLORS[ei++ % EDU_COLORS.length];
           return (
             <div key={index} className="nf-track-row">
