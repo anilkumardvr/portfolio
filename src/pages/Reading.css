@@ -1,124 +1,222 @@
-/* Reading.css */
+/* ===================================================
+   READING / BOOKS — Netflix Cinematic CSS
+   =================================================== */
 
-.reading-container {
-  padding: 6rem 2rem 3rem;
-  color: #fff;
-  text-align: center;
-  max-width: 1200px;
+:root {
+  --nf-red: #e50914;
+  --nf-bg: #141414;
+  --nf-card-bg: #1a1a1a;
+  --nf-text: #e5e5e5;
+  --nf-muted: #999;
+  --nf-ease: cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+/* ─── Container ─────────────────────────────────── */
+.nf-reading-container {
+  padding: 7rem 3rem 4rem;
+  background: var(--nf-bg);
+  min-height: 100vh;
+  max-width: 1300px;
   margin: 0 auto;
 }
 
-.reading-title {
-  font-size: 2.5rem;
-  color: #e50914;
-  font-weight: bold;
-  margin-bottom: 0.5rem;
-  animation: slideDown 0.8s ease-in-out;
+/* ─── Header ────────────────────────────────────── */
+.nf-reading-header {
+  margin-bottom: 3rem;
+  opacity: 0;
+  transform: translateY(30px);
+  animation: nfReadHeaderIn 0.8s var(--nf-ease) 0.2s forwards;
+}
+@keyframes nfReadHeaderIn {
+  to { opacity: 1; transform: translateY(0); }
+}
+.nf-reading-page-bar {
+  width: 50px;
+  height: 4px;
+  background: var(--nf-red);
+  margin-bottom: 1rem;
+  animation: nfReadBarExpand 0.7s var(--nf-ease) 0.4s both;
+}
+@keyframes nfReadBarExpand {
+  from { width: 0; }
+  to   { width: 50px; }
+}
+.nf-reading-title {
+  font-size: 2.4rem;
+  font-weight: 800;
+  color: #fff;
+  margin: 0 0 0.4rem;
+  letter-spacing: -0.5px;
+}
+.nf-reading-intro {
+  font-size: 1rem;
+  color: var(--nf-muted);
+  margin: 0;
 }
 
-.reading-intro {
-  font-size: 1.1rem;
-  color: rgba(255,255,255,0.7);
-  margin-bottom: 2.5rem;
-}
-
-.books-grid {
+/* ─── Grid ──────────────────────────────────────── */
+.nf-books-grid {
   display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+  grid-template-columns: repeat(auto-fill, minmax(240px, 1fr));
   gap: 1.5rem;
 }
 
-.book-card {
-  background: #1a1a1a;
+/* ─── Book Card Wrap ────────────────────────────── */
+.nf-book-card-wrap {
+  opacity: 0;
+  transform: translateY(40px) scale(0.95);
+  transition: opacity 0.65s var(--nf-ease), transform 0.65s var(--nf-ease);
+  transition-delay: var(--book-delay, 0s);
+}
+.nf-book-card-wrap--visible {
+  opacity: 1;
+  transform: translateY(0) scale(1);
+}
+
+/* ─── Book Card ─────────────────────────────────── */
+.nf-book-card {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  background: var(--nf-card-bg);
+  border: 1px solid rgba(255,255,255,0.06);
   border-radius: 10px;
   overflow: hidden;
-  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.5);
-  transition: transform 0.3s ease, box-shadow 0.3s ease;
-  cursor: pointer;
   text-decoration: none;
   color: inherit;
-  display: flex;
-  flex-direction: column;
-  border: 1px solid rgba(255,255,255,0.07);
+  transition: transform 0.3s var(--nf-ease), border-color 0.3s ease, box-shadow 0.3s ease;
+}
+.nf-book-card:hover {
+  transform: translateY(-8px) scale(1.02);
+  border-color: rgba(229,9,20,0.4);
+  box-shadow: 0 20px 50px rgba(229,9,20,0.25);
 }
 
-.book-card:hover {
-  transform: translateY(-8px) scale(1.03);
-  box-shadow: 0 0 30px rgba(229, 9, 20, 0.4);
-  border-color: rgba(229, 9, 20, 0.3);
+/* Letterbox */
+.nf-book-letterbox {
+  position: absolute;
+  left: 0; right: 0;
+  height: 100%;
+  background: #000;
+  z-index: 2;
+  transition: transform 0.7s var(--nf-ease);
+  pointer-events: none;
+}
+.nf-book-letterbox--top {
+  top: 0;
+  transform-origin: top;
+  transform: scaleY(1);
+}
+.nf-book-letterbox--bot {
+  bottom: 0;
+  transform-origin: bottom;
+  transform: scaleY(1);
+}
+.nf-book-card-wrap--visible .nf-book-letterbox--top {
+  transform: scaleY(0);
+  transition-delay: calc(var(--book-delay, 0s) + 0.05s);
+}
+.nf-book-card-wrap--visible .nf-book-letterbox--bot {
+  transform: scaleY(0);
+  transition-delay: calc(var(--book-delay, 0s) + 0.15s);
 }
 
-.book-cover {
+/* Spotlight */
+.nf-book-spotlight {
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(130deg, rgba(255,255,255,0.05) 0%, transparent 55%);
+  opacity: 0;
+  z-index: 4;
+  pointer-events: none;
+  transition: opacity 0.3s ease;
+}
+.nf-book-card:hover .nf-book-spotlight {
+  opacity: 1;
+}
+
+/* Cover */
+.nf-book-cover-wrap {
+  position: relative;
+  height: 260px;
+  overflow: hidden;
+}
+.nf-book-cover {
   width: 100%;
-  height: 280px;
+  height: 100%;
   object-fit: cover;
-  object-position: top;
+  display: block;
+  transition: transform 0.5s var(--nf-ease);
 }
-
-.book-info {
-  padding: 1rem;
-  flex: 1;
-  display: flex;
-  flex-direction: column;
+.nf-book-card:hover .nf-book-cover {
+  transform: scale(1.07);
 }
-
-.book-title {
-  font-size: 1rem;
-  color: #fff;
-  margin: 0 0 0.3rem;
+.nf-book-cover-overlay {
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(to bottom, transparent 50%, var(--nf-card-bg) 100%);
+}
+.nf-book-read-label {
+  position: absolute;
+  bottom: 0.6rem;
+  right: 0.8rem;
+  font-size: 0.72rem;
   font-weight: 700;
-}
-
-.book-author {
-  font-size: 0.85rem;
-  color: #e50914;
-  margin-bottom: 0.5rem;
-  font-weight: 600;
-}
-
-.book-description {
-  font-size: 0.8rem;
-  color: rgba(255,255,255,0.6);
-  line-height: 1.4;
-  flex: 1;
-}
-
-.book-link-label {
-  display: inline-block;
-  margin-top: 0.8rem;
-  font-size: 0.78rem;
-  color: #e50914;
-  font-weight: 600;
+  color: rgba(255,255,255,0.5);
   letter-spacing: 0.5px;
+  z-index: 3;
+  transition: color 0.2s ease;
+}
+.nf-book-card:hover .nf-book-read-label {
+  color: var(--nf-red);
 }
 
-.book-card:hover .book-link-label {
-  text-decoration: underline;
+/* Info */
+.nf-book-info {
+  position: relative;
+  z-index: 3;
+  padding: 0.9rem 1rem 1.1rem;
+}
+.nf-book-accent {
+  width: 30px;
+  height: 2px;
+  background: var(--nf-red);
+  margin-bottom: 0.6rem;
+  transform-origin: left;
+  transform: scaleX(0);
+  transition: transform 0.5s var(--nf-ease);
+  transition-delay: calc(var(--book-delay, 0s) + 0.3s);
+}
+.nf-book-card-wrap--visible .nf-book-accent {
+  transform: scaleX(1);
+}
+.nf-book-title {
+  font-size: 0.95rem;
+  font-weight: 800;
+  color: #fff;
+  margin: 0 0 0.25rem;
+  line-height: 1.2;
+}
+.nf-book-author {
+  font-size: 0.78rem;
+  font-weight: 500;
+  color: var(--nf-red);
+  margin: 0 0 0.5rem;
+}
+.nf-book-desc {
+  font-size: 0.75rem;
+  color: var(--nf-muted);
+  margin: 0;
+  line-height: 1.5;
 }
 
-@keyframes slideDown {
-  0% { opacity: 0; transform: translateY(-20px); }
-  100% { opacity: 1; transform: translateY(0); }
-}
-
+/* ─── Responsive ────────────────────────────────── */
 @media (max-width: 768px) {
-  .reading-container {
-    padding: 5rem 1rem 3rem;
-  }
-  .reading-title {
-    font-size: 1.8rem;
-  }
-  .books-grid {
-    grid-template-columns: repeat(2, 1fr);
-    gap: 1rem;
-  }
-  .book-cover {
-    height: 200px;
-  }
+  .nf-reading-container { padding: 6rem 1.2rem 3rem; }
+  .nf-books-grid { grid-template-columns: repeat(2, 1fr); gap: 1rem; }
+  .nf-reading-title { font-size: 1.8rem; }
+  .nf-book-cover-wrap { height: 180px; }
 }
-
 @media (max-width: 480px) {
-  .books-grid {
-    grid-template-columns: repeat(2, 1fr);
-  }
+  .nf-books-grid { grid-template-columns: 1fr; }
 }
