@@ -1,7 +1,7 @@
 .netflix-intro-page {
   height: 100vh;
   width: 100%;
-  background: #0a0a0a;
+  background: radial-gradient(ellipse at center, #1a0505 0%, #0a0a0a 60%, #000 100%);
   display: flex;
   justify-content: center;
   align-items: center;
@@ -10,12 +10,51 @@
   cursor: pointer;
 }
 
+/* ── Animated star particles ── */
+.netflix-intro-page::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background-image:
+    radial-gradient(1px 1px at 10% 15%, rgba(255,255,255,0.6) 0%, transparent 100%),
+    radial-gradient(1px 1px at 20% 85%, rgba(255,255,255,0.5) 0%, transparent 100%),
+    radial-gradient(1px 1px at 30% 40%, rgba(255,255,255,0.4) 0%, transparent 100%),
+    radial-gradient(1.5px 1.5px at 40% 70%, rgba(255,255,255,0.7) 0%, transparent 100%),
+    radial-gradient(1px 1px at 50% 25%, rgba(255,255,255,0.5) 0%, transparent 100%),
+    radial-gradient(1px 1px at 60% 90%, rgba(255,255,255,0.6) 0%, transparent 100%),
+    radial-gradient(1.5px 1.5px at 70% 55%, rgba(255,255,255,0.4) 0%, transparent 100%),
+    radial-gradient(1px 1px at 80% 10%, rgba(255,255,255,0.7) 0%, transparent 100%),
+    radial-gradient(1px 1px at 90% 35%, rgba(255,255,255,0.5) 0%, transparent 100%),
+    radial-gradient(1px 1px at 15% 60%, rgba(255,255,255,0.4) 0%, transparent 100%),
+    radial-gradient(1.5px 1.5px at 25% 50%, rgba(255,255,255,0.6) 0%, transparent 100%),
+    radial-gradient(1px 1px at 35% 95%, rgba(255,255,255,0.3) 0%, transparent 100%),
+    radial-gradient(1px 1px at 45% 5%, rgba(255,255,255,0.5) 0%, transparent 100%),
+    radial-gradient(1.5px 1.5px at 55% 78%, rgba(255,255,255,0.6) 0%, transparent 100%),
+    radial-gradient(1px 1px at 65% 20%, rgba(255,255,255,0.4) 0%, transparent 100%),
+    radial-gradient(1px 1px at 75% 65%, rgba(255,255,255,0.5) 0%, transparent 100%),
+    radial-gradient(1.5px 1.5px at 85% 45%, rgba(255,255,255,0.7) 0%, transparent 100%),
+    radial-gradient(1px 1px at 95% 80%, rgba(255,255,255,0.4) 0%, transparent 100%);
+  animation: starsTwinkle 4s ease-in-out infinite alternate;
+  pointer-events: none;
+  z-index: 1;
+}
+
+@keyframes starsTwinkle {
+  0%   { opacity: 0.4; }
+  50%  { opacity: 0.9; }
+  100% { opacity: 0.5; }
+}
+
+/* ── Red vignette overlay ── */
 .netflix-intro-page::after {
   content: "";
   position: absolute;
   inset: 0;
-  background: radial-gradient(ellipse at center, transparent 40%, rgba(0,0,0,0.5) 100%);
+  background:
+    radial-gradient(ellipse at center, rgba(229,9,20,0.08) 0%, transparent 65%),
+    radial-gradient(ellipse at center, transparent 40%, rgba(0,0,0,0.7) 100%);
   pointer-events: none;
+  z-index: 2;
 }
 
 .title-name-wrap {
@@ -24,6 +63,22 @@
   display: flex;
   align-items: center;
   justify-content: center;
+  flex-direction: column;
+  gap: 1rem;
+}
+
+/* ── Animated underline bar ── */
+.title-name-wrap::after {
+  content: "";
+  display: block;
+  width: 0;
+  height: 3px;
+  background: linear-gradient(to right, transparent, #e50914, transparent);
+  animation: barExpand 2s ease-out 0.5s forwards;
+  border-radius: 2px;
+}
+@keyframes barExpand {
+  to { width: 100%; }
 }
 
 .intro-name {
@@ -32,13 +87,21 @@
   font-family: 'Arial Black', Impact, Haettenschweiler, 'Arial Narrow Bold', sans-serif;
   font-size: clamp(2.8rem, 5vw, 6rem);
   font-weight: 900;
-  letter-spacing: 4px;
+  letter-spacing: 6px;
   line-height: 1;
   text-transform: uppercase;
   text-shadow:
+    0 0 20px rgba(229,9,20,0.8),
+    0 0 60px rgba(229,9,20,0.4),
     0 2px 8px rgba(229,9,20,0.4),
     0 0 2px rgba(229,9,20,0.6);
   white-space: nowrap;
+  animation: nameGlow 3s ease-in-out infinite alternate;
+}
+
+@keyframes nameGlow {
+  0%   { text-shadow: 0 0 20px rgba(229,9,20,0.8), 0 0 60px rgba(229,9,20,0.4), 0 2px 8px rgba(229,9,20,0.4); }
+  100% { text-shadow: 0 0 30px rgba(229,9,20,1), 0 0 80px rgba(229,9,20,0.7), 0 2px 8px rgba(229,9,20,0.6), 0 0 120px rgba(229,9,20,0.3); }
 }
 
 .animate-title {
@@ -55,6 +118,12 @@
   font-weight: 700;
   text-align: center;
   text-transform: uppercase;
+  animation: fadeInUp 1.5s ease 1s both;
+}
+
+@keyframes fadeInUp {
+  from { opacity: 0; transform: translateY(20px); }
+  to   { opacity: 1; transform: translateY(0); }
 }
 
 .down-arrow {
@@ -94,10 +163,26 @@
   50% { opacity: 1; transform: translateY(6px); }
 }
 
+/* ── Click hint pulse ring ── */
+.click-hint {
+  position: absolute;
+  width: 120px;
+  height: 120px;
+  border-radius: 50%;
+  border: 2px solid rgba(229,9,20,0.3);
+  z-index: 2;
+  animation: hintRing 2s ease-out infinite;
+  pointer-events: none;
+}
+@keyframes hintRing {
+  0%   { transform: scale(0.8); opacity: 0.8; }
+  100% { transform: scale(2);   opacity: 0; }
+}
+
 /* Mobile responsive */
 @media (max-width: 768px) {
   .intro-name {
     font-size: clamp(2rem, 8vw, 3.5rem);
-    letter-spacing: 2px;
+    letter-spacing: 3px;
   }
 }
