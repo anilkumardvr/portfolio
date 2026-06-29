@@ -4,28 +4,95 @@
   justify-content: center;
   align-items: center;
   height: 100vh;
-  background-color: #141414;
+  background: radial-gradient(ellipse at 50% 40%, #1a0a0a 0%, #141414 50%, #0a0a0a 100%);
+  position: relative;
+  overflow: hidden;
+}
+
+/* ── Subtle animated background grid ── */
+.browse-container::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background-image:
+    linear-gradient(rgba(229,9,20,0.04) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(229,9,20,0.04) 1px, transparent 1px);
+  background-size: 60px 60px;
+  animation: gridPan 20s linear infinite;
+  pointer-events: none;
+  z-index: 0;
+}
+@keyframes gridPan {
+  0%   { background-position: 0 0; }
+  100% { background-position: 60px 60px; }
+}
+
+/* ── Red atmospheric glow ── */
+.browse-container::after {
+  content: "";
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  width: 600px;
+  height: 400px;
+  transform: translate(-50%, -60%);
+  background: radial-gradient(ellipse, rgba(229,9,20,0.07) 0%, transparent 70%);
+  pointer-events: none;
+  z-index: 0;
+  animation: glowPulse 4s ease-in-out infinite alternate;
+}
+@keyframes glowPulse {
+  0%   { opacity: 0.5; transform: translate(-50%, -60%) scale(1); }
+  100% { opacity: 1;   transform: translate(-50%, -60%) scale(1.15); }
 }
 
 .who-is-watching {
   color: #fff;
-    font-size: 3.5vw;
-    font-weight: unset;
-    width: 100%;
-    text-align: center;
+  font-size: 3.5vw;
+  font-weight: 300;
+  width: 100%;
+  text-align: center;
+  letter-spacing: 0.05em;
+  position: relative;
+  z-index: 1;
+  margin-bottom: 2rem;
+  text-shadow: 0 2px 20px rgba(0,0,0,0.5);
+  animation: titleFadeIn 0.8s ease both;
+}
+@keyframes titleFadeIn {
+  from { opacity: 0; transform: translateY(-16px); }
+  to   { opacity: 1; transform: translateY(0); }
 }
 
 .profiles {
   display: flex;
-  gap: 20px;
+  gap: 28px;
   flex-wrap: wrap;
-  margin-bottom: 10rem;
+  margin-bottom: 6rem;
   justify-content: center;
+  position: relative;
+  z-index: 1;
 }
 
+/* Profile card entrance animations */
+.profiles > * {
+  animation: profilePop 0.5s var(--profile-delay, 0s) cubic-bezier(0.34, 1.56, 0.64, 1) both;
+}
+.profiles > *:nth-child(1) { --profile-delay: 0.1s; }
+.profiles > *:nth-child(2) { --profile-delay: 0.2s; }
+.profiles > *:nth-child(3) { --profile-delay: 0.3s; }
+.profiles > *:nth-child(4) { --profile-delay: 0.4s; }
+
+@keyframes profilePop {
+  from { opacity: 0; transform: scale(0.7) translateY(30px); }
+  to   { opacity: 1; transform: scale(1) translateY(0); }
+}
 
 @media (max-width: 768px) {
   .who-is-watching {
     font-size: 30px;
+  }
+  .profiles {
+    gap: 18px;
   }
 }
