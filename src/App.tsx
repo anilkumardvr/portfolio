@@ -14,10 +14,13 @@ import Music from './pages/Music';
 import Reading from './pages/Reading';
 import Blogs from './pages/Blogs';
 import Certifications from './pages/Certifications';
+import VisitorCounter from './components/VisitorCounter';
 
 const App: React.FC = () => {
   return (
-    <Routes>
+   <>
+       <VisitorCounter />
+       <Routes>
       <Route path="/" element={<NetflixTitle />} />
       <Route path="/browse" element={<Browse />} />
       <Route path="/profile/:profileName" element={<Layout><ProfilePage /></Layout>} />
@@ -32,6 +35,8 @@ const App: React.FC = () => {
       <Route path="/blogs" element={<Layout><Blogs /></Layout>} />
       <Route path="/certifications" element={<Layout><Certifications /></Layout>} />
     </Routes>
+   </>
+    
   );
 };
 
