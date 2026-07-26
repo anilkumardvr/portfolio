@@ -10,8 +10,8 @@ const VisitorCounter: React.FC = () => {
   useEffect(() => {
     const alreadyCounted = sessionStorage.getItem('portfolio-visit-counted');
     const endpoint = alreadyCounted
-    ? `https://api.countapi.xyz/get/${NAMESPACE}/${KEY}`
-      : `https://api.countapi.xyz/hit/${NAMESPACE}/${KEY}`;
+    ? `https://abacus.jasoncameron.dev/get/${NAMESPACE}/${KEY}`
+      : `https://abacus.jasoncameron.dev/hit/${NAMESPACE}/${KEY}`;
 
             fetch(endpoint)
     .then((res) => res.json())
