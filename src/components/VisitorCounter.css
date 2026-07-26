@@ -1,0 +1,36 @@
+.visitor-counter {
+  position: fixed;
+bottom: 16px;
+right: 16px;
+display: flex;
+align-items: center;
+gap: 6px;
+background: rgba(20, 20, 20, 0.85);
+border: 1px solid #e50914;
+color: #ffffff;
+padding: 8px 14px;
+border-radius: 6px;
+font-family: 'Helvetica Neue', Arial, sans-serif;
+font-size: 13px;
+z-index: 1000;
+backdrop-filter: blur(4px);
+box-shadow: 0 2px 10px rgba(0, 0, 0, 0.4);
+}
+
+.visitor-counter__icon {
+  font-size: 15px;
+line-height: 1;
+}
+
+.visitor-counter__text {
+  white-space: nowrap;
+}
+
+  @media (max-width: 480px) {
+.visitor-counter {
+  font-size: 11px;
+padding: 6px 10px;
+bottom: 8px;
+right: 8px;
+}
+}
