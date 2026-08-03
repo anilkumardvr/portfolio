@@ -104,6 +104,12 @@
   transform: scale(1) translateY(0);
 }
 
+/* Continuous idle float so the icon stays lively while visible */
+.icon-inner {
+  display: inline-block;
+  animation: iconFloat 2.2s ease-in-out infinite;
+}
+
 .pick-label {
   color: #fff;
   font-size: 1.2rem;
@@ -117,6 +123,7 @@
 .pick-card:hover .pick-label {
   opacity: 1;
   transform: translateY(0);
+  animation: labelGlow 1.6s ease-in-out infinite;
 }
 
 .pick-label:hover {
@@ -143,5 +150,23 @@
   to {
     opacity: 1;
     transform: translateX(0) scale(1);
+  }
+}
+
+@keyframes iconFloat {
+  0%, 100% {
+    transform: translateY(0);
+  }
+  50% {
+    transform: translateY(-6px);
+  }
+}
+
+@keyframes labelGlow {
+  0%, 100% {
+    text-shadow: 0 2px 4px rgba(0, 0, 0, 0.5);
+  }
+  50% {
+    text-shadow: 0 2px 12px rgba(255, 255, 255, 0.8), 0 0 18px rgba(255, 0, 0, 0.7);
   }
 }
