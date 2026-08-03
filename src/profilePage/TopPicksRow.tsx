@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import './TopPicksRow.css';
 import { FaPassport, FaCode, FaBriefcase, FaCertificate, FaHandsHelping, FaProjectDiagram, FaEnvelope, FaMusic, FaBook, FaCloud } from 'react-icons/fa';
@@ -46,15 +46,43 @@ const topPicksConfig = {
 const TopPicksRow: React.FC<TopPicksRowProps> = ({ profile }) => {
   const navigate = useNavigate();
   const topPicks = topPicksConfig[profile];
+  const rowRef = useRef<HTMLDivElement>(null);
+  const [isVisible, setIsVisible] = useState(false);
+
+  useEffect(() => {
+    const node = rowRef.current;
+    if (!node) return;
+
+    const observer = new IntersectionObserver(
+      ([entry]) => {
+        if (entry.isIntersecting) {
+          setIsVisible(true);
+        }
+      },
+      { threshold: 0.2 }
+    );
+
+    observer.observe(node);
+    return () => observer.disconnect();
+  }, []);
 
   return (
-    <div className="top-picks-row">
+    <div className="top-picks-row" ref={rowRef}>
       <h2 className="row-title">Today's Top Picks for {profile}</h2>
       <div className="card-row">
         {topPicks.map((pick, index) => (
-          <div key={index} className="pick-card" onClick={() => navigate(pick.route)} style={{ animationDelay: `${index * 0.2}s` }}>
+          <div
+            key={index}
+            className={`pick-card ${isVisible ? 'in-view' : ''}`}
+            onClick={() => navigate(pick.route)}
+            style={{ animationDelay: `${index * 0.15}s` }}
+          >
             <img src={pick.imgSrc} alt={pick.title} className="pick-image" />
-            <div className="overlay"><div className="pick-label">{pick.title}</div></div>
+            <div className="shimmer"></div>
+            <div className="overlay">
+              <div className="pick-icon">{pick.icon}</div>
+              <div className="pick-label">{pick.title}</div>
+            </div>
           </div>
         ))}
       </div>
