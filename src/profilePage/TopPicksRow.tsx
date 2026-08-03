@@ -80,7 +80,9 @@ const TopPicksRow: React.FC<TopPicksRowProps> = ({ profile }) => {
             <img src={pick.imgSrc} alt={pick.title} className="pick-image" />
             <div className="shimmer"></div>
             <div className="overlay">
-              <div className="pick-icon">{pick.icon}</div>
+              <div className="pick-icon">
+                <span className="icon-inner">{pick.icon}</span>
+              </div>
               <div className="pick-label">{pick.title}</div>
             </div>
           </div>
