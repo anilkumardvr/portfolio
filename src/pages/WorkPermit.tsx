@@ -30,7 +30,7 @@ export default function WorkPermit() {
 
         <div className="wp-badge">
           <span className="wp-badge-dot" />
-          🍁 Canada · Open Work Permit
+          Canada · Open Work Permit
         </div>
 
         <h2>Work Authorization</h2>
