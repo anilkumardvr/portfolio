@@ -1,12 +1,40 @@
+import type { CSSProperties } from 'react';
 import './WorkPermit.css';
+import { FaIdCard, FaMapMarkerAlt, FaBuilding, FaBriefcase, FaCheckCircle, FaStamp } from 'react-icons/fa';
+
+const stats = [
+  { icon: <FaIdCard />, label: 'Status', value: 'Open Work Permit Holder' },
+  { icon: <FaMapMarkerAlt />, label: 'Location', value: 'Toronto, Ontario, Canada' },
+  { icon: <FaBuilding />, label: 'Employer Requirement', value: 'No sponsorship required' },
+  { icon: <FaBriefcase />, label: 'Role Availability', value: 'Contract, full-time, hybrid, remote, or onsite' },
+];
+
+const checklist = [
+  'No LMIA required',
+  'No employer sponsorship needed',
+  'Immediately available to start',
+  'Full mobility — open to any employer across Canada',
+];
 
 export default function WorkPermit() {
   return (
     <div className="work-permit-container">
+      <div className="wp-glow" />
+
       <div className="permit-card">
-        <p className="permit-eyebrow">Canada Employment Eligibility</p>
+        <div className="wp-stamp" aria-hidden="true">
+          <FaStamp className="wp-stamp-icon" />
+          <span>Authorized</span>
+          <span>To Work</span>
+        </div>
+
+        <div className="wp-badge">
+          <span className="wp-badge-dot" />
+          🍁 Canada · Open Work Permit
+        </div>
 
         <h2>Work Authorization</h2>
+        <div className="wp-title-bar" />
 
         <p className="permit-summary">
           I am currently residing in Canada and hold an Open Work Permit. I am legally authorized
@@ -14,25 +42,22 @@ export default function WorkPermit() {
         </p>
 
         <div className="permit-grid">
-          <div>
-            <span>Status</span>
-            <strong>Open Work Permit Holder</strong>
-          </div>
+          {stats.map((stat, idx) => (
+            <div key={stat.label} className="wp-stat-card" style={{ '--i': idx } as CSSProperties}>
+              <div className="wp-stat-icon">{stat.icon}</div>
+              <span>{stat.label}</span>
+              <strong>{stat.value}</strong>
+            </div>
+          ))}
+        </div>
 
-          <div>
-            <span>Location</span>
-            <strong>Toronto, Ontario, Canada</strong>
-          </div>
-
-          <div>
-            <span>Employer Requirement</span>
-            <strong>No sponsorship required</strong>
-          </div>
-
-          <div>
-            <span>Role Availability</span>
-            <strong>Contract, full-time, hybrid, remote, or onsite</strong>
-          </div>
+        <div className="wp-checklist">
+          {checklist.map((item, idx) => (
+            <div key={item} className="wp-check-item" style={{ '--i': idx } as CSSProperties}>
+              <FaCheckCircle className="wp-check-icon" />
+              <span>{item}</span>
+            </div>
+          ))}
         </div>
 
         <p className="note">
