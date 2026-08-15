@@ -84,7 +84,7 @@
 .intro-name {
   display: block;
   color: #e50914;
-  font-family: 'Arial Black', Impact, Haettenschweiler, 'Arial Narrow Bold', sans-serif;
+  font-family: 'Harry Potter', 'Arial Black', Impact, Haettenschweiler, 'Arial Narrow Bold', sans-serif;
   font-size: clamp(2.8rem, 5vw, 6rem);
   font-weight: 900;
   letter-spacing: 6px;
@@ -126,12 +126,12 @@
   to   { opacity: 1; transform: translateY(0); }
 }
 
-.down-arrow {
+.tap-icon {
   margin-top: 8px;
   color: #e50914;
   font-size: 1.4rem;
   line-height: 1;
-  animation: arrow-pulse 1.2s infinite;
+  animation: tap-pulse 1.2s infinite;
   text-align: center;
 }
 
@@ -158,9 +158,9 @@
   }
 }
 
-@keyframes arrow-pulse {
-  0%, 100% { opacity: .5; transform: translateY(0); }
-  50% { opacity: 1; transform: translateY(6px); }
+@keyframes tap-pulse {
+  0%, 100% { opacity: .5; transform: scale(1); }
+  50% { opacity: 1; transform: scale(1.25); }
 }
 
 /* ── Click hint pulse ring ── */
