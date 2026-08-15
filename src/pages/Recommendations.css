@@ -1,72 +1,38 @@
-/* Ensure the container takes up the full viewport height and centers the content */
-.timeline-container {
-  display: flex;
-  justify-content: center;
+.rec-container {
+  min-height: 100vh;
+  background: #141414;
+  color: #ffffff;
+  padding: 120px 60px 80px;
 }
-
-/* Styling for the recommendation card */
-.recommendation-card {
-  max-width: 800px;
-  width: 100%; /* Responsive width to ensure it fits smaller screens */
-  background-color: #1e1e1e; /* Slightly lighter for contrast */
-  color: #fff;
-  padding: 25px;
-  border-radius: 10px;
-  box-shadow: 0 8px 20px rgba(255, 0, 0, 0.3), 0 0 10px rgba(255, 0, 0, 0.2); /* Softer shadow with subtle glow */
-  transition: transform 0.3s ease, box-shadow 0.3s ease;
-  border: 2px dotted #e50914; /* Netflix red border */
+.rec-header { text-align: center; max-width: 720px; margin: 0 auto 46px; }
+.rec-bar { width: 60px; height: 3px; margin: 0 auto 20px; background: linear-gradient(to right, transparent, #e50914, transparent); border-radius: 2px; }
+.rec-title { font-size: 2.6rem; margin: 0 0 12px; }
+.rec-subtitle { color: #b3b3b3; font-size: 1.05rem; margin: 0; }
+.rec-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(260px, 1fr)); gap: 22px; max-width: 1200px; margin: 0 auto; }
+.rec-card {
+  position: relative;
+  background: linear-gradient(160deg, #1c1c1c, #111);
+  border: 1px solid rgba(255,255,255,.08);
+  border-radius: 14px;
+  padding: 26px;
+  overflow: hidden;
+  opacity: 0;
+  transform: translateY(18px);
+  animation: recIn .5s ease calc(var(--i) * .08s) forwards;
+  transition: transform .25s ease, border-color .25s ease, box-shadow .25s ease;
 }
-
-.recommendation-card:hover {
-  transform: scale(1.03); /* Slight zoom on hover */
-  box-shadow: 0 12px 30px rgba(255, 0, 0, 0.5), 0 0 15px rgba(255, 0, 0, 0.4); /* Enhanced shadow on hover */
-}
-
-.recommendation-header {
-  display: flex;
-  align-items: center;
-}
-
-.profile-pic {
-  width: 70px;
-  height: 70px;
-  border-radius: 50%;
-  margin-right: 15px;
-  border: 2px solid #e50914; /* Netflix red border */
-}
-
-.recommendation-header h3 {
-  font-size: 1.5rem;
-  color: #e50914; /* Netflix red for name */
-  margin: 0;
-}
-
-.recommendation-header p {
-  margin: 3px 0;
-  font-size: 0.9rem;
-  color: #999;
-}
-
-.date {
-  color: #ccc;
-  font-size: 0.8rem;
-}
-
-.recommendation-body {
-  font-size: 1rem;
-  line-height: 1.6;
-}
-
-.recommendation-body p {
-  margin-bottom: 15px;
-}
-
-.recommendation-body strong {
-  color: #e50914; /* Highlighted text in Netflix red */
-}
-
-.recommendation-body p:first-of-type {
-  font-size: 1.1rem;
-  font-weight: bold;
-  margin-bottom: 20px;
+.rec-card::before { content: ""; position: absolute; top: 0; left: 0; height: 3px; width: 0; background: linear-gradient(to right, #e50914, #ff5a5f); transition: width .3s ease; }
+.rec-card:hover { transform: translateY(-6px); border-color: rgba(229,9,20,.4); box-shadow: 0 16px 40px rgba(0,0,0,.5); }
+.rec-card:hover::before { width: 100%; }
+@keyframes recIn { from { opacity: 0; transform: translateY(18px); } to { opacity: 1; transform: translateY(0); } }
+.rec-card-top { display: flex; align-items: center; justify-content: space-between; margin-bottom: 18px; }
+.rec-icon { width: 44px; height: 44px; display: flex; align-items: center; justify-content: center; border-radius: 50%; background: rgba(229,9,20,.12); color: #e50914; font-size: 1.3rem; flex-shrink: 0; }
+.rec-match { color: #4ee08a; font-weight: 700; font-size: .74rem; letter-spacing: .5px; background: rgba(46,204,113,.1); border: 1px solid rgba(46,204,113,.3); padding: 4px 10px; border-radius: 999px; white-space: nowrap; }
+.rec-card-title { font-size: 1.2rem; margin: 0 0 8px; }
+.rec-because { color: #e50914; font-size: .78rem; font-weight: 700; text-transform: uppercase; letter-spacing: .5px; margin: 0 0 12px; }
+.rec-desc { color: #c9c9c9; font-size: .92rem; line-height: 1.55; margin: 0; }
+@media (max-width: 640px) {
+  .rec-container { padding: 100px 24px 60px; }
+  .rec-title { font-size: 2rem; }
+  .rec-grid { grid-template-columns: 1fr; }
 }
