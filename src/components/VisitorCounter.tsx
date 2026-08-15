@@ -40,7 +40,6 @@ const VisitorCounter: React.FC = () => {
 
     return (
           <div className={`visitor-counter ${visible ? '' : 'visitor-counter--hidden'}`} title="Total portfolio views">
-                  <span className="visitor-counter__icon" aria-hidden="true">🎬</span>
       <span className="visitor-counter__text">
         {count.toLocaleString()} {count === 1 ? 'viewer has' : 'viewers have'} watched this profile
       </span>
