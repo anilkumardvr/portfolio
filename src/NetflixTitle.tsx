@@ -29,7 +29,6 @@ const NetflixTitle: React.FC = () => {
       {!isClicked && (
         <div className="scroll-text">
           <span>TAP ANYWHERE TO EXPLORE</span>
-          <div className="tap-icon">👆</div>
         </div>
       )}
     </div>
