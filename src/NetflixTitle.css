@@ -91,17 +91,16 @@
   line-height: 1;
   text-transform: uppercase;
   text-shadow:
-    0 0 20px rgba(229,9,20,0.8),
-    0 0 60px rgba(229,9,20,0.4),
-    0 2px 8px rgba(229,9,20,0.4),
-    0 0 2px rgba(229,9,20,0.6);
+    0 0 8px rgba(229,9,20,0.55),
+    0 0 20px rgba(229,9,20,0.22),
+    0 2px 6px rgba(229,9,20,0.3);
   white-space: nowrap;
   animation: nameGlow 3s ease-in-out infinite alternate;
 }
 
 @keyframes nameGlow {
-  0%   { text-shadow: 0 0 20px rgba(229,9,20,0.8), 0 0 60px rgba(229,9,20,0.4), 0 2px 8px rgba(229,9,20,0.4); }
-  100% { text-shadow: 0 0 30px rgba(229,9,20,1), 0 0 80px rgba(229,9,20,0.7), 0 2px 8px rgba(229,9,20,0.6), 0 0 120px rgba(229,9,20,0.3); }
+  0%   { text-shadow: 0 0 8px rgba(229,9,20,0.5), 0 0 18px rgba(229,9,20,0.2), 0 2px 6px rgba(229,9,20,0.28); }
+  100% { text-shadow: 0 0 12px rgba(229,9,20,0.65), 0 0 26px rgba(229,9,20,0.3), 0 2px 6px rgba(229,9,20,0.32); }
 }
 
 .animate-title {
@@ -113,8 +112,9 @@
   bottom: 11%;
   z-index: 8;
   color: rgba(255,255,255,0.85);
-  font-size: .72rem;
-  letter-spacing: 5px;
+  font-family: 'Harry Potter', 'Arial Black', Impact, Haettenschweiler, 'Arial Narrow Bold', sans-serif;
+  font-size: .55rem;
+  letter-spacing: 3px;
   font-weight: 700;
   text-align: center;
   text-transform: uppercase;
@@ -124,15 +124,6 @@
 @keyframes fadeInUp {
   from { opacity: 0; transform: translateY(20px); }
   to   { opacity: 1; transform: translateY(0); }
-}
-
-.tap-icon {
-  margin-top: 8px;
-  color: #e50914;
-  font-size: 1.4rem;
-  line-height: 1;
-  animation: tap-pulse 1.2s infinite;
-  text-align: center;
 }
 
 @keyframes netflix-zoom {
@@ -156,11 +147,6 @@
     transform: scale(5.5);
     filter: blur(16px);
   }
-}
-
-@keyframes tap-pulse {
-  0%, 100% { opacity: .5; transform: scale(1); }
-  50% { opacity: 1; transform: scale(1.25); }
 }
 
 /* ── Click hint pulse ring ── */
