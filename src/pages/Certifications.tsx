@@ -90,25 +90,10 @@ const CertCard: React.FC<CertCardProps> = ({ cert, idx }) => {
   );
 };
 
-const Certifications: React.FC = () => {
-  const [certifications, setCertifications] = useState<Certification[]>([]);
+interface CertificationsBodyProps { certifications: Certification[]; }
+
+const CertificationsBody: React.FC<CertificationsBodyProps> = ({ certifications }) => {
   const { ref: statsRef, visible: statsVisible } = useInView(0.2);
-
-  useEffect(() => {
-    async function fetchCertifications() {
-      const data = await getCertifications();
-      setCertifications(data);
-    }
-    fetchCertifications();
-  }, []);
-
-  if (certifications.length === 0) return (
-    <div className="cert-loading">
-      <div className="cert-loading-n">N</div>
-      <div className="cert-loading-bar"><div className="cert-loading-fill" /></div>
-    </div>
-  );
-
   const verifiedCount = certifications.filter((c) => c.status !== 'in-progress').length;
   const progressCount = certifications.filter((c) => c.status === 'in-progress').length;
 
@@ -139,6 +124,27 @@ const Certifications: React.FC = () => {
       </div>
     </div>
   );
+};
+
+const Certifications: React.FC = () => {
+  const [certifications, setCertifications] = useState<Certification[]>([]);
+
+  useEffect(() => {
+    async function fetchCertifications() {
+      const data = await getCertifications();
+      setCertifications(data);
+    }
+    fetchCertifications();
+  }, []);
+
+  if (certifications.length === 0) return (
+    <div className="cert-loading">
+      <div className="cert-loading-n">N</div>
+      <div className="cert-loading-bar"><div className="cert-loading-fill" /></div>
+    </div>
+  );
+
+  return <CertificationsBody certifications={certifications} />;
 };
 
 export default Certifications;
