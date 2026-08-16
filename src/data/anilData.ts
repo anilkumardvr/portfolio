@@ -161,12 +161,12 @@ export const anilProjects = [
 ];
 
 export const anilCertifications = [
-  "Google Cloud Certified - Professional Cloud DevOps Engineer",
-  "Terraform Certification",
-  "Microsoft Azure Fundamentals (AZ-900)",
-  "Certified Kubernetes Administrator (CKA) - In Progress",
-  "Cloud & DevOps Certifications - Ongoing"
-];
+  { title: "Google Cloud Certified - Professional Cloud DevOps Engineer", issuer: "Google Cloud", iconName: "google", status: "completed" },
+  { title: "Terraform Certification", issuer: "HashiCorp", iconName: "terraform", status: "completed" },
+  { title: "Microsoft Azure Fundamentals (AZ-900)", issuer: "Microsoft Azure", iconName: "azure", status: "completed" },
+  { title: "Certified Kubernetes Administrator (CKA)", issuer: "CNCF / Linux Foundation", iconName: "kubernetes", status: "in-progress" },
+  { title: "Cloud & DevOps Certifications", issuer: "Continuous Learning", iconName: "learning", status: "in-progress" }
+  ];
 
 export const anilProfileBanner = {
   backgroundImage: { url: "https://media.giphy.com/media/v1.Y2lkPTc5MGI3NjExOTZ5eWwwbjRpdWM1amxyd3VueHhteTVzajVjeGZtZGJ1dDc4MXMyNCZlcD12MV9pbnRlcm5hbF9naWZfYnlfaWQmY3Q9dg/16u7Ifl2T4zYfQ932F/giphy.gif" },
