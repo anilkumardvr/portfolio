@@ -1,5 +1,6 @@
 import { anilCertifications } from '../data/anilData';
+import { Certification } from '../types';
 
-export async function getCertifications(): Promise<any[]> {
-  return anilCertifications.map((title) => ({ title, description: title, issuer: title }));
+export async function getCertifications(): Promise<Certification[]> {
+    return anilCertifications as Certification[];
 }
