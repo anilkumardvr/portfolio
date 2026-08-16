@@ -3,9 +3,9 @@ import './NetflixTitle.css';
 import netflixSound from './netflix-sound.mp3';
 import { useNavigate } from 'react-router-dom';
 
-// Total time (ms) the "tudum" transition plays before we route to /browse.
-// Kept in sync with netflix-sound.mp3 (~3.24s) + a hair of black hold.
-const TRANSITION_MS = 3300;
+// Total time (ms) the transition plays before we route to /browse.
+// Kept in sync with netflix-sound.mp3 (~3.24s).
+const TRANSITION_MS = 2900;
 
 const NetflixTitle: React.FC = () => {
   const [isClicked, setIsClicked] = useState(false);
@@ -38,13 +38,6 @@ const NetflixTitle: React.FC = () => {
 
       {isClicked && (
         <div className="netflix-tudum" aria-hidden="true">
-          <div className="tudum-bars">
-            <span className="tudum-bar bar-1" />
-            <span className="tudum-bar bar-2" />
-            <span className="tudum-bar bar-3" />
-            <span className="tudum-bar bar-4" />
-            <span className="tudum-bar bar-5" />
-          </div>
           <div className="tudum-flash" />
           <div className="tudum-blackout" />
         </div>
