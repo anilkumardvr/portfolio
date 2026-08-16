@@ -11,15 +11,36 @@
   border-radius: 4px;
   cursor: pointer;
   opacity: 0;
-  transform: translateY(16px);
+  transform: translateY(24px) scale(0.9);
   transition: transform 0.25s cubic-bezier(0.16, 1, 0.3, 1), box-shadow 0.25s ease, background-color 0.25s ease, border-color 0.25s ease;
-  animation: moreInfoButtonIn 0.6s cubic-bezier(0.16, 1, 0.3, 1) 1.05s forwards;
+  animation: moreInfoButtonIn 0.7s cubic-bezier(0.34, 1.56, 0.64, 1) 0.45s forwards,
+    moreInfoButtonPulse 2.6s ease-in-out 1.8s infinite;
 }
 
 @keyframes moreInfoButtonIn {
-  to {
+  0% {
+    opacity: 0;
+    transform: translateY(24px) scale(0.9);
+  }
+  60% {
     opacity: 1;
-    transform: translateY(0);
+    transform: translateY(-4px) scale(1.03);
+  }
+  100% {
+    opacity: 1;
+    transform: translateY(0) scale(1);
+  }
+}
+
+@keyframes moreInfoButtonPulse {
+  0%,
+  100% {
+    border-color: rgba(255, 255, 255, 0.15);
+    box-shadow: 0 0 0 rgba(10, 132, 255, 0);
+  }
+  50% {
+    border-color: rgba(10, 132, 255, 0.6);
+    box-shadow: 0 0 18px rgba(10, 132, 255, 0.35);
   }
 }
 
@@ -32,23 +53,35 @@
   height: 100%;
   background: linear-gradient(120deg, transparent, rgba(255, 255, 255, 0.18), transparent);
   transform: skewX(-20deg);
-  transition: left 0.6s ease;
   pointer-events: none;
+  animation: moreInfoButtonSheen 3.2s ease-in-out 2.1s infinite;
+}
+
+@keyframes moreInfoButtonSheen {
+  0% {
+    left: -60%;
+  }
+  35% {
+    left: 130%;
+  }
+  100% {
+    left: 130%;
+  }
 }
 
 .more-info-button:hover {
   background-color: rgba(109, 109, 110, 0.9);
-  border-color: rgba(10, 132, 255, 0.55);
-  transform: translateY(-3px) scale(1.04);
-  box-shadow: 0 10px 26px rgba(10, 132, 255, 0.28);
+  border-color: rgba(10, 132, 255, 0.7);
+  transform: translateY(-3px) scale(1.06);
+  box-shadow: 0 10px 30px rgba(10, 132, 255, 0.4);
 }
 
 .more-info-button:hover::before {
-  left: 130%;
+  animation-duration: 0.9s;
 }
 
 .more-info-button:active {
-  transform: translateY(-1px) scale(0.97);
+  transform: translateY(-1px) scale(0.96);
 }
 
 .more-info-button .label {
@@ -64,7 +97,7 @@
 }
 
 .more-info-button:hover .icon-container {
-  transform: rotate(-10deg) scale(1.18);
+  transform: rotate(-14deg) scale(1.25);
 }
 
 .spacer {
