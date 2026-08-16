@@ -104,7 +104,7 @@
 }
 
 .animate-title {
-  animation: netflix-zoom 1.3s cubic-bezier(.36,0,.66,1) forwards;
+  animation: netflix-zoom 1.8s cubic-bezier(.55,.06,.68,.19) forwards;
 }
 
 .scroll-text {
@@ -128,25 +128,28 @@
 
 @keyframes netflix-zoom {
   0% {
-    opacity: 1;
     transform: scale(1);
-    filter: blur(0);
+    filter: brightness(1) blur(0);
   }
-  30% {
-    opacity: 1;
-    transform: scale(1.1);
-    filter: blur(0);
+  50% {
+    transform: scale(1.8);
+    filter: brightness(1.15) blur(0);
+  }
+  80% {
+    transform: scale(3);
+    filter: brightness(1.55) blur(0.3px);
   }
   100% {
-    opacity: 0;
-    transform: scale(0.82);
-    filter: blur(2px);
+    transform: scale(5);
+    filter: brightness(2.2) blur(1px);
   }
 }
 
 /* ══════════════════════════════════════════════════════
-   THE "TUDUM" — Netflix-style bar-convergence transition
-   Fires when the name is tapped. Total runtime ~3.3s,
+   THE NETFLIX-STYLE TRANSITION — the logo punches toward
+   the camera (scale + brightness ramp), hits a white-hot
+   flash on the beat, then cuts hard to black.
+   Fires when the name is tapped. Total runtime ~2.9s,
    synced to netflix-sound.mp3.
    ══════════════════════════════════════════════════════ */
 
@@ -155,89 +158,22 @@
   inset: 0;
   z-index: 20;
   pointer-events: none;
-  perspective: 900px;
 }
 
-/* ── The five fanned crimson bars (ribbon/flame silhouette) ── */
-.tudum-bars {
-  position: absolute;
-  inset: 0;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  gap: clamp(6px, 1.4vw, 14px);
-}
-
-.tudum-bar {
-  width: clamp(10px, 1.8vw, 20px);
-  border-radius: 999px;
-  background: linear-gradient(to bottom, #ff5b64 0%, #e50914 45%, #7a050c 100%);
-  box-shadow:
-    0 0 18px 4px rgba(229, 9, 20, 0.75),
-    0 0 46px 10px rgba(229, 9, 20, 0.35);
-  transform-origin: 50% 100%;
-  animation: tudumBar 2s cubic-bezier(.22,.8,.28,1) both;
-}
-
-.bar-1, .bar-5 { height: 34vh; }
-.bar-2, .bar-4 { height: 52vh; }
-.bar-3        { height: 66vh; }
-
-.bar-1 { transform: rotate(-11deg); animation-delay: 0s; }
-.bar-2 { transform: rotate(-5deg);  animation-delay: 0.06s; }
-.bar-3 { transform: rotate(0deg);   animation-delay: 0.12s; }
-.bar-4 { transform: rotate(5deg);   animation-delay: 0.18s; }
-.bar-5 { transform: rotate(11deg);  animation-delay: 0.24s; }
-
-@keyframes tudumBar {
-  0% {
-    transform: scaleY(0) scaleX(0.3) rotate(var(--rot, 0deg));
-    opacity: 0;
-    filter: blur(10px);
-  }
-  26% {
-    opacity: 1;
-    filter: blur(0);
-  }
-  55% {
-    transform: scaleY(1) scaleX(1);
-    opacity: 1;
-    filter: blur(0);
-  }
-  70% {
-    transform: scaleY(1.06) scaleX(1.35);
-    opacity: 1;
-    filter: brightness(1.9) blur(0);
-  }
-  100% {
-    transform: scaleY(1.4) scaleX(2.4);
-    opacity: 0;
-    filter: brightness(2.6) blur(14px);
-  }
-}
-
-/* Preserve each bar's fan rotation through the scale keyframes */
-.bar-1 { --rot: -11deg; }
-.bar-2 { --rot: -5deg; }
-.bar-3 { --rot: 0deg; }
-.bar-4 { --rot: 5deg; }
-.bar-5 { --rot: 11deg; }
-
-/* ── The "tudum" flash — the bright beat the bars burst into ── */
+/* ── The flash — the bright beat the zoom punches into ── */
 .tudum-flash {
   position: absolute;
   inset: 0;
-  background:
-    radial-gradient(circle at center, rgba(255,255,255,0.95) 0%, rgba(229,9,20,0.9) 22%, rgba(120,4,10,0.5) 46%, transparent 72%);
+  background: radial-gradient(circle at center, rgba(255,255,255,0.98) 0%, rgba(229,9,20,0.85) 30%, rgba(120,4,10,0.4) 55%, transparent 78%);
   opacity: 0;
-  animation: tudumFlash 2s ease-out both;
+  animation: tudumFlash 0.9s ease-out 1.3s both;
 }
 
 @keyframes tudumFlash {
-  0%, 62% { opacity: 0; }
-  68%     { opacity: 1; }
-  80%     { opacity: 0.45; }
-  100%    { opacity: 0; }
+  0%   { opacity: 0; }
+  30%  { opacity: 1; }
+  60%  { opacity: 0.5; }
+  100% { opacity: 0; }
 }
 
 /* ── Final cut to black before routing to /browse ── */
@@ -246,7 +182,7 @@
   inset: 0;
   background: #000;
   opacity: 0;
-  animation: tudumBlackout 1.6s ease-in 1.6s both;
+  animation: tudumBlackout 1s ease-in 1.8s both;
 }
 
 @keyframes tudumBlackout {
@@ -254,15 +190,8 @@
   100% { opacity: 1; }
 }
 
-@media (max-width: 768px) {
-  .bar-1, .bar-5 { height: 26vh; }
-  .bar-2, .bar-4 { height: 40vh; }
-  .bar-3         { height: 52vh; }
-}
-
 @media (prefers-reduced-motion: reduce) {
   .animate-title,
-  .tudum-bar,
   .tudum-flash,
   .tudum-blackout {
     animation-duration: 0.4s !important;
