@@ -34,7 +34,7 @@ const checklist = [
   'No LMIA required',
   'No employer sponsorship needed',
   'Immediately available to start',
-  'Full mobility â open to any employer across Canada',
+  'Full mobility — open to any employer across Canada',
 ];
 
 export default function WorkPermit() {
@@ -53,7 +53,7 @@ export default function WorkPermit() {
 
         <div className="wp-badge">
           <span className="wp-badge-dot" />
-          Canada Â· Open Work Permit
+          Canada · Open Work Permit
         </div>
 
         <h2>Work Authorization</h2>
