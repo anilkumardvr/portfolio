@@ -26,7 +26,7 @@ const NetflixTitle: React.FC = () => {
 
   return (
     <div className="netflix-intro-page" onClick={handleStart}>
-      <div className={`title-name-wrap ${isClicked ? 'animate-title' : ''}`}>
+      <div className={`title-name-wrap ${isClicked ? 'fade-out-name' : ''}`}>
         <span className="intro-name">ANIL DEVANDLA</span>
       </div>
 
@@ -38,6 +38,9 @@ const NetflixTitle: React.FC = () => {
 
       {isClicked && (
         <div className="netflix-tudum" aria-hidden="true">
+          <div className="netflix-n-wrap">
+            <span className="netflix-n">N</span>
+          </div>
           <div className="tudum-flash" />
           <div className="tudum-blackout" />
         </div>
