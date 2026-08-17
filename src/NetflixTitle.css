@@ -240,10 +240,13 @@
 .netflix-n {
   display: block;
   color: #e50914;
-  font-family: 'Harry Potter', 'Arial Black', Impact, Haettenschweiler, 'Arial Narrow Bold', sans-serif;
+  /* Real Netflix-style block letterform for the logo punch-through —
+     deliberately NOT the horror "Harry Potter" font used for the name. */
+  font-family: 'Anton', 'Bebas Neue', 'Arial Black', Impact, Haettenschweiler, 'Arial Narrow Bold', sans-serif;
   font-weight: 900;
   font-size: 12rem;
   line-height: 1;
+  letter-spacing: -2px;
   text-shadow:
     0 0 20px rgba(229,9,20,0.7),
     0 0 60px rgba(229,9,20,0.4),
