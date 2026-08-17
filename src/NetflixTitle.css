@@ -82,20 +82,26 @@
 }
 
 .intro-name {
-  display: block;
+  display: inline-flex;
+  gap: 6px;
   color: #e50914;
   font-family: 'Harry Potter', 'Arial Black', Impact, Haettenschweiler, 'Arial Narrow Bold', sans-serif;
   font-size: clamp(2.8rem, 5vw, 6rem);
   font-weight: 900;
-  letter-spacing: 6px;
   line-height: 1;
   text-transform: uppercase;
+  white-space: nowrap;
+}
+
+.name-letter {
+  display: inline-block;
   text-shadow:
     0 0 8px rgba(229,9,20,0.55),
     0 0 20px rgba(229,9,20,0.22),
     0 2px 6px rgba(229,9,20,0.3);
-  white-space: nowrap;
   animation: nameGlow 3s ease-in-out infinite alternate;
+  transform: translate(0, 0) scale(1);
+  opacity: 1;
 }
 
 @keyframes nameGlow {
@@ -103,12 +109,27 @@
   100% { text-shadow: 0 0 12px rgba(229,9,20,0.65), 0 0 26px rgba(229,9,20,0.3), 0 2px 6px rgba(229,9,20,0.32); }
 }
 
-.fade-out-name {
-  animation: fadeOutName 0.35s ease forwards;
+/* ── Letters fly inward and merge into the point the "N" logo
+   emerges from, instead of the name simply fading as a block. ── */
+.converge-name .name-letter {
+  animation: letterConverge 0.62s cubic-bezier(.55,.06,.68,.19) both;
 }
 
-@keyframes fadeOutName {
-  to { opacity: 0; transform: scale(0.88); }
+@keyframes letterConverge {
+  0% {
+    transform: translate(0, 0) scale(1);
+    opacity: 1;
+    filter: blur(0);
+  }
+  40% {
+    opacity: 1;
+    filter: blur(0);
+  }
+  100% {
+    transform: translate(var(--dx), 0) scale(0.1);
+    opacity: 0;
+    filter: blur(3px);
+  }
 }
 
 .scroll-text {
@@ -131,11 +152,17 @@
 }
 
 /* ══════════════════════════════════════════════════════
-   THE NETFLIX-STYLE TRANSITION — a single "N" (pulled from
-   the name) punches toward the camera like the Netflix mark,
-   hits a white-hot flash on the beat, then cuts hard to black.
-   Fires when the name is tapped. Total runtime ~2.9s,
-   synced to netflix-sound.mp3.
+   THE NETFLIX-STYLE TRANSITION.
+   1) The tapped name's letters converge inward (see
+      .converge-name above) toward the same center point
+      the logo will emerge from.
+   2) Straight vertical light strips sweep in from the edges
+      and converge into a solid curtain.
+   3) The red "N" (pulled from the name) punches through that
+      curtain toward the camera like the real Netflix mark.
+   4) A white-hot flash hits on the beat, then a hard cut to
+      black before routing to /browse.
+   Total runtime 3.3s, synced to netflix-sound.mp3.
    ══════════════════════════════════════════════════════ */
 
 .netflix-tudum {
@@ -143,6 +170,63 @@
   inset: 0;
   z-index: 20;
   pointer-events: none;
+}
+
+/* ── Straight vertical strips converging into a curtain ── */
+.netflix-strips {
+  position: absolute;
+  inset: 0;
+}
+
+.strip {
+  position: absolute;
+  top: -4vh;
+  bottom: -4vh;
+  left: 50%;
+  width: clamp(12px, 1.6vw, 22px);
+  margin-left: calc(clamp(12px, 1.6vw, 22px) / -2);
+  background: linear-gradient(to bottom, #ff5b64 0%, #e50914 45%, #7a050c 100%);
+  box-shadow:
+    0 0 18px 4px rgba(229, 9, 20, 0.7),
+    0 0 46px 12px rgba(229, 9, 20, 0.35);
+  opacity: 0;
+  transform: translateX(var(--fromX)) scaleY(0.5);
+  animation: stripConverge 1.05s cubic-bezier(.22,.8,.28,1) both;
+}
+
+.strip-1 { --fromX: -130vw; --tx: -84px; animation-delay: 0s; }
+.strip-2 { --fromX: 120vw;  --tx: -56px; animation-delay: 0.035s; }
+.strip-3 { --fromX: -150vw; --tx: -28px; animation-delay: 0.07s; }
+.strip-4 { --fromX: 0vw;    --tx: 0px;   animation-delay: 0.09s; }
+.strip-5 { --fromX: 150vw;  --tx: 28px;  animation-delay: 0.07s; }
+.strip-6 { --fromX: -120vw; --tx: 56px;  animation-delay: 0.035s; }
+.strip-7 { --fromX: 130vw;  --tx: 84px;  animation-delay: 0s; }
+
+@keyframes stripConverge {
+  0% {
+    transform: translateX(var(--fromX)) scaleY(0.5);
+    opacity: 0;
+    filter: blur(6px) brightness(1);
+  }
+  32% {
+    opacity: 1;
+    filter: blur(0) brightness(1);
+  }
+  55% {
+    transform: translateX(var(--tx)) scaleY(1);
+    opacity: 1;
+    filter: blur(0) brightness(1);
+  }
+  75% {
+    transform: translateX(var(--tx)) scaleY(1);
+    opacity: 1;
+    filter: blur(0) brightness(1.5);
+  }
+  100% {
+    transform: translateX(var(--tx)) scaleY(1.08);
+    opacity: 0;
+    filter: blur(10px) brightness(2.2);
+  }
 }
 
 .netflix-n-wrap {
@@ -167,7 +251,7 @@
   opacity: 0;
   transform: scale(0.4);
   transform-origin: center;
-  animation: netflixNZoom 1.8s cubic-bezier(.55,.06,.68,.19) forwards;
+  animation: netflixNZoom 1.8s cubic-bezier(.55,.06,.68,.19) 0.5s both;
 }
 
 @keyframes netflixNZoom {
@@ -200,7 +284,7 @@
   inset: 0;
   background: radial-gradient(circle at center, rgba(255,255,255,0.98) 0%, rgba(229,9,20,0.85) 30%, rgba(120,4,10,0.4) 55%, transparent 78%);
   opacity: 0;
-  animation: tudumFlash 0.9s ease-out 1.3s both;
+  animation: tudumFlash 0.9s ease-out 1.8s both;
 }
 
 @keyframes tudumFlash {
@@ -216,7 +300,7 @@
   inset: 0;
   background: #000;
   opacity: 0;
-  animation: tudumBlackout 1s ease-in 1.8s both;
+  animation: tudumBlackout 1s ease-in 2.3s both;
 }
 
 @keyframes tudumBlackout {
@@ -225,11 +309,13 @@
 }
 
 @media (prefers-reduced-motion: reduce) {
-  .fade-out-name,
+  .name-letter,
+  .strip,
   .netflix-n,
   .tudum-flash,
   .tudum-blackout {
     animation-duration: 0.4s !important;
+    animation-delay: 0s !important;
   }
 }
 
@@ -253,7 +339,7 @@
 @media (max-width: 768px) {
   .intro-name {
     font-size: clamp(2rem, 8vw, 3.5rem);
-    letter-spacing: 3px;
+    gap: 3px;
   }
 
   .netflix-n {
