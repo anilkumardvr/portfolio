@@ -33,6 +33,7 @@
 
 /* Navbar Links */
 .navbar-links {
+  position: relative;
   display: flex;
   list-style: none;
   gap: 16px;
@@ -93,6 +94,23 @@
   transform: scaleX(1);
 }
 
+/* Sliding indicator bar — glides between links to track whichever page
+   is active, measured in NavBar.tsx via refs. Lives under the per-link
+   hover underline above as a second, shared layer of feedback. */
+.nav-indicator {
+  position: absolute;
+  left: 0;
+  bottom: -2px;
+  height: 2px;
+  background: linear-gradient(to right, #e50914, #ff5b64);
+  border-radius: 2px;
+  box-shadow: 0 0 8px rgba(229, 9, 20, 0.7);
+  transition: transform 0.45s cubic-bezier(0.65, 0, 0.35, 1),
+              width 0.45s cubic-bezier(0.65, 0, 0.35, 1),
+              opacity 0.3s ease;
+  pointer-events: none;
+}
+
 /* LinkedIn icon in navbar */
 .navbar-linkedin {
   color: #0077b5;
@@ -113,9 +131,18 @@
   width: 30px;
   height: 30px;
   border-radius: 15%;
-  transition: transform 0.3s;
+  transition: transform 0.3s cubic-bezier(0.34, 1.56, 0.64, 1), box-shadow 0.3s ease;
   margin-right: 1rem;
   cursor: pointer;
+}
+
+.profile-icon:hover {
+  transform: scale(1.14);
+  box-shadow: 0 0 0 2px rgba(229, 9, 20, 0.75), 0 6px 16px rgba(229, 9, 20, 0.45);
+}
+
+.profile-icon:active {
+  transform: scale(0.94);
 }
 
 /* Hide the hamburger and sidebar in desktop view */
@@ -301,6 +328,7 @@
   margin-right: 24px;
   margin-left: 10px;
   white-space: nowrap;
+  transition: text-shadow 0.3s ease;
   text-shadow:
     0 0 5px rgba(229, 9, 20, .9),
     0 0 15px rgba(229, 9, 20, .7),
