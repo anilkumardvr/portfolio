@@ -1,20 +1,20 @@
 {
   "files": {
-    "main.css": "/portfolio/static/css/main.9eef7138.css",
-    "main.js": "/portfolio/static/js/main.4f4f29bd.js",
-    "static/js/453.b0cd7502.chunk.js": "/portfolio/static/js/453.b0cd7502.chunk.js",
+    "main.css": "/portfolio/static/css/main.f74ba1a8.css",
+    "main.js": "/portfolio/static/js/main.960affac.js",
+    "static/js/453.1547bdc1.chunk.js": "/portfolio/static/js/453.1547bdc1.chunk.js",
     "static/media/anil.jpg": "/portfolio/static/media/anil.0eed916f789acfdef595.jpg",
     "static/media/blue.png": "/portfolio/static/media/blue.9c433318cb378e4a634e.png",
     "static/media/Anil_Kumar_Devandla_Resume.pdf": "/portfolio/static/media/Anil_Kumar_Devandla_Resume.6d2da15be84e6944fd23.pdf",
     "static/media/netflix-sound.mp3": "/portfolio/static/media/netflix-sound.85eb0b77826cf4ad94f3.mp3",
     "static/media/grey.png": "/portfolio/static/media/grey.32a9d8dc64ca06d6c502.png",
     "index.html": "/portfolio/index.html",
-    "main.9eef7138.css.map": "/portfolio/static/css/main.9eef7138.css.map",
-    "main.4f4f29bd.js.map": "/portfolio/static/js/main.4f4f29bd.js.map",
-    "453.b0cd7502.chunk.js.map": "/portfolio/static/js/453.b0cd7502.chunk.js.map"
+    "main.f74ba1a8.css.map": "/portfolio/static/css/main.f74ba1a8.css.map",
+    "main.960affac.js.map": "/portfolio/static/js/main.960affac.js.map",
+    "453.1547bdc1.chunk.js.map": "/portfolio/static/js/453.1547bdc1.chunk.js.map"
   },
   "entrypoints": [
-    "static/css/main.9eef7138.css",
-    "static/js/main.4f4f29bd.js"
+    "static/css/main.f74ba1a8.css",
+    "static/js/main.960affac.js"
   ]
 }
