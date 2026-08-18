@@ -60,6 +60,8 @@ const NetflixTitle: React.FC = () => {
       )}
 
       {isClicked && (
+        // t=0s here == the moment isClicked flips true, same clock the
+        // keyframe delays below are measured against.
         <div className="netflix-tudum" aria-hidden="true">
           <div className="netflix-strips">
             <span className="strip strip-1" />
@@ -71,9 +73,14 @@ const NetflixTitle: React.FC = () => {
             <span className="strip strip-7" />
           </div>
           <div className="netflix-n-wrap">
+            {/* Two shockwave rings mark the "tu" and "dum" drum hits,
+                timed with the beats baked into .netflix-n's keyframes. */}
+            <span className="tudum-ring tudum-ring--tu" />
+            <span className="tudum-ring tudum-ring--dum" />
             <span className="netflix-n">N</span>
           </div>
           <div className="tudum-flash" />
+          <div className="tudum-chroma" />
           <div className="tudum-blackout" />
         </div>
       )}
@@ -82,3 +89,4 @@ const NetflixTitle: React.FC = () => {
 };
 
 export default NetflixTitle;
+
