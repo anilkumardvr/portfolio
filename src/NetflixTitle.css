@@ -156,13 +156,14 @@
    1) The tapped name's letters converge inward (see
       .converge-name above) toward the same center point
       the logo will emerge from.
-   2) Straight vertical light strips sweep in from the edges
-      and converge into a solid curtain.
-   3) The red "N" punches through in the real tudum's
-      signature two-beat drum hit — a small "tu" pop, a
-      breath, then a much bigger "DUM" hit (with a screen
-      shake and a shockwave ring on each beat) — before
-      continuing into the zoom toward the camera.
+   2) A dense wall of vertical bars flies toward camera in
+      3D (perspective + translateZ), closing into a solid
+      curtain like flying down a tunnel of red pillars.
+   3) The red "N" ribbon-mark punches through in the real
+      tudum's signature two-beat drum hit — a small "tu"
+      pop, a breath, then a much bigger "DUM" hit (with a
+      screen shake and a shockwave ring on each beat) —
+      before continuing into the zoom toward the camera.
    4) A white-hot flash hits on the beat (with a quick
       chromatic-aberration snap), then a hard cut to black
       before routing to /browse.
@@ -188,60 +189,58 @@
   80%      { transform: translate(3px, -2px); }
 }
 
-/* ── Straight vertical strips converging into a curtain ── */
+/* ── A dense wall of vertical bars flying toward camera in 3D,
+   closing into a solid curtain — the "tunnel of light" the real
+   ident reads as, rather than a handful of wide gapped ribbons. ── */
 .netflix-strips {
   position: absolute;
   inset: 0;
+  perspective: 900px;
+  perspective-origin: 50% 50%;
 }
 
 .strip {
   position: absolute;
-  top: -4vh;
-  bottom: -4vh;
+  top: -6vh;
+  bottom: -6vh;
   left: 50%;
-  width: clamp(12px, 1.6vw, 22px);
-  margin-left: calc(clamp(12px, 1.6vw, 22px) / -2);
-  background: linear-gradient(to bottom, #ff5b64 0%, #e50914 45%, #7a050c 100%);
+  width: clamp(8px, 1.15vw, 16px);
+  margin-left: calc(clamp(8px, 1.15vw, 16px) / -2);
+  background: linear-gradient(to bottom, #8a0d13 0%, #5c0509 45%, #380306 100%);
   box-shadow:
-    0 0 18px 4px rgba(229, 9, 20, 0.7),
-    0 0 46px 12px rgba(229, 9, 20, 0.35);
+    0 0 14px 2px rgba(229, 9, 20, 0.35),
+    0 0 34px 8px rgba(229, 9, 20, 0.15);
   opacity: 0;
-  transform: translateX(var(--fromX)) scaleY(0.5);
-  animation: stripConverge 1.05s cubic-bezier(.22,.8,.28,1) both;
+  transform-style: preserve-3d;
+  transform: translateX(var(--fromX)) translateZ(var(--tz)) scaleY(0.6);
+  animation: stripConverge 1.15s cubic-bezier(.22,.8,.28,1) both;
 }
-
-.strip-1 { --fromX: -130vw; --tx: -84px; animation-delay: 0s; }
-.strip-2 { --fromX: 120vw;  --tx: -56px; animation-delay: 0.035s; }
-.strip-3 { --fromX: -150vw; --tx: -28px; animation-delay: 0.07s; }
-.strip-4 { --fromX: 0vw;    --tx: 0px;   animation-delay: 0.09s; }
-.strip-5 { --fromX: 150vw;  --tx: 28px;  animation-delay: 0.07s; }
-.strip-6 { --fromX: -120vw; --tx: 56px;  animation-delay: 0.035s; }
-.strip-7 { --fromX: 130vw;  --tx: 84px;  animation-delay: 0s; }
 
 @keyframes stripConverge {
   0% {
-    transform: translateX(var(--fromX)) scaleY(0.5);
+    transform: translateX(var(--fromX)) translateZ(var(--tz)) scaleY(0.6);
     opacity: 0;
-    filter: blur(6px) brightness(1);
+    filter: blur(5px) brightness(0.8);
   }
-  32% {
+  30% {
+    opacity: 0.85;
+    filter: blur(0) brightness(0.9);
+  }
+  58% {
+    transform: translateX(var(--tx)) translateZ(0) scaleY(1);
     opacity: 1;
+    background: linear-gradient(to bottom, #ff5b64 0%, #e50914 45%, #7a050c 100%);
     filter: blur(0) brightness(1);
   }
-  55% {
-    transform: translateX(var(--tx)) scaleY(1);
+  78% {
+    transform: translateX(var(--tx)) translateZ(60px) scaleY(1);
     opacity: 1;
-    filter: blur(0) brightness(1);
-  }
-  75% {
-    transform: translateX(var(--tx)) scaleY(1);
-    opacity: 1;
-    filter: blur(0) brightness(1.5);
+    filter: blur(0) brightness(1.6);
   }
   100% {
-    transform: translateX(var(--tx)) scaleY(1.08);
+    transform: translateX(var(--tx)) translateZ(140px) scaleY(1.08);
     opacity: 0;
-    filter: blur(10px) brightness(2.2);
+    filter: blur(10px) brightness(2.4);
   }
 }
 
@@ -283,24 +282,73 @@
   100% { opacity: 0; transform: scale(2.6); }
 }
 
+/* ── The logo mark itself. Real Netflix ribbon-mark reads as a folded
+   strip of material — dark maroon where it turns away from the light,
+   a hot red/orange highlight where it catches it — rather than a flat
+   single-tone glyph, so the fill is a diagonal gradient instead of a
+   solid color, with a layered shadow standing in for the fold's
+   drop-shadow and a light "spine" down the crease. ── */
 .netflix-n {
+  position: relative;
   display: block;
-  color: #e50914;
-  /* Real Netflix-style block letterform for the logo punch-through —
-     deliberately NOT the horror "Harry Potter" font used for the name. */
   font-family: 'Anton', 'Bebas Neue', 'Arial Black', Impact, Haettenschweiler, 'Arial Narrow Bold', sans-serif;
   font-weight: 900;
   font-size: 12rem;
   line-height: 1;
   letter-spacing: -2px;
-  text-shadow:
-    0 0 20px rgba(229,9,20,0.7),
-    0 0 60px rgba(229,9,20,0.4),
-    0 4px 10px rgba(0,0,0,0.5);
   opacity: 0;
   transform: scale(0.4);
   transform-origin: center;
   animation: netflixNZoom 1.8s cubic-bezier(.55,.06,.68,.19) 0.5s both;
+  filter: drop-shadow(0 6px 14px rgba(0,0,0,0.55));
+}
+
+.netflix-n-glyph {
+  display: block;
+  background: linear-gradient(
+    100deg,
+    #4a0407 0%,
+    #8b0000 16%,
+    #c40812 32%,
+    #ff5b3d 48%,
+    #ff2a2a 54%,
+    #c40812 68%,
+    #6e0509 88%,
+    #4a0407 100%
+  );
+  background-size: 220% 100%;
+  background-position: 30% 0;
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+  text-shadow: none;
+}
+
+/* A soft diagonal sheen that sweeps once across the ribbon fold right as
+   the logo punches through on the "DUM" beat — the flash of light a real
+   folded/lacquered surface throws as it turns toward camera. */
+.netflix-n-sheen {
+  position: absolute;
+  inset: -10% -20%;
+  background: linear-gradient(
+    115deg,
+    transparent 40%,
+    rgba(255, 214, 194, 0.85) 49%,
+    rgba(255, 255, 255, 0.95) 51%,
+    transparent 60%
+  );
+  mix-blend-mode: screen;
+  transform: translateX(-60%);
+  opacity: 0;
+  animation: nSheen 0.55s ease-out 1.28s both;
+  pointer-events: none;
+}
+
+@keyframes nSheen {
+  0%   { transform: translateX(-70%); opacity: 0; }
+  15%  { opacity: 0.9; }
+  60%  { opacity: 0.5; }
+  100% { transform: translateX(70%); opacity: 0; }
 }
 
 /* Two-beat "tu... DUM" drum hit, then the continued zoom through
@@ -308,17 +356,17 @@
    bigger punch with a brightness spike (46%) is the "DUM" — timed
    to the .tudum-ring and .netflix-tudum shake above. */
 @keyframes netflixNZoom {
-  0%   { opacity: 0;    transform: scale(0.28); filter: brightness(1)   blur(4px); }
-  5%   { opacity: 1;    transform: scale(0.30); filter: brightness(1.1) blur(0); }
-  9%   {                transform: scale(0.46); filter: brightness(1.4) blur(0); }
-  14%  {                transform: scale(0.40); filter: brightness(1.1) blur(0); }
-  30%  {                transform: scale(0.42); filter: brightness(1.05) blur(0); }
-  40%  {                transform: scale(0.55); filter: brightness(1.1) blur(0); }
-  46%  {                transform: scale(0.98); filter: brightness(1.6) blur(0); }
-  54%  {                transform: scale(0.84); filter: brightness(1.3) blur(0); }
-  70%  {                transform: scale(1.7);  filter: brightness(1.25) blur(0); }
-  88%  {                transform: scale(3.0);  filter: brightness(1.7) blur(0.3px); }
-  100% { opacity: 1;    transform: scale(4.6);  filter: brightness(2.4) blur(1px); }
+  0%   { opacity: 0;    transform: scale(0.28); filter: drop-shadow(0 6px 14px rgba(0,0,0,0.55)) brightness(1)   blur(4px); }
+  5%   { opacity: 1;    transform: scale(0.30); filter: drop-shadow(0 6px 14px rgba(0,0,0,0.55)) brightness(1.1) blur(0); }
+  9%   {                transform: scale(0.46); filter: drop-shadow(0 6px 14px rgba(0,0,0,0.55)) brightness(1.4) blur(0); }
+  14%  {                transform: scale(0.40); filter: drop-shadow(0 6px 14px rgba(0,0,0,0.55)) brightness(1.1) blur(0); }
+  30%  {                transform: scale(0.42); filter: drop-shadow(0 6px 14px rgba(0,0,0,0.55)) brightness(1.05) blur(0); }
+  40%  {                transform: scale(0.55); filter: drop-shadow(0 6px 14px rgba(0,0,0,0.55)) brightness(1.1) blur(0); }
+  46%  {                transform: scale(0.98); filter: drop-shadow(0 8px 20px rgba(0,0,0,0.6)) brightness(1.6) blur(0); }
+  54%  {                transform: scale(0.84); filter: drop-shadow(0 8px 20px rgba(0,0,0,0.6)) brightness(1.3) blur(0); }
+  70%  {                transform: scale(1.7);  filter: drop-shadow(0 10px 26px rgba(0,0,0,0.6)) brightness(1.25) blur(0); }
+  88%  {                transform: scale(3.0);  filter: drop-shadow(0 12px 32px rgba(0,0,0,0.6)) brightness(1.7) blur(0.3px); }
+  100% { opacity: 1;    transform: scale(4.6);  filter: drop-shadow(0 14px 38px rgba(0,0,0,0.6)) brightness(2.4) blur(1px); }
 }
 
 /* ── The flash — the bright beat the zoom punches into ── */
@@ -374,6 +422,7 @@
   .name-letter,
   .strip,
   .netflix-n,
+  .netflix-n-sheen,
   .tudum-flash,
   .tudum-chroma,
   .tudum-blackout,
@@ -416,4 +465,5 @@
   .tudum-ring--tu { width: 90px; height: 90px; }
   .tudum-ring--dum { width: 140px; height: 140px; }
 }
+
 
