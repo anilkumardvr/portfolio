@@ -158,10 +158,14 @@
       the logo will emerge from.
    2) Straight vertical light strips sweep in from the edges
       and converge into a solid curtain.
-   3) The red "N" (pulled from the name) punches through that
-      curtain toward the camera like the real Netflix mark.
-   4) A white-hot flash hits on the beat, then a hard cut to
-      black before routing to /browse.
+   3) The red "N" punches through in the real tudum's
+      signature two-beat drum hit — a small "tu" pop, a
+      breath, then a much bigger "DUM" hit (with a screen
+      shake and a shockwave ring on each beat) — before
+      continuing into the zoom toward the camera.
+   4) A white-hot flash hits on the beat (with a quick
+      chromatic-aberration snap), then a hard cut to black
+      before routing to /browse.
    Total runtime 3.3s, synced to netflix-sound.mp3.
    ══════════════════════════════════════════════════════ */
 
@@ -170,6 +174,18 @@
   inset: 0;
   z-index: 20;
   pointer-events: none;
+  /* The whole scene punches with the camera on the "DUM" beat —
+     matches the second, larger peak in .netflix-n's keyframes below
+     (46% of a 1.8s animation that starts at the 0.5s delay mark). */
+  animation: dumShake 0.32s ease-out 1.3s both;
+}
+
+@keyframes dumShake {
+  0%, 100% { transform: translate(0, 0); }
+  20%      { transform: translate(-7px, 3px); }
+  40%      { transform: translate(6px, -5px); }
+  60%      { transform: translate(-5px, 3px); }
+  80%      { transform: translate(3px, -2px); }
 }
 
 /* ── Straight vertical strips converging into a curtain ── */
@@ -237,6 +253,36 @@
   justify-content: center;
 }
 
+/* ── Shockwave rings — one per drum hit, centered on the N ── */
+.tudum-ring {
+  position: absolute;
+  border-radius: 50%;
+  border: 3px solid rgba(229, 9, 20, 0.85);
+  opacity: 0;
+  transform: scale(0.3);
+}
+
+.tudum-ring--tu {
+  width: 140px;
+  height: 140px;
+  box-shadow: 0 0 20px 4px rgba(229, 9, 20, 0.5);
+  animation: ringPulse 0.5s cubic-bezier(.22,.8,.28,1) 0.66s both;
+}
+
+.tudum-ring--dum {
+  width: 220px;
+  height: 220px;
+  border-width: 5px;
+  box-shadow: 0 0 46px 12px rgba(229, 9, 20, 0.7);
+  animation: ringPulse 0.68s cubic-bezier(.22,.8,.28,1) 1.3s both;
+}
+
+@keyframes ringPulse {
+  0%   { opacity: 0.9; transform: scale(0.3); }
+  70%  { opacity: 0.35; }
+  100% { opacity: 0; transform: scale(2.6); }
+}
+
 .netflix-n {
   display: block;
   color: #e50914;
@@ -257,28 +303,22 @@
   animation: netflixNZoom 1.8s cubic-bezier(.55,.06,.68,.19) 0.5s both;
 }
 
+/* Two-beat "tu... DUM" drum hit, then the continued zoom through
+   the camera. The small early punch (9%) is the "tu"; the much
+   bigger punch with a brightness spike (46%) is the "DUM" — timed
+   to the .tudum-ring and .netflix-tudum shake above. */
 @keyframes netflixNZoom {
-  0% {
-    opacity: 0;
-    transform: scale(0.4);
-    filter: brightness(1) blur(3px);
-  }
-  15% {
-    opacity: 1;
-    filter: blur(0);
-  }
-  50% {
-    transform: scale(1.6);
-    filter: brightness(1.2) blur(0);
-  }
-  80% {
-    transform: scale(2.8);
-    filter: brightness(1.6) blur(0.3px);
-  }
-  100% {
-    transform: scale(4.5);
-    filter: brightness(2.4) blur(1px);
-  }
+  0%   { opacity: 0;    transform: scale(0.28); filter: brightness(1)   blur(4px); }
+  5%   { opacity: 1;    transform: scale(0.30); filter: brightness(1.1) blur(0); }
+  9%   {                transform: scale(0.46); filter: brightness(1.4) blur(0); }
+  14%  {                transform: scale(0.40); filter: brightness(1.1) blur(0); }
+  30%  {                transform: scale(0.42); filter: brightness(1.05) blur(0); }
+  40%  {                transform: scale(0.55); filter: brightness(1.1) blur(0); }
+  46%  {                transform: scale(0.98); filter: brightness(1.6) blur(0); }
+  54%  {                transform: scale(0.84); filter: brightness(1.3) blur(0); }
+  70%  {                transform: scale(1.7);  filter: brightness(1.25) blur(0); }
+  88%  {                transform: scale(3.0);  filter: brightness(1.7) blur(0.3px); }
+  100% { opacity: 1;    transform: scale(4.6);  filter: brightness(2.4) blur(1px); }
 }
 
 /* ── The flash — the bright beat the zoom punches into ── */
@@ -294,6 +334,25 @@
   0%   { opacity: 0; }
   30%  { opacity: 1; }
   60%  { opacity: 0.5; }
+  100% { opacity: 0; }
+}
+
+/* ── A quick chromatic-aberration snap right as the flash lands,
+   the kind of RGB-fringe pop a real camera gives a hard light hit. ── */
+.tudum-chroma {
+  position: absolute;
+  inset: 0;
+  background:
+    radial-gradient(circle at 48% 50%, rgba(0, 230, 255, 0.28) 0%, transparent 40%),
+    radial-gradient(circle at 52% 50%, rgba(255, 0, 60, 0.28) 0%, transparent 40%);
+  mix-blend-mode: screen;
+  opacity: 0;
+  animation: chromaSnap 0.35s ease-out 1.78s both;
+}
+
+@keyframes chromaSnap {
+  0%   { opacity: 0; }
+  35%  { opacity: 0.85; }
   100% { opacity: 0; }
 }
 
@@ -316,9 +375,14 @@
   .strip,
   .netflix-n,
   .tudum-flash,
-  .tudum-blackout {
+  .tudum-chroma,
+  .tudum-blackout,
+  .tudum-ring {
     animation-duration: 0.4s !important;
     animation-delay: 0s !important;
+  }
+  .netflix-tudum {
+    animation: none !important;
   }
 }
 
@@ -348,4 +412,8 @@
   .netflix-n {
     font-size: 6rem;
   }
+
+  .tudum-ring--tu { width: 90px; height: 90px; }
+  .tudum-ring--dum { width: 140px; height: 140px; }
 }
+
