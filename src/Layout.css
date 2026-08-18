@@ -1,7 +1,15 @@
 /* ================================================================
    LAYOUT — global cinematic transition played on every route change.
-   Keyed by pathname in Layout.tsx so React remounts this wrapper on
-   every navigation, retriggering the animation below.
+   Keyed by pathname in Layout.tsx so React remounts these elements on
+   every navigation, retriggering the animations below.
+
+   IMPORTANT: .page-transition-bar and .page-transition-scan must stay
+   OUTSIDE .page-transition-wrap in the markup. .page-transition-wrap is
+   animated with `transform`, which makes it the containing block for any
+   `position: fixed` descendant — if the bars/scanline were nested inside
+   it, they'd be sized against the wrapper's own (content-driven) height
+   instead of the viewport, which was doubling the scrollable height of
+   every page.
    ================================================================ */
 
 .page-transition-wrap {
@@ -14,8 +22,41 @@
   100% { opacity: 1; transform: translateY(0); }
 }
 
-/* A quick red scanline sweep — the "channel change" beat that plays
-   once over the new section as it settles into place. */
+/* Letterbox curtain — top and bottom bars slide away on arrival, the
+   same "channel change" language used by the card reveals throughout
+   the site, now played once at the page level. */
+.page-transition-bar {
+  position: fixed;
+  left: 0;
+  right: 0;
+  height: 52vh;
+  background: #000;
+  z-index: 70;
+  pointer-events: none;
+}
+
+.page-transition-bar--top {
+  top: 0;
+  animation: nfBarTop 0.6s cubic-bezier(0.65, 0, 0.35, 1) both;
+}
+
+.page-transition-bar--bottom {
+  bottom: 0;
+  animation: nfBarBottom 0.6s cubic-bezier(0.65, 0, 0.35, 1) both;
+}
+
+@keyframes nfBarTop {
+  0%   { transform: translateY(0); }
+  100% { transform: translateY(-100%); }
+}
+
+@keyframes nfBarBottom {
+  0%   { transform: translateY(0); }
+  100% { transform: translateY(100%); }
+}
+
+/* A quick red scanline sweep — the beat that plays over the new section
+   just after the curtain opens, as it settles into place. */
 .page-transition-scan {
   position: fixed;
   inset: 0;
@@ -30,6 +71,7 @@
   );
   transform: translateY(-100%);
   animation: nfScanSweep 0.7s cubic-bezier(0.65, 0, 0.35, 1) both;
+  animation-delay: 0.15s;
 }
 
 @keyframes nfScanSweep {
@@ -38,7 +80,8 @@
 
 @media (prefers-reduced-motion: reduce) {
   .page-transition-wrap,
-  .page-transition-scan {
+  .page-transition-scan,
+  .page-transition-bar {
     animation-duration: 0.01s !important;
   }
 }
