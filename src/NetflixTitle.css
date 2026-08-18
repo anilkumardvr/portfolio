@@ -156,9 +156,11 @@
    1) The tapped name's letters converge inward (see
       .converge-name above) toward the same center point
       the logo will emerge from.
-   2) A dense wall of vertical bars flies toward camera in
-      3D (perspective + translateZ), closing into a solid
-      curtain like flying down a tunnel of red pillars.
+   2) A dense spray of colored light threads (red, orange,
+      magenta, violet, blue — reference stills of the real
+      ident show it is NOT flat monochrome red) flies toward
+      camera in 3D, closing into a solid red curtain right
+      as the logo is about to reveal.
    3) The red "N" ribbon-mark punches through in the real
       tudum's signature two-beat drum hit — a small "tu"
       pop, a breath, then a much bigger "DUM" hit (with a
@@ -189,9 +191,9 @@
   80%      { transform: translate(3px, -2px); }
 }
 
-/* ── A dense wall of vertical bars flying toward camera in 3D,
-   closing into a solid curtain — the "tunnel of light" the real
-   ident reads as, rather than a handful of wide gapped ribbons. ── */
+/* ── A dense spray of colored light threads flying toward camera in 3D,
+   closing into a solid red curtain — the "tunnel of light" the real
+   ident reads as, rather than a handful of wide gapped red ribbons. ── */
 .netflix-strips {
   position: absolute;
   inset: 0;
@@ -206,10 +208,19 @@
   left: 50%;
   width: clamp(8px, 1.15vw, 16px);
   margin-left: calc(clamp(8px, 1.15vw, 16px) / -2);
-  background: linear-gradient(to bottom, #8a0d13 0%, #5c0509 45%, #380306 100%);
+  /* Starts as its own hue (set per-bar via --hue in NetflixTitle.tsx,
+     sweeping red → orange → magenta → violet → blue across the set) —
+     see the 58% keyframe below where every bar resolves to brand red
+     as the curtain closes. */
+  background: linear-gradient(
+    to bottom,
+    hsl(var(--hue) 90% 52%) 0%,
+    hsl(var(--hue) 85% 32%) 45%,
+    hsl(var(--hue) 80% 14%) 100%
+  );
   box-shadow:
-    0 0 14px 2px rgba(229, 9, 20, 0.35),
-    0 0 34px 8px rgba(229, 9, 20, 0.15);
+    0 0 14px 2px hsla(var(--hue), 90%, 50%, 0.35),
+    0 0 34px 8px hsla(var(--hue), 90%, 50%, 0.15);
   opacity: 0;
   transform-style: preserve-3d;
   transform: translateX(var(--fromX)) translateZ(var(--tz)) scaleY(0.6);
@@ -230,6 +241,9 @@
     transform: translateX(var(--tx)) translateZ(0) scaleY(1);
     opacity: 1;
     background: linear-gradient(to bottom, #ff5b64 0%, #e50914 45%, #7a050c 100%);
+    box-shadow:
+      0 0 18px 4px rgba(229, 9, 20, 0.7),
+      0 0 46px 12px rgba(229, 9, 20, 0.35);
     filter: blur(0) brightness(1);
   }
   78% {
@@ -244,9 +258,35 @@
   }
 }
 
+/* Darkens the middle of the tunnel so the colored threads read as
+   concentrated toward the edges (like the reference stills) instead of
+   an even wash — the "N" then punches through that darker core. */
+.netflix-tunnel-vignette {
+  position: absolute;
+  inset: 0;
+  z-index: 15;
+  pointer-events: none;
+  background: radial-gradient(
+    ellipse at center,
+    rgba(0,0,0,0.88) 0%,
+    rgba(0,0,0,0.55) 24%,
+    rgba(0,0,0,0.15) 42%,
+    transparent 62%
+  );
+  opacity: 0;
+  animation: tunnelVignetteFade 1.15s ease-out both;
+}
+
+@keyframes tunnelVignetteFade {
+  0%   { opacity: 0; }
+  35%  { opacity: 1; }
+  100% { opacity: 0.9; }
+}
+
 .netflix-n-wrap {
   position: absolute;
   inset: 0;
+  z-index: 16;
   display: flex;
   align-items: center;
   justify-content: center;
@@ -373,6 +413,7 @@
 .tudum-flash {
   position: absolute;
   inset: 0;
+  z-index: 17;
   background: radial-gradient(circle at center, rgba(255,255,255,0.98) 0%, rgba(229,9,20,0.85) 30%, rgba(120,4,10,0.4) 55%, transparent 78%);
   opacity: 0;
   animation: tudumFlash 0.9s ease-out 1.8s both;
@@ -390,6 +431,7 @@
 .tudum-chroma {
   position: absolute;
   inset: 0;
+  z-index: 17;
   background:
     radial-gradient(circle at 48% 50%, rgba(0, 230, 255, 0.28) 0%, transparent 40%),
     radial-gradient(circle at 52% 50%, rgba(255, 0, 60, 0.28) 0%, transparent 40%);
@@ -408,6 +450,7 @@
 .tudum-blackout {
   position: absolute;
   inset: 0;
+  z-index: 18;
   background: #000;
   opacity: 0;
   animation: tudumBlackout 1s ease-in 2.3s both;
@@ -426,7 +469,8 @@
   .tudum-flash,
   .tudum-chroma,
   .tudum-blackout,
-  .tudum-ring {
+  .tudum-ring,
+  .netflix-tunnel-vignette {
     animation-duration: 0.4s !important;
     animation-delay: 0s !important;
   }
