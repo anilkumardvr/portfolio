@@ -1,0 +1,44 @@
+/* ================================================================
+   LAYOUT — global cinematic transition played on every route change.
+   Keyed by pathname in Layout.tsx so React remounts this wrapper on
+   every navigation, retriggering the animation below.
+   ================================================================ */
+
+.page-transition-wrap {
+  position: relative;
+  animation: nfPageFadeSlide 0.55s cubic-bezier(0.16, 1, 0.3, 1) both;
+}
+
+@keyframes nfPageFadeSlide {
+  0%   { opacity: 0; transform: translateY(22px); }
+  100% { opacity: 1; transform: translateY(0); }
+}
+
+/* A quick red scanline sweep — the "channel change" beat that plays
+   once over the new section as it settles into place. */
+.page-transition-scan {
+  position: fixed;
+  inset: 0;
+  z-index: 60;
+  pointer-events: none;
+  background: linear-gradient(
+    180deg,
+    transparent 0%,
+    rgba(229, 9, 20, 0.09) 46%,
+    rgba(229, 9, 20, 0.03) 50%,
+    transparent 60%
+  );
+  transform: translateY(-100%);
+  animation: nfScanSweep 0.7s cubic-bezier(0.65, 0, 0.35, 1) both;
+}
+
+@keyframes nfScanSweep {
+  to { transform: translateY(100%); }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .page-transition-wrap,
+  .page-transition-scan {
+    animation-duration: 0.01s !important;
+  }
+}
