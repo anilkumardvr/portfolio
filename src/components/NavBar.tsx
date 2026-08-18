@@ -4,6 +4,26 @@ import { FaHome, FaBriefcase, FaTools, FaProjectDiagram, FaEnvelope, FaMusic, Fa
 import './Navbar.css';
 import blueImage from '../images/blue.png';
 
+const NAV_LINKS = [
+  { to: '/browse', label: 'Home' },
+  { to: '/work-experience', label: 'Experience' },
+  { to: '/skills', label: 'Skills' },
+  { to: '/projects', label: 'Projects' },
+  { to: '/reading', label: 'Books' },
+  { to: '/music', label: 'Music' },
+  { to: '/contact-me', label: 'Hire Me' },
+];
+
+const SIDEBAR_LINKS = [
+  { to: '/browse', label: 'Home', icon: <FaHome /> },
+  { to: '/work-experience', label: 'Experience', icon: <FaBriefcase /> },
+  { to: '/skills', label: 'Skills', icon: <FaTools /> },
+  { to: '/projects', label: 'Projects', icon: <FaProjectDiagram /> },
+  { to: '/reading', label: 'Books', icon: <FaBook /> },
+  { to: '/music', label: 'Music', icon: <FaMusic /> },
+  { to: '/contact-me', label: 'Hire Me', icon: <FaEnvelope /> },
+];
+
 const Navbar: React.FC = () => {
   const location = useLocation();
   const navigate = useNavigate();
@@ -18,6 +38,7 @@ const Navbar: React.FC = () => {
   }, []);
 
   const closeSidebar = () => setIsSidebarOpen(false);
+  const isActive = (path: string) => location.pathname === path;
 
   return (
     <>
@@ -25,13 +46,14 @@ const Navbar: React.FC = () => {
         <div className="navbar-left">
           <Link to="/" className="navbar-logo anil-logo-text">ANIL DEVANDLA</Link>
           <ul className="navbar-links">
-            <li><Link to="/browse">Home</Link></li>
-            <li><Link to="/work-experience">Experience</Link></li>
-            <li><Link to="/skills">Skills</Link></li>
-            <li><Link to="/projects">Projects</Link></li>
-            <li><Link to="/reading">Books</Link></li>
-            <li><Link to="/music">Music</Link></li>
-            <li><Link to="/contact-me">Hire Me</Link></li>
+            {NAV_LINKS.map((link, i) => (
+              <li key={link.to} style={{ '--i': i } as React.CSSProperties}>
+                <Link to={link.to} className={isActive(link.to) ? 'nav-active' : ''}>
+                  {link.label}
+                  <span className="nav-underline" />
+                </Link>
+              </li>
+            ))}
           </ul>
         </div>
         <div className="navbar-right">
@@ -44,7 +66,11 @@ const Navbar: React.FC = () => {
           >
             <FaLinkedin />
           </a>
-          <div className="hamburger" onClick={() => setIsSidebarOpen(!isSidebarOpen)}>
+          <div
+            className={`hamburger ${isSidebarOpen ? 'open' : ''}`}
+            onClick={() => setIsSidebarOpen(!isSidebarOpen)}
+            aria-label="Toggle menu"
+          >
             <div></div><div></div><div></div>
           </div>
           <img src={profileImage} alt="Profile" className="profile-icon" onClick={() => navigate('/browse')} />
@@ -56,14 +82,18 @@ const Navbar: React.FC = () => {
       <div className={`sidebar ${isSidebarOpen ? 'open' : ''}`}>
         <div className="sidebar-logo anil-logo-text">ANIL DEVANDLA</div>
         <ul>
-          <li><Link to="/browse" onClick={closeSidebar}><FaHome /> Home</Link></li>
-          <li><Link to="/work-experience" onClick={closeSidebar}><FaBriefcase /> Experience</Link></li>
-          <li><Link to="/skills" onClick={closeSidebar}><FaTools /> Skills</Link></li>
-          <li><Link to="/projects" onClick={closeSidebar}><FaProjectDiagram /> Projects</Link></li>
-          <li><Link to="/reading" onClick={closeSidebar}><FaBook /> Books</Link></li>
-          <li><Link to="/music" onClick={closeSidebar}><FaMusic /> Music</Link></li>
-          <li><Link to="/contact-me" onClick={closeSidebar}><FaEnvelope /> Hire Me</Link></li>
-          <li>
+          {SIDEBAR_LINKS.map((link, i) => (
+            <li key={link.to} style={{ '--i': i } as React.CSSProperties}>
+              <Link
+                to={link.to}
+                onClick={closeSidebar}
+                className={isActive(link.to) ? 'nav-active' : ''}
+              >
+                {link.icon} {link.label}
+              </Link>
+            </li>
+          ))}
+          <li style={{ '--i': SIDEBAR_LINKS.length } as React.CSSProperties}>
             <a href="https://linkedin.com/in/anilkumardevandla" target="_blank" rel="noopener noreferrer" onClick={closeSidebar}>
               <FaLinkedin /> LinkedIn
             </a>
