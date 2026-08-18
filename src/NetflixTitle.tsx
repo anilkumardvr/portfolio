@@ -12,6 +12,13 @@ const NAME = 'ANIL DEVANDLA';
 // the same spot the "N" logo will zoom in from.
 const CONVERGE_CENTER = (NAME.length - 1) / 2;
 
+// Number of vertical bars in the tunnel curtain. The real ident reads as a
+// dense wall of pillars, not a handful of wide gapped strips — more, thinner
+// bars sitting close together sells the "flying through a curtain of light"
+// feeling instead of looking like a handful of ribbons.
+const STRIP_COUNT = 13;
+const STRIP_CENTER = (STRIP_COUNT - 1) / 2;
+
 const NetflixTitle: React.FC = () => {
   const [isClicked, setIsClicked] = useState(false);
   const navigate = useNavigate();
@@ -64,20 +71,32 @@ const NetflixTitle: React.FC = () => {
         // keyframe delays below are measured against.
         <div className="netflix-tudum" aria-hidden="true">
           <div className="netflix-strips">
-            <span className="strip strip-1" />
-            <span className="strip strip-2" />
-            <span className="strip strip-3" />
-            <span className="strip strip-4" />
-            <span className="strip strip-5" />
-            <span className="strip strip-6" />
-            <span className="strip strip-7" />
+            {Array.from({ length: STRIP_COUNT }).map((_, i) => {
+              // Bars alternate which edge of the screen they fly in from and
+              // stagger their arrival slightly outward-in, like the real
+              // curtain closing from both sides toward the center pillar.
+              const fromEdge = i % 2 === 0 ? -1 : 1;
+              const distanceFromCenter = Math.abs(i - STRIP_CENTER);
+              const style = {
+                '--fromX': `${fromEdge * (120 + distanceFromCenter * 6)}vw`,
+                '--tx': `${(i - STRIP_CENTER) * 34}px`,
+                '--tz': `${-420 + distanceFromCenter * 24}px`,
+                animationDelay: `${distanceFromCenter * 0.028}s`,
+              } as React.CSSProperties;
+              return <span key={i} className="strip" style={style} />;
+            })}
           </div>
           <div className="netflix-n-wrap">
             {/* Two shockwave rings mark the "tu" and "dum" drum hits,
                 timed with the beats baked into .netflix-n's keyframes. */}
             <span className="tudum-ring tudum-ring--tu" />
             <span className="tudum-ring tudum-ring--dum" />
-            <span className="netflix-n">N</span>
+            <span className="netflix-n">
+              <span className="netflix-n-glyph">N</span>
+              {/* A soft diagonal sheen sweeps across the ribbon-folded
+                  logotype once, right as it punches through on "DUM". */}
+              <span className="netflix-n-sheen" aria-hidden="true" />
+            </span>
           </div>
           <div className="tudum-flash" />
           <div className="tudum-chroma" />
@@ -89,4 +108,5 @@ const NetflixTitle: React.FC = () => {
 };
 
 export default NetflixTitle;
+
 
