@@ -151,6 +151,556 @@
   to   { opacity: 1; transform: translateY(0); }
 }
 
+/* ════════════════════════════════════════════════════════════════════
+   THE NETFLIX-STYLE TRANSITION — matched against actual frame
+   grabs of the real ident, which run in this order:
+   1) The tapped name's letters converge inward (see
+      .converge-name above) toward the same center point
+      the logo will emerge from.
+   2) The red "N" ribbon-mark punches through fast, in the
+      real tudum's signature two-beat drum hit — a small
+      "tu" pop, a breath, then a much bigger "DUM" hit (with
+      a screen shake and a shockwave ring on each beat) —
+      and settles, catching a soft sheen sweep.
+   3) The solid N then dissolves outward into a dense spray
+      of colored light threads (red, orange, magenta, violet,
+      blue — the reference frames show it is NOT flat
+      monochrome red at this stage).
+   4) That spread contracts back down into a single thin
+      light thread at dead center, which fades to black
+      before routing to /browse.
+   Total runtime 3.3s, synced to netflix-sound.mp3.
+   ════════════════════════════════════════════════════════════════════ */
+
+.netflix-tudum {
+  position: fixed;
+  inset: 0;
+  z-index: 20;
+  pointer-events: none;
+  /* The whole scene punches with the camera on the "DUM" beat —
+     matches the second, larger peak in .netflix-n's keyframes below
+     (46% of a 1.8s animation that starts at the 0.5s delay mark). */
+  animation: dumShake 0.32s ease-out 1.3s both;
+}
+
+@keyframes dumShake {
+  0%, 100% { transform: translate(0, 0); }
+  20%      { transform: translate(-7px, 3px); }
+  40%      { transform: translate(6px, -5px); }
+  60%      { transform: translate(-5px, 3px); }
+  80%      { transform: translate(3px, -2px); }
+}
+
+/* ── The solid N (below) dissolves into this dense spray of colored
+   light threads, which fans out to fill the screen and then contracts
+   back down to a single thin thread at dead center before fading out —
+   the "tunnel of light" the real ident reads as. Delayed via
+   animationDelay in NetflixTitle.tsx so it picks up right as the N
+   finishes its drum-hit punch-through and starts dissolving, rather
+   than running underneath it from the very start. ── */
+.netflix-strips {
+  position: absolute;
+  inset: 0;
+  perspective: 900px;
+  perspective-origin: 50% 50%;
+}
+
+.strip {
+  position: absolute;
+  top: -6vh;
+  bottom: -6vh;
+  left: 50%;
+  width: clamp(8px, 1.15vw, 16px);
+  margin-left: calc(clamp(8px, 1.15vw, 16px) / -2);
+  /* Sits as a faint brand-red column (matching the solid N above it)
+     until its delayed animation kicks in — see stripConverge below,
+     where it fans out into its own hue (red → orange → magenta →
+     violet → blue across the set) at peak spread, then pulls back
+     toward warm red/orange as it contracts to the closing thread. */
+  background: linear-gradient(to bottom, #ff5b64 0%, #e50914 45%, #7a050c 100%);
+  box-shadow:
+    0 0 14px 2px rgba(229, 9, 20, 0.35),
+    0 0 34px 8px rgba(229, 9, 20, 0.15);
+  opacity: 0.12;
+  transform-style: preserve-3d;
+  transform: translateX(var(--tx)) translateZ(0) scaleY(1);
+  animation: stripConverge 1.3s cubic-bezier(.3,.0,.4,1) both;
+}
+
+@keyframes stripConverge {
+  /* Faint red curtain, roughly the N's own silhouette/color — barely
+     visible, just enough to read as "part of" the solid logo above. */
+  0% {
+    transform: translateX(var(--tx)) translateZ(0) scaleY(1);
+    opacity: 0.12;
+    background: linear-gradient(to bottom, #ff5b64 0%, #e50914 45%, #7a050c 100%);
+    box-shadow:
+      0 0 14px 2px rgba(229, 9, 20, 0.35),
+      0 0 34px 8px rgba(229, 9, 20, 0.15);
+    filter: blur(0) brightness(1);
+  }
+  20% {
+    opacity: 0.55;
+    filter: blur(0) brightness(1.1);
+  }
+  /* Peak spread — fanned out to full width, each bar in its own hue
+     (matches the wide multi-color curtain reference frames). */
+  55% {
+    transform: translateX(var(--fromX)) translateZ(var(--tz)) scaleY(0.75);
+    opacity: 1;
+    background: linear-gradient(
+      to bottom,
+      hsl(var(--hue) 90% 52%) 0%,
+      hsl(var(--hue) 85% 32%) 45%,
+      hsl(var(--hue) 80% 14%) 100%
+    );
+    box-shadow:
+      0 0 14px 2px hsla(var(--hue), 90%, 50%, 0.35),
+      0 0 34px 8px hsla(var(--hue), 90%, 50%, 0.15);
+    filter: blur(0) brightness(1);
+  }
+  /* The spread contracts back in toward dead center, warming back
+     toward red/orange — the single thin thread the reference frames
+     end on. */
+  82% {
+    transform: translateX(calc(var(--tx) * 0.12)) translateZ(-40px) scaleY(0.22);
+    opacity: 0.95;
+    background: linear-gradient(to bottom, #ff9a4d 0%, #ff3b1f 45%, #b3160a 100%);
+    box-shadow: 0 0 20px 4px rgba(255, 110, 40, 0.6);
+    filter: blur(0) brightness(2);
+  }
+  100% {
+    transform: translateX(calc(var(--tx) * 0.04)) translateZ(-60px) scaleY(0.08);
+    opacity: 0;
+    filter: blur(6px) brightness(2.6);
+  }
+}
+
+/* Darkens the middle of the tunnel so the colored threads read as
+   concentrated toward the edges (like the reference stills) instead of
+   an even wash, framing the N while it holds at the center. */
+.netflix-tunnel-vignette {
+  position: absolute;
+  inset: 0;
+  z-index: 15;
+  pointer-events: none;
+  background: radial-gradient(
+    ellipse at center,
+    rgba(0,0,0,0.88) 0%,
+    rgba(0,0,0,0.55) 24%,
+    rgba(0,0,0,0.15) 42%,
+    transparent 62%
+  );
+  opacity: 0;
+  animation: tunnelVignetteFade 2.3s ease-out both;
+}
+
+@keyframes tunnelVignetteFade {
+  0%   { opacity: 0; }
+  25%  { opacity: 0.75; }
+  70%  { opacity: 1; }
+  100% { opacity: 0.9; }
+}
+
+.netflix-n-wrap {
+  position: absolute;
+  inset: 0;
+  z-index: 16;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+/* ── Shockwave rings — one per drum hit, centered on the N ── */
+.tudum-ring {
+  position: absolute;
+  border-radius: 50%;
+  border: 3px solid rgba(229, 9, 20, 0.85);
+  opacity: 0;
+  transform: scale(0.3);
+}
+
+.tudum-ring--tu {
+  width: 140px;
+  height: 140px;
+  box-shadow: 0 0 20px 4px rgba(229, 9, 20, 0.5);
+  animation: ringPulse 0.5s cubic-bezier(.22,.8,.28,1) 0.66s both;
+}
+
+.tudum-ring--dum {
+  width: 220px;
+  height: 220px;
+  border-width: 5px;
+  box-shadow: 0 0 46px 12px rgba(229, 9, 20, 0.7);
+  animation: ringPulse 0.68s cubic-bezier(.22,.8,.28,1) 1.3s both;
+}
+
+@keyframes ringPulse {
+  0%   { opacity: 0.9; transform: scale(0.3); }
+  70%  { opacity: 0.35; }
+  100% { opacity: 0; transform: scale(2.6); }
+}
+
+/* ── The logo mark itself. Real Netflix ribbon-mark reads as a folded
+   strip of material — dark maroon where it turns away from the light,
+   a hot red/orange highlight where it catches it — rather than a flat
+   single-tone glyph, so the fill is a diagonal gradient instead of a
+   solid color, with a layered shadow standing in for the fold's
+   drop-shadow and a light "spine" down the crease. ── */
+.netflix-n {
+  position: relative;
+  display: block;
+  font-family: 'Anton', 'Bebas Neue', 'Arial Black', Impact, Haettenschweiler, 'Arial Narrow Bold', sans-serif;
+  font-weight: 900;
+  font-size: 12rem;
+  line-height: 1;
+  letter-spacing: -2px;
+  opacity: 0;
+  transform: scale(0.4);
+  transform-origin: center;
+  animation: netflixNZoom 1.8s cubic-bezier(.55,.06,.68,.19) 0.5s both;
+  filter: drop-shadow(0 6px 14px rgba(0,0,0,0.55));
+}
+
+.netflix-n-glyph {
+  display: block;
+  background: linear-gradient(
+    100deg,
+    #4a0407 0%,
+    #8b0000 16%,
+    #c40812 32%,
+    #ff5b3d 48%,
+    #ff2a2a 54%,
+    #c40812 68%,
+    #6e0509 88%,
+    #4a0407 100%
+  );
+  background-size: 220% 100%;
+  background-position: 30% 0;
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+  text-shadow: none;
+}
+
+/* A soft diagonal sheen that sweeps once across the ribbon fold right as
+   the logo punches through on the "DUM" beat — the flash of light a real
+   folded/lacquered surface throws as it turns toward camera. */
+.netflix-n-sheen {
+  position: absolute;
+  inset: -10% -20%;
+  background: linear-gradient(
+    115deg,
+    transparent 40%,
+    rgba(255, 214, 194, 0.85) 49%,
+    rgba(255, 255, 255, 0.95) 51%,
+    transparent 60%
+  );
+  mix-blend-mode: screen;
+  transform: translateX(-60%);
+  opacity: 0;
+  animation: nSheen 0.55s ease-out 1.28s both;
+  pointer-events: none;
+}
+
+@keyframes nSheen {
+  0%   { transform: translateX(-70%); opacity: 0; }
+  15%  { opacity: 0.9; }
+  60%  { opacity: 0.5; }
+  100% { transform: translateX(70%); opacity: 0; }
+}
+
+/* Two-beat "tu... DUM" drum hit (small punch at 9%, bigger one with a
+   brightness spike at 46% — timed to .tudum-ring and .netflix-tudum
+   shake above), then the N HOLDS at its resting size and starts
+   dissolving from ~65% onward — handing off to .strip's delayed
+   stripConverge animation, which fans out into light right as the N
+   fades, then contracts to the single thread that closes the scene. */
+@keyframes netflixNZoom {
+  0%   { opacity: 0;    transform: scale(0.5);  filter: drop-shadow(0 6px 14px rgba(0,0,0,0.55)) brightness(1)   blur(4px); }
+  5%   { opacity: 1;    transform: scale(0.55); filter: drop-shadow(0 6px 14px rgba(0,0,0,0.55)) brightness(1.1) blur(0); }
+  9%   {                transform: scale(0.68); filter: drop-shadow(0 6px 14px rgba(0,0,0,0.55)) brightness(1.4) blur(0); }
+  14%  {                transform: scale(0.60); filter: drop-shadow(0 6px 14px rgba(0,0,0,0.55)) brightness(1.1) blur(0); }
+  30%  {                transform: scale(0.62); filter: drop-shadow(0 6px 14px rgba(0,0,0,0.55)) brightness(1.05) blur(0); }
+  40%  {                transform: scale(0.66); filter: drop-shadow(0 6px 14px rgba(0,0,0,0.55)) brightness(1.1) blur(0); }
+  46%  {                transform: scale(0.80); filter: drop-shadow(0 8px 20px rgba(0,0,0,0.6)) brightness(1.6) blur(0); }
+  54%  {                transform: scale(0.70); filter: drop-shadow(0 8px 20px rgba(0,0,0,0.6)) brightness(1.3) blur(0); }
+  65%  { opacity: 1;    transform: scale(0.68); filter: drop-shadow(0 8px 20px rgba(0,0,0,0.6)) brightness(1.1) blur(0); }
+  80%  { opacity: 0.55; transform: scale(0.5);  filter: drop-shadow(0 8px 20px rgba(0,0,0,0.6)) brightness(1.3) blur(2px); }
+  92%  { opacity: 0.15; transform: scale(0.3);  filter: drop-shadow(0 8px 20px rgba(0,0,0,0.6)) brightness(1.6) blur(5px); }
+  100% { opacity: 0;    transform: scale(0.15); filter: drop-shadow(0 8px 20px rgba(0,0,0,0.6)) brightness(2)   blur(9px); }
+}
+
+/* ── A soft warm pulse as the N finishes dissolving and the light
+   thread is about to close — not a hard white blow-out, just enough
+   glow to punctuate the moment right before the cut to black. ── */
+.tudum-flash {
+  position: absolute;
+  inset: 0;
+  z-index: 17;
+  background: radial-gradient(circle at center, rgba(255,200,180,0.85) 0%, rgba(229,9,20,0.7) 30%, rgba(120,4,10,0.35) 55%, transparent 78%);
+  opacity: 0;
+  animation: tudumFlash 0.5s ease-out 2.0s both;
+}
+
+@keyframes tudumFlash {
+  0%   { opacity: 0; }
+  40%  { opacity: 0.6; }
+  100% { opacity: 0; }
+}
+
+/* ── A quick chromatic-aberration snap right as the thread closes,
+   the kind of RGB-fringe pop a real camera gives a hard light hit. ── */
+.tudum-chroma {
+  position: absolute;
+  inset: 0;
+  z-index: 17;
+  background:
+    radial-gradient(circle at 48% 50%, rgba(0, 230, 255, 0.22) 0%, transparent 40%),
+    radial-gradient(circle at 52% 50%, rgba(255, 0, 60, 0.22) 0%, transparent 40%);
+  mix-blend-mode: screen;
+  opacity: 0;
+  animation: chromaSnap 0.3s ease-out 1.98s both;
+}
+
+@keyframes chromaSnap {
+  0%   { opacity: 0; }
+  35%  { opacity: 0.6; }
+  100% { opacity: 0; }
+}
+
+/* ── Full-screen canvas ident (cinematic light-ident: solid N reveal ->
+   fiber zoom -> spectral light field -> single red beam sweep). Sits
+   above the converging name/vignette so it reads as its own scene. ── */
+.netflix-ident-canvas {
+  position: fixed;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  z-index: 20;
+  display: block;
+  background: #000;
+}
+
+/* ── Final cut to black before routing to /browse ── */
+.tudum-blackout {
+  position: fixed;
+  inset: 0;
+  z-index: 25;
+  background: #000;
+  opacity: 0;
+  animation: tudumBlackout 1s ease-in 2.3s both;
+}
+
+@keyframes tudumBlackout {
+  0%   { opacity: 0; }
+  100% { opacity: 1; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .name-letter,
+  .strip,
+  .netflix-n,
+  .netflix-n-sheen,
+  .tudum-flash,
+  .tudum-chroma,
+  .tudum-blackout,
+  .tudum-ring,
+  .netflix-tunnel-vignette {
+    animation-duration: 0.4s !important;
+    animation-delay: 0s !important;
+  }
+  .netflix-tudum {
+    animation: none !important;
+  }
+}
+
+/* ── Click hint pulse ring ── */
+.click-hint {
+  position: absolute;
+  width: 120px;
+  height: 120px;
+  border-radius: 50%;
+  border: 2px solid rgba(229,9,20,0.3);
+  z-index: 2;
+  animation: hintRing 2s ease-out infinite;
+  pointer-events: none;
+}
+@keyframes hintRing {
+  0%   { transform: scale(0.8); opacity: 0.8; }
+  100% { transform: scale(2);   opacity: 0; }
+}
+
+/* Mobile responsive */
+@media (max-width: 768px) {
+  .intro-name {
+    font-size: clamp(2rem, 8vw, 3.5rem);
+    gap: 3px;
+  }
+
+  .netflix-n {
+    font-size: 6rem;
+  }
+
+  .tudum-ring--tu { width: 90px; height: 90px; }
+  .tudum-ring--dum { width: 140px; height: 140px; }
+}
+
+
+
+.netflix-intro-page {
+  height: 100vh;
+  width: 100%;
+  background: radial-gradient(ellipse at center, #1a0505 0%, #0a0a0a 60%, #000 100%);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  overflow: hidden;
+  position: relative;
+  cursor: pointer;
+}
+
+/* ── Animated star particles ── */
+.netflix-intro-page::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background-image:
+    radial-gradient(1px 1px at 10% 15%, rgba(255,255,255,0.6) 0%, transparent 100%),
+    radial-gradient(1px 1px at 20% 85%, rgba(255,255,255,0.5) 0%, transparent 100%),
+    radial-gradient(1px 1px at 30% 40%, rgba(255,255,255,0.4) 0%, transparent 100%),
+    radial-gradient(1.5px 1.5px at 40% 70%, rgba(255,255,255,0.7) 0%, transparent 100%),
+    radial-gradient(1px 1px at 50% 25%, rgba(255,255,255,0.5) 0%, transparent 100%),
+    radial-gradient(1px 1px at 60% 90%, rgba(255,255,255,0.6) 0%, transparent 100%),
+    radial-gradient(1.5px 1.5px at 70% 55%, rgba(255,255,255,0.4) 0%, transparent 100%),
+    radial-gradient(1px 1px at 80% 10%, rgba(255,255,255,0.7) 0%, transparent 100%),
+    radial-gradient(1px 1px at 90% 35%, rgba(255,255,255,0.5) 0%, transparent 100%),
+    radial-gradient(1px 1px at 15% 60%, rgba(255,255,255,0.4) 0%, transparent 100%),
+    radial-gradient(1.5px 1.5px at 25% 50%, rgba(255,255,255,0.6) 0%, transparent 100%),
+    radial-gradient(1px 1px at 35% 95%, rgba(255,255,255,0.3) 0%, transparent 100%),
+    radial-gradient(1px 1px at 45% 5%, rgba(255,255,255,0.5) 0%, transparent 100%),
+    radial-gradient(1.5px 1.5px at 55% 78%, rgba(255,255,255,0.6) 0%, transparent 100%),
+    radial-gradient(1px 1px at 65% 20%, rgba(255,255,255,0.4) 0%, transparent 100%),
+    radial-gradient(1px 1px at 75% 65%, rgba(255,255,255,0.5) 0%, transparent 100%),
+    radial-gradient(1.5px 1.5px at 85% 45%, rgba(255,255,255,0.7) 0%, transparent 100%),
+    radial-gradient(1px 1px at 95% 80%, rgba(255,255,255,0.4) 0%, transparent 100%);
+  animation: starsTwinkle 4s ease-in-out infinite alternate;
+  pointer-events: none;
+  z-index: 1;
+}
+
+@keyframes starsTwinkle {
+  0%   { opacity: 0.4; }
+  50%  { opacity: 0.9; }
+  100% { opacity: 0.5; }
+}
+
+/* ── Red vignette overlay ── */
+.netflix-intro-page::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background:
+    radial-gradient(ellipse at center, rgba(229,9,20,0.08) 0%, transparent 65%),
+    radial-gradient(ellipse at center, transparent 40%, rgba(0,0,0,0.7) 100%);
+  pointer-events: none;
+  z-index: 2;
+}
+
+.title-name-wrap {
+  position: relative;
+  z-index: 3;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-direction: column;
+  gap: 1rem;
+}
+
+/* ── Animated underline bar ── */
+.title-name-wrap::after {
+  content: "";
+  display: block;
+  width: 0;
+  height: 3px;
+  background: linear-gradient(to right, transparent, #e50914, transparent);
+  animation: barExpand 2s ease-out 0.5s forwards;
+  border-radius: 2px;
+}
+@keyframes barExpand {
+  to { width: 100%; }
+}
+
+.intro-name {
+  display: inline-flex;
+  gap: 6px;
+  color: #e50914;
+  font-family: 'Harry Potter', 'Arial Black', Impact, Haettenschweiler, 'Arial Narrow Bold', sans-serif;
+  font-size: clamp(2.8rem, 5vw, 6rem);
+  font-weight: 900;
+  line-height: 1;
+  text-transform: uppercase;
+  white-space: nowrap;
+}
+
+.name-letter {
+  display: inline-block;
+  text-shadow:
+    0 0 8px rgba(229,9,20,0.55),
+    0 0 20px rgba(229,9,20,0.22),
+    0 2px 6px rgba(229,9,20,0.3);
+  animation: nameGlow 3s ease-in-out infinite alternate;
+  transform: translate(0, 0) scale(1);
+  opacity: 1;
+}
+
+@keyframes nameGlow {
+  0%   { text-shadow: 0 0 8px rgba(229,9,20,0.5), 0 0 18px rgba(229,9,20,0.2), 0 2px 6px rgba(229,9,20,0.28); }
+  100% { text-shadow: 0 0 12px rgba(229,9,20,0.65), 0 0 26px rgba(229,9,20,0.3), 0 2px 6px rgba(229,9,20,0.32); }
+}
+
+/* ── Letters fly inward and merge into the point the "N" logo
+   emerges from, instead of the name simply fading as a block. ── */
+.converge-name .name-letter {
+  animation: letterConverge 0.62s cubic-bezier(.55,.06,.68,.19) both;
+}
+
+@keyframes letterConverge {
+  0% {
+    transform: translate(0, 0) scale(1);
+    opacity: 1;
+    filter: blur(0);
+  }
+  40% {
+    opacity: 1;
+    filter: blur(0);
+  }
+  100% {
+    transform: translate(var(--dx), 0) scale(0.1);
+    opacity: 0;
+    filter: blur(3px);
+  }
+}
+
+.scroll-text {
+  position: absolute;
+  bottom: 11%;
+  z-index: 8;
+  color: rgba(255,255,255,0.85);
+  font-family: 'Harry Potter', 'Arial Black', Impact, Haettenschweiler, 'Arial Narrow Bold', sans-serif;
+  font-size: .55rem;
+  letter-spacing: 3px;
+  font-weight: 700;
+  text-align: center;
+  text-transform: uppercase;
+  animation: fadeInUp 1.5s ease 1s both;
+}
+
+@keyframes fadeInUp {
+  from { opacity: 0; transform: translateY(20px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+
 /* ══════════════════════════════════════════════════════
    THE NETFLIX-STYLE TRANSITION — matched against actual frame
    grabs of the real ident, which run in this order:
