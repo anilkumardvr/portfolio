@@ -72,22 +72,26 @@ const NetflixTitle: React.FC = () => {
         <div className="netflix-tudum" aria-hidden="true">
           <div className="netflix-strips">
             {Array.from({ length: STRIP_COUNT }).map((_, i) => {
-              // Bars alternate which edge of the screen they fly in from and
-              // stagger their arrival slightly outward-in, like the real
-              // curtain closing from both sides toward the center pillar.
+              // Bars alternate which edge of the screen they fan out toward
+              // at peak spread, and stagger their motion outward, like the
+              // real ident's light spraying apart from a single center seed.
               const fromEdge = i % 2 === 0 ? -1 : 1;
               const distanceFromCenter = Math.abs(i - STRIP_CENTER);
               // The real ident's strips read as a spray of color threads —
               // red, orange, magenta, violet, blue — not flat monochrome red,
-              // so each bar gets its own hue that only resolves to brand red
-              // once the curtain closes (see the 58% keyframe in the CSS).
+              // at their peak spread, before pulling back toward red/orange
+              // as the curtain closes (see the 55%/82% keyframes in the CSS).
               const hue = 350 - (i / (STRIP_COUNT - 1)) * 190;
               const style = {
                 '--fromX': `${fromEdge * (120 + distanceFromCenter * 6)}vw`,
                 '--tx': `${(i - STRIP_CENTER) * 30}px`,
                 '--tz': `${-420 + distanceFromCenter * 24}px`,
                 '--hue': hue,
-                animationDelay: `${distanceFromCenter * 0.028}s`,
+                // Held back until the N is done punching through and starts
+                // dissolving (see netflixNZoom in the CSS) — the bars pick up
+                // right where the solid N leaves off, rather than racing
+                // ahead of it.
+                animationDelay: `${0.95 + distanceFromCenter * 0.028}s`,
               } as React.CSSProperties;
               return <span key={i} className="strip" style={style} />;
             })}
@@ -118,6 +122,7 @@ const NetflixTitle: React.FC = () => {
 };
 
 export default NetflixTitle;
+
 
 
 
