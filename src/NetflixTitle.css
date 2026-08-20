@@ -489,7 +489,7 @@
   z-index: 25;
   background: #000;
   opacity: 0;
-    animation: tudumBlackout 1s ease-in 2.3s both;
+      animation: tudumBlackout 0.45s ease-in 2.55s both;
 }
 
 @keyframes tudumBlackout {
