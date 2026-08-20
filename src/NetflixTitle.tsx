@@ -5,7 +5,7 @@ import { useNavigate } from 'react-router-dom';
 
 // Total time (ms) the transition plays before we route to /browse.
 // Matches the ident's own internal choreography 1:1 (V4 ident, 9.6s).
-const TRANSITION_MS = 9600;
+const TRANSITION_MS = 3000;
 const DURATION = TRANSITION_MS / 1000;
 
 const NAME = 'ANIL DEVANDLA';
@@ -39,7 +39,7 @@ const IDENT_PALETTE: RGB[] = [
 ];
 
 function identFont(size: number) {
-  return `900 ${size}px "Arial Narrow","Helvetica Neue Condensed","Roboto Condensed",Impact,Arial,sans-serif`;
+    return `900 ${size}px 'Harry Potter','Arial Black',Impact,Haettenschweiler,'Arial Narrow Bold',sans-serif`;
 }
 
 type Column = { px: number; segs: [number, number][] };
@@ -168,8 +168,8 @@ const NetflixTitle: React.FC = () => {
     window.addEventListener('resize', resize);
 
     function drawTitle(t: number) {
-      const appear = smoother(0.05, 0.72, t);
-      const dissolve = 1 - smoother(1.95, 3.55, t);
+            const appear = smoother(0.016, 0.225, t);
+            const dissolve = 1 - smoother(0.609, 1.109, t);
       const a = appear * dissolve;
       if (a <= 0.001) return;
       ctx!.save();
@@ -195,9 +195,9 @@ const NetflixTitle: React.FC = () => {
     function drawLetterFibers(t: number) {
       // Broad overlap: fibers emerge before the solid title fades and remain
       // until the fullscreen field has already taken over.
-      const a = smoother(0.85, 2.05, t) * (1 - smoother(4.55, 5.65, t));
+            const a = smoother(0.266, 0.641, t) * (1 - smoother(1.422, 1.766, t));
       if (a <= 0.001) return;
-      const p = smoother(1.75, 5.15, t);
+            const p = smoother(0.547, 1.609, t);
       // Hermite-style camera travel; derivative reaches zero at both ends.
       const zoom = 1 + 12.5 * (p * p * (3 - 2 * p));
       const focusX = W * 0.49;
@@ -212,7 +212,7 @@ const NetflixTitle: React.FC = () => {
           const y2 = focusY + (seg[1] - focusY) * zoom;
           const h = pseudoRandom(i * 29 + j * 17);
           const q: RGB = h > 0.83 ? [255, 112, 30] : h > 0.52 ? [250, 38, 16] : [185, 0, 10];
-          const pulse = 0.82 + 0.18 * Math.sin(t * 1.25 + i * 0.07);
+                const pulse = 0.82 + 0.18 * Math.sin(t * 4 + i * 0.07);
           const al = a * (0.16 + pseudoRandom(i * 13 + j * 5) * 0.76) * pulse;
           const lw = (0.3 + pseudoRandom(i * 7 + j) * 1.3) * mix(0.9, 3.8, p);
           ctx!.beginPath();
@@ -246,11 +246,11 @@ const NetflixTitle: React.FC = () => {
     }
 
     function drawField(t: number) {
-      const a = smoother(3.75, 5.0, t) * (1 - smoother(7.45, 8.55, t));
+            const a = smoother(1.172, 1.563, t) * (1 - smoother(2.328, 2.672, t));
       if (a <= 0.001) return;
-      const expand = smoother(3.65, 6.15, t);
-      const colorMix = smoother(4.8, 6.25, t);
-      const sweep = smoother(6.45, 8.15, t);
+            const expand = smoother(1.141, 1.922, t);
+            const colorMix = smoother(1.5, 1.953, t);
+            const sweep = smoother(2.016, 2.547, t);
       ctx!.save();
       ctx!.globalCompositeOperation = 'lighter';
       field.forEach((s) => {
@@ -258,7 +258,7 @@ const NetflixTitle: React.FC = () => {
         // At first the field is narrow and aligned with the enlarged title
         // fibers, then expands continuously to fullscreen.
         let px = W / 2 + centered * mix(W * 0.07, W * 1.42, expand);
-        px += Math.sin(s.phase + t * 0.95) * W * s.drift * expand;
+                px += Math.sin(s.phase + t * 3) * W * s.drift * expand;
         px += centered * sweep * W * 0.34;
         const q = fieldColor(s, colorMix);
         const al = a * s.alpha * (s.gap < 0.19 ? 0.07 : 1);
@@ -292,11 +292,11 @@ const NetflixTitle: React.FC = () => {
     }
 
     function drawBeam(t: number) {
-      const a = smoother(7.85, 8.55, t) * (1 - smoother(9.28, 9.58, t));
+            const a = smoother(2.453, 2.672, t) * (1 - smoother(2.9, 2.994, t));
       if (a <= 0.001) return;
-      const m = smoother(8.35, 9.38, t);
+            const m = smoother(2.609, 2.931, t);
       const px = mix(W * 0.52, W * 1.055, m);
-      const bw = mix(W * 0.011, W * 0.19, smoother(8.55, 9.35, t));
+            const bw = mix(W * 0.011, W * 0.19, smoother(2.672, 2.922, t));
       ctx!.save();
       ctx!.globalCompositeOperation = 'lighter';
       const g = ctx!.createLinearGradient(px - bw * 2.8, 0, px + bw * 2.8, 0);
@@ -318,7 +318,7 @@ const NetflixTitle: React.FC = () => {
       // hard clear each frame.
       ctx!.save();
       ctx!.globalCompositeOperation = 'source-over';
-      ctx!.fillStyle = t < 0.06 ? '#000' : 'rgba(0,0,0,.84)';
+            ctx!.fillStyle = t < 0.019 ? '#000' : 'rgba(0,0,0,.84)';
       ctx!.fillRect(0, 0, W, H);
       ctx!.restore();
       drawTitle(t);
