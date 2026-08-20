@@ -4,18 +4,12 @@ import netflixSound from './netflix-sound.mp3';
 import { useNavigate } from 'react-router-dom';
 
 // Total time (ms) the transition plays before we route to /browse.
-// Kept in sync with netflix-sound.mp3 (~3.24s).
-const TRANSITION_MS = 3300;
+// Matches the ident's own internal choreography 1:1 (V4 ident, 9.6s).
+const TRANSITION_MS = 9600;
 const DURATION = TRANSITION_MS / 1000;
-// The canvas ident below was choreographed against a 5.25s timeline; every
-// time constant is scaled by this factor so the same beats fit inside
-// TRANSITION_MS and stay in sync with the sound effect.
-const SCALE = DURATION / 5.25;
-const S = (x: number) => x * SCALE;
 
 const NAME = 'ANIL DEVANDLA';
-// Index (can be fractional) of the point every letter converges toward —
-// the same spot the "N" logo will zoom in from.
+// Index (can be fractional) of the point every letter converges toward.
 const CONVERGE_CENTER = (NAME.length - 1) / 2;
 
 function clamp(v: number, min = 0, max = 1) {
@@ -24,52 +18,41 @@ function clamp(v: number, min = 0, max = 1) {
 function mix(a: number, b: number, t: number) {
   return a + (b - a) * t;
 }
-function smoothstep(a: number, b: number, x: number) {
+/* Quintic smootherstep — matches the V4 ident's easing shape. */
+function smoother(a: number, b: number, x: number) {
   x = clamp((x - a) / (b - a));
-  return x * x * (3 - 2 * x);
+  return x * x * x * (x * (x * 6 - 15) + 10);
 }
-function easeInCubic(x: number) {
-  return x * x * x;
-}
-function easeOutCubic(x: number) {
-  return 1 - Math.pow(1 - x, 3);
-}
-function easeInOutCubic(x: number) {
-  return x < 0.5 ? 4 * x * x * x : 1 - Math.pow(-2 * x + 2, 3) / 2;
-}
-/* deterministic pseudo random */
-function randomFrom(i: number) {
-  const x = Math.sin(i * 12412.9898 + 78.233) * 43758.5453;
-  return x - Math.floor(x);
+/* deterministic pseudo random, seeded the same way as the V4 ident source */
+function pseudoRandom(i: number) {
+  const z = Math.sin(i * 127.1 + 311.7) * 43758.5453123;
+  return z - Math.floor(z);
 }
 type RGB = [number, number, number];
 const rgba = (c: RGB, a: number) => `rgba(${c[0]},${c[1]},${c[2]},${a})`;
 
-/* Deliberately not a conventional rainbow — includes dark gaps, weighted
-   toward red/orange like the real ident. */
-const palette: RGB[] = [
-  [255, 15, 8], [255, 35, 12], [255, 72, 18], [255, 122, 30],
-  [235, 15, 70], [255, 30, 105], [220, 45, 135], [130, 40, 160],
-  [75, 65, 205], [25, 85, 230], [15, 125, 255], [15, 195, 255],
-  [255, 95, 35], [255, 180, 65], [240, 40, 45],
+/* Ident palette — red/orange core sweeping through magenta, violet and blue. */
+const IDENT_PALETTE: RGB[] = [
+  [255, 15, 8], [255, 38, 10], [255, 75, 14], [255, 125, 28], [255, 185, 65],
+  [245, 28, 70], [255, 35, 112], [215, 45, 145], [145, 45, 170], [90, 55, 195],
+  [55, 70, 220], [25, 105, 245], [12, 150, 255], [15, 205, 255],
 ];
 
-const N_FIBERS = Array.from({ length: 150 }, (_, i) => ({
-  u: randomFrom(i * 4),
-  width: 0.25 + randomFrom(i * 7) * 2.1,
-  alpha: 0.15 + randomFrom(i * 11) * 0.75,
-  brightness: randomFrom(i * 17),
-}));
+function identFont(size: number) {
+  return `900 ${size}px "Arial Narrow","Helvetica Neue Condensed","Roboto Condensed",Impact,Arial,sans-serif`;
+}
 
-const STRANDS = Array.from({ length: 380 }, (_, i) => ({
-  baseX: randomFrom(i + 200),
-  width: 0.35 + Math.pow(randomFrom(i * 3 + 500), 2.2) * 8,
-  alpha: 0.1 + randomFrom(i * 9 + 800) * 0.78,
-  palette: Math.floor(randomFrom(i * 13 + 900) * palette.length),
-  drift: (randomFrom(i * 17) - 0.5) * 0.06,
-  phase: randomFrom(i * 21) * Math.PI * 2,
-  bright: randomFrom(i * 25),
-}));
+type Column = { px: number; segs: [number, number][] };
+type FieldParticle = {
+  u: number;
+  width: number;
+  alpha: number;
+  phase: number;
+  drift: number;
+  hot: number;
+  ci: number;
+  gap: number;
+};
 
 const NetflixTitle: React.FC = () => {
   const [isClicked, setIsClicked] = useState(false);
@@ -89,210 +72,264 @@ const NetflixTitle: React.FC = () => {
     }
   }, [isClicked, navigate]);
 
-  // Drives the cinematic light-ident: solid N reveal -> fiber zoom -> full
-  // spectral light field -> single red beam sweeping off-screen.
+  // Drives the cinematic light-ident: title reveal -> letter-fiber zoom ->
+  // fullscreen spectral field -> single beam sweeping off-screen.
   useEffect(() => {
     if (!isClicked) return;
     const canvas = canvasRef.current;
     if (!canvas) return;
-    const ctx = canvas.getContext('2d');
+    const ctx = canvas.getContext('2d', { alpha: false });
     if (!ctx) return;
 
     let W = 0;
     let H = 0;
     let DPR = 1;
     let rafId = 0;
+    let fs = 100;
+    let columns: Column[] = [];
+    let field: FieldParticle[] = [];
     const start = performance.now();
+
+    function build() {
+      const maskCanvas = document.createElement('canvas');
+      maskCanvas.width = W;
+      maskCanvas.height = H;
+      const maskCtx = maskCanvas.getContext('2d', { willReadFrequently: true });
+      if (!maskCtx) return;
+
+      fs = Math.min(H * 0.205, 176);
+      maskCtx.font = identFont(fs);
+      while (maskCtx.measureText(NAME).width * 0.88 > W * 0.58 && fs > 28) {
+        fs--;
+        maskCtx.font = identFont(fs);
+      }
+      maskCtx.clearRect(0, 0, W, H);
+      maskCtx.save();
+      maskCtx.translate(W / 2, H / 2);
+      maskCtx.scale(0.88, 1);
+      maskCtx.font = identFont(fs);
+      maskCtx.textAlign = 'center';
+      maskCtx.textBaseline = 'middle';
+      maskCtx.fillStyle = '#fff';
+      maskCtx.fillText(NAME, 0, 0);
+      maskCtx.restore();
+
+      const img = maskCtx.getImageData(0, 0, W, H).data;
+      columns = [];
+      const x0 = Math.max(0, Math.floor(W * 0.17));
+      const x1 = Math.min(W - 1, Math.ceil(W * 0.83));
+      const y0 = Math.max(0, Math.floor(H / 2 - fs * 0.72));
+      const y1 = Math.min(H - 1, Math.ceil(H / 2 + fs * 0.72));
+      const step = Math.max(1, Math.floor(W / 1500));
+      for (let px = x0; px <= x1; px += step) {
+        const segs: [number, number][] = [];
+        let inside = false;
+        let sy = 0;
+        for (let py = y0; py <= y1; py += 2) {
+          const on = img[(py * W + px) * 4 + 3] > 25;
+          if (on && !inside) {
+            inside = true;
+            sy = py;
+          }
+          if (!on && inside) {
+            inside = false;
+            segs.push([sy, py]);
+          }
+        }
+        if (inside) segs.push([sy, y1]);
+        if (segs.length) columns.push({ px, segs });
+      }
+
+      // One persistent particle field drives the fullscreen spectral sweep.
+      field = Array.from({ length: 620 }, (_, i) => ({
+        u: pseudoRandom(i + 11),
+        width: 0.22 + Math.pow(pseudoRandom(i * 3 + 19), 2.3) * 7.2,
+        alpha: 0.07 + pseudoRandom(i * 5 + 23) * 0.82,
+        phase: pseudoRandom(i * 7 + 29) * Math.PI * 2,
+        drift: (pseudoRandom(i * 11 + 31) - 0.5) * 0.045,
+        hot: pseudoRandom(i * 13 + 37),
+        ci: Math.floor(pseudoRandom(i * 17 + 41) * IDENT_PALETTE.length),
+        gap: pseudoRandom(i * 19 + 43),
+      }));
+    }
 
     function resize() {
       DPR = Math.min(window.devicePixelRatio || 1, 2);
-      W = window.innerWidth;
-      H = window.innerHeight;
+      W = Math.max(1, window.innerWidth);
+      H = Math.max(1, window.innerHeight);
       canvas!.width = Math.round(W * DPR);
       canvas!.height = Math.round(H * DPR);
+      canvas!.style.width = `${W}px`;
+      canvas!.style.height = `${H}px`;
       ctx!.setTransform(DPR, 0, 0, DPR, 0, 0);
+      build();
     }
     resize();
     window.addEventListener('resize', resize);
 
-    function nMetrics(scale = 1) {
-      const h = Math.min(H * 0.41, 355) * scale;
-      const w = h * 0.39;
-      return { x: W / 2 - w / 2, y: H / 2 - h / 2, w, h, bar: w * 0.27 };
-    }
-    function createNPath(m: ReturnType<typeof nMetrics>) {
-      const p = new Path2D();
-      p.rect(m.x, m.y, m.bar, m.h);
-      p.rect(m.x + m.w - m.bar, m.y, m.bar, m.h);
-      const d = new Path2D();
-      d.moveTo(m.x, m.y);
-      d.lineTo(m.x + m.bar, m.y);
-      d.lineTo(m.x + m.w, m.y + m.h);
-      d.lineTo(m.x + m.w - m.bar, m.y + m.h);
-      d.closePath();
-      p.addPath(d);
-      return p;
-    }
-    function drawSolidN(t: number) {
-      const reveal = smoothstep(S(0.08), S(0.46), t) * (1 - smoothstep(S(1.25), S(1.72), t));
-      if (reveal <= 0) return;
-      const m = nMetrics();
-      const n = createNPath(m);
+    function drawTitle(t: number) {
+      const appear = smoother(0.05, 0.72, t);
+      const dissolve = 1 - smoother(1.95, 3.55, t);
+      const a = appear * dissolve;
+      if (a <= 0.001) return;
       ctx!.save();
-      ctx!.globalAlpha = reveal;
-      ctx!.shadowColor = 'rgba(229,9,20,.35)';
-      ctx!.shadowBlur = 18;
-      const g = ctx!.createLinearGradient(m.x, m.y, m.x + m.w, m.y);
-      g.addColorStop(0, '#8e0008');
-      g.addColorStop(0.22, '#b20710');
-      g.addColorStop(0.49, '#ff1018');
-      g.addColorStop(0.68, '#e50914');
-      g.addColorStop(1, '#830006');
+      ctx!.translate(W / 2, H / 2);
+      ctx!.scale(0.88, 1);
+      ctx!.font = identFont(fs);
+      ctx!.textAlign = 'center';
+      ctx!.textBaseline = 'middle';
+      const g = ctx!.createLinearGradient(-W * 0.25, 0, W * 0.25, 0);
+      g.addColorStop(0, '#780006');
+      g.addColorStop(0.18, '#c90711');
+      g.addColorStop(0.48, '#ff1119');
+      g.addColorStop(0.72, '#d50812');
+      g.addColorStop(1, '#710005');
+      ctx!.globalAlpha = a;
+      ctx!.shadowColor = 'rgba(229,9,20,.38)';
+      ctx!.shadowBlur = 16;
       ctx!.fillStyle = g;
-      ctx!.fill(n);
-      ctx!.restore();
-
-      ctx!.save();
-      ctx!.globalAlpha = reveal;
-      const d = new Path2D();
-      d.moveTo(m.x, m.y);
-      d.lineTo(m.x + m.bar, m.y);
-      d.lineTo(m.x + m.w, m.y + m.h);
-      d.lineTo(m.x + m.w - m.bar, m.y + m.h);
-      d.closePath();
-      const dg = ctx!.createLinearGradient(m.x, m.y, m.x + m.w, m.y + m.h);
-      dg.addColorStop(0, '#ff1118');
-      dg.addColorStop(0.45, '#f40712');
-      dg.addColorStop(1, '#c9000b');
-      ctx!.fillStyle = dg;
-      ctx!.fill(d);
+      ctx!.fillText(NAME, 0, 0);
       ctx!.restore();
     }
-    function drawNFibers(t: number) {
-      const amount = smoothstep(S(0.72), S(1.35), t) * (1 - smoothstep(S(2.12), S(2.52), t));
-      if (amount <= 0) return;
-      const push = smoothstep(S(1.35), S(2.45), t);
-      const zoom = mix(1, 10.5, easeInCubic(push));
-      const m = nMetrics(zoom);
-      m.x += W * 0.055 * push;
-      m.y += H * 0.04 * push;
+
+    function drawLetterFibers(t: number) {
+      // Broad overlap: fibers emerge before the solid title fades and remain
+      // until the fullscreen field has already taken over.
+      const a = smoother(0.85, 2.05, t) * (1 - smoother(4.55, 5.65, t));
+      if (a <= 0.001) return;
+      const p = smoother(1.75, 5.15, t);
+      // Hermite-style camera travel; derivative reaches zero at both ends.
+      const zoom = 1 + 12.5 * (p * p * (3 - 2 * p));
+      const focusX = W * 0.49;
+      const focusY = H * 0.5;
       ctx!.save();
-      ctx!.clip(createNPath(m));
       ctx!.globalCompositeOperation = 'lighter';
-      N_FIBERS.forEach((f, i) => {
-        const x = m.x + f.u * m.w + Math.sin(i * 7.13) * m.w * 0.015;
-        const c: RGB = f.brightness > 0.82 ? [255, 110, 35] : f.brightness > 0.55 ? [255, 45, 18] : [190, 0, 10];
-        ctx!.beginPath();
-        ctx!.strokeStyle = rgba(c, amount * f.alpha);
-        ctx!.lineWidth = f.width * zoom * 0.35;
-        ctx!.shadowColor = rgba(c, 0.7);
-        ctx!.shadowBlur = 5 + 12 * push;
-        ctx!.moveTo(x, m.y - 30);
-        ctx!.lineTo(x + Math.sin(i) * 2 * zoom, m.y + m.h + 30);
-        ctx!.stroke();
+      columns.forEach((col, i) => {
+        const sx = focusX + (col.px - focusX) * zoom;
+        if (sx < -100 || sx > W + 100) return;
+        col.segs.forEach((seg, j) => {
+          const y1 = focusY + (seg[0] - focusY) * zoom;
+          const y2 = focusY + (seg[1] - focusY) * zoom;
+          const h = pseudoRandom(i * 29 + j * 17);
+          const q: RGB = h > 0.83 ? [255, 112, 30] : h > 0.52 ? [250, 38, 16] : [185, 0, 10];
+          const pulse = 0.82 + 0.18 * Math.sin(t * 1.25 + i * 0.07);
+          const al = a * (0.16 + pseudoRandom(i * 13 + j * 5) * 0.76) * pulse;
+          const lw = (0.3 + pseudoRandom(i * 7 + j) * 1.3) * mix(0.9, 3.8, p);
+          ctx!.beginPath();
+          ctx!.strokeStyle = rgba(q, al * 0.17);
+          ctx!.lineWidth = lw * 5.5;
+          ctx!.shadowColor = rgba(q, al * 0.85);
+          ctx!.shadowBlur = 10 + 18 * p;
+          ctx!.moveTo(sx, y1 - 5 * zoom);
+          ctx!.lineTo(sx + (pseudoRandom(i + j) - 0.5) * 1.5 * p, y2 + 5 * zoom);
+          ctx!.stroke();
+          ctx!.beginPath();
+          ctx!.strokeStyle = rgba(q, al);
+          ctx!.lineWidth = lw;
+          ctx!.shadowBlur = 3 + 8 * p;
+          ctx!.moveTo(sx, y1);
+          ctx!.lineTo(sx, y2);
+          ctx!.stroke();
+        });
       });
       ctx!.restore();
     }
-    function spectrumColor(s: (typeof STRANDS)[number], t: number): RGB {
-      const spectral = smoothstep(S(2.38), S(3.05), t);
-      if (spectral < randomFrom(s.palette * 19) * 0.7) {
-        return s.bright > 0.72 ? [255, 90, 20] : [220, 8, 15];
-      }
-      return palette[s.palette];
+
+    function fieldColor(s: FieldParticle, colorMix: number): RGB {
+      const red: RGB = s.hot > 0.72 ? [255, 92, 20] : [205, 5, 12];
+      const spectral = IDENT_PALETTE[s.ci];
+      return [
+        Math.round(mix(red[0], spectral[0], colorMix)),
+        Math.round(mix(red[1], spectral[1], colorMix)),
+        Math.round(mix(red[2], spectral[2], colorMix)),
+      ];
     }
-    function drawSpectrum(t: number) {
-      const amount = smoothstep(S(2), S(2.52), t) * (1 - smoothstep(S(3.72), S(4.35), t));
-      if (amount <= 0) return;
-      const expansion = easeOutCubic(smoothstep(S(2), S(3.15), t));
-      const velocity = smoothstep(S(3.15), S(4.2), t);
+
+    function drawField(t: number) {
+      const a = smoother(3.75, 5.0, t) * (1 - smoother(7.45, 8.55, t));
+      if (a <= 0.001) return;
+      const expand = smoother(3.65, 6.15, t);
+      const colorMix = smoother(4.8, 6.25, t);
+      const sweep = smoother(6.45, 8.15, t);
       ctx!.save();
       ctx!.globalCompositeOperation = 'lighter';
-      STRANDS.forEach((s) => {
-        const centered = s.baseX - 0.5;
-        let x = W / 2 + centered * mix(W * 0.1, W * 1.25, expansion);
-        x += Math.sin(s.phase + t * 2) * W * s.drift * expansion;
-        x += centered * velocity * W * 0.45;
-        const c = spectrumColor(s, t);
-        let alpha = amount * s.alpha;
-        if (randomFrom(Math.floor(s.baseX * 31)) < 0.24) alpha *= 0.12;
-        const width = s.width * mix(0.5, 2.8, expansion);
+      field.forEach((s) => {
+        const centered = s.u - 0.5;
+        // At first the field is narrow and aligned with the enlarged title
+        // fibers, then expands continuously to fullscreen.
+        let px = W / 2 + centered * mix(W * 0.07, W * 1.42, expand);
+        px += Math.sin(s.phase + t * 0.95) * W * s.drift * expand;
+        px += centered * sweep * W * 0.34;
+        const q = fieldColor(s, colorMix);
+        const al = a * s.alpha * (s.gap < 0.19 ? 0.07 : 1);
+        const lw = s.width * mix(0.42, 3.15, expand);
         ctx!.beginPath();
-        ctx!.strokeStyle = rgba(c, alpha * 0.24);
-        ctx!.lineWidth = width * 4.5;
-        ctx!.shadowColor = rgba(c, alpha);
-        ctx!.shadowBlur = 12 + width * 3;
-        ctx!.moveTo(x, -40);
-        ctx!.lineTo(x + Math.sin(s.phase) * 3 * velocity, H + 40);
+        ctx!.strokeStyle = rgba(q, al * 0.15);
+        ctx!.lineWidth = lw * 5.6;
+        ctx!.shadowColor = rgba(q, al);
+        ctx!.shadowBlur = 12 + lw * 3.1;
+        ctx!.moveTo(px, -40);
+        ctx!.lineTo(px + Math.sin(s.phase) * 2.5 * sweep, H + 40);
         ctx!.stroke();
         ctx!.beginPath();
-        ctx!.strokeStyle = rgba(c, alpha);
-        ctx!.lineWidth = width;
-        ctx!.shadowBlur = 4 + width * 1.5;
-        ctx!.moveTo(x, -20);
-        ctx!.lineTo(x, H + 20);
+        ctx!.strokeStyle = rgba(q, al);
+        ctx!.lineWidth = lw;
+        ctx!.shadowBlur = 3 + lw * 1.5;
+        ctx!.moveTo(px, -20);
+        ctx!.lineTo(px, H + 20);
         ctx!.stroke();
-        if (s.bright > 0.89) {
+        if (s.hot > 0.915) {
           ctx!.beginPath();
-          ctx!.strokeStyle = `rgba(255,225,205,${alpha * 0.75})`;
-          ctx!.lineWidth = Math.max(0.35, width * 0.17);
-          ctx!.shadowBlur = 3;
-          ctx!.moveTo(x, 0);
-          ctx!.lineTo(x, H);
+          ctx!.strokeStyle = `rgba(255,238,224,${al * 0.65})`;
+          ctx!.lineWidth = Math.max(0.28, lw * 0.14);
+          ctx!.shadowBlur = 2;
+          ctx!.moveTo(px, 0);
+          ctx!.lineTo(px, H);
           ctx!.stroke();
         }
       });
       ctx!.restore();
     }
-    function drawFinalBeam(t: number) {
-      const show = smoothstep(S(3.92), S(4.25), t) * (1 - smoothstep(S(5.05), S(5.25), t));
-      if (show <= 0) return;
-      const move = easeInOutCubic(smoothstep(S(4.18), S(5.08), t));
-      const x = mix(W * 0.53, W * 1.04, move);
-      const bw = mix(W * 0.018, W * 0.19, smoothstep(S(4.52), S(5.1), t));
+
+    function drawBeam(t: number) {
+      const a = smoother(7.85, 8.55, t) * (1 - smoother(9.28, 9.58, t));
+      if (a <= 0.001) return;
+      const m = smoother(8.35, 9.38, t);
+      const px = mix(W * 0.52, W * 1.055, m);
+      const bw = mix(W * 0.011, W * 0.19, smoother(8.55, 9.35, t));
       ctx!.save();
       ctx!.globalCompositeOperation = 'lighter';
-      const glow = ctx!.createLinearGradient(x - bw * 2.5, 0, x + bw * 2.5, 0);
-      glow.addColorStop(0, 'rgba(80,0,0,0)');
-      glow.addColorStop(0.28, `rgba(150,0,0,${show * 0.16})`);
-      glow.addColorStop(0.43, `rgba(255,0,0,${show * 0.5})`);
-      glow.addColorStop(0.5, `rgba(255,40,5,${show})`);
-      glow.addColorStop(0.57, `rgba(255,15,0,${show * 0.65})`);
-      glow.addColorStop(0.75, `rgba(110,0,0,${show * 0.16})`);
-      glow.addColorStop(1, 'rgba(50,0,0,0)');
-      ctx!.fillStyle = glow;
-      ctx!.fillRect(x - bw * 2.5, 0, bw * 5, H);
-      const core = ctx!.createLinearGradient(x - bw / 2, 0, x + bw / 2, 0);
-      core.addColorStop(0, 'rgba(255,0,0,0)');
-      core.addColorStop(0.28, `rgba(255,15,0,${show * 0.65})`);
-      core.addColorStop(0.48, `rgba(255,80,15,${show})`);
-      core.addColorStop(0.53, `rgba(255,25,0,${show})`);
-      core.addColorStop(1, 'rgba(255,0,0,0)');
-      ctx!.fillStyle = core;
-      ctx!.fillRect(x - bw / 2, 0, bw, H);
-      ctx!.restore();
-    }
-    function drawExposure(t: number) {
-      const flash = smoothstep(S(2.75), S(3.05), t) * (1 - smoothstep(S(3.35), S(3.72), t));
-      if (flash <= 0) return;
-      ctx!.save();
-      ctx!.globalCompositeOperation = 'screen';
-      ctx!.fillStyle = `rgba(255,45,25,${flash * 0.025})`;
-      ctx!.fillRect(0, 0, W, H);
+      const g = ctx!.createLinearGradient(px - bw * 2.8, 0, px + bw * 2.8, 0);
+      g.addColorStop(0, 'rgba(70,0,0,0)');
+      g.addColorStop(0.3, `rgba(145,0,0,${a * 0.12})`);
+      g.addColorStop(0.44, `rgba(255,0,0,${a * 0.45})`);
+      g.addColorStop(0.5, `rgba(255,62,10,${a})`);
+      g.addColorStop(0.57, `rgba(255,12,0,${a * 0.58})`);
+      g.addColorStop(0.76, `rgba(105,0,0,${a * 0.12})`);
+      g.addColorStop(1, 'rgba(40,0,0,0)');
+      ctx!.fillStyle = g;
+      ctx!.fillRect(px - bw * 2.8, 0, bw * 5.6, H);
       ctx!.restore();
     }
 
     function render(now: number) {
-      const elapsed = (now - start) / 1000;
-      ctx!.clearRect(0, 0, W, H);
-      ctx!.fillStyle = '#000';
+      const t = (now - start) / 1000;
+      // Frame blending provides gentle motion blur/trailing instead of a
+      // hard clear each frame.
+      ctx!.save();
+      ctx!.globalCompositeOperation = 'source-over';
+      ctx!.fillStyle = t < 0.06 ? '#000' : 'rgba(0,0,0,.84)';
       ctx!.fillRect(0, 0, W, H);
-      drawSolidN(elapsed);
-      drawNFibers(elapsed);
-      drawSpectrum(elapsed);
-      drawFinalBeam(elapsed);
-      drawExposure(elapsed);
-      if (elapsed < DURATION) {
+      ctx!.restore();
+      drawTitle(t);
+      drawLetterFibers(t);
+      drawField(t);
+      drawBeam(t);
+      if (t < DURATION) {
         rafId = requestAnimationFrame(render);
+      } else {
+        ctx!.fillStyle = '#000';
+        ctx!.fillRect(0, 0, W, H);
       }
     }
     rafId = requestAnimationFrame(render);
