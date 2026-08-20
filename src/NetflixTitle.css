@@ -482,14 +482,15 @@
   background: #000;
 }
 
-/* ── Final cut to black before routing to /browse ── */
+/* — Final cut to black before routing to /browse. Timed to the V4 ident's
+   9.6s runtime: fully opaque right as its beam sweep finishes fading. — */
 .tudum-blackout {
   position: fixed;
   inset: 0;
   z-index: 25;
   background: #000;
   opacity: 0;
-  animation: tudumBlackout 1s ease-in 2.3s both;
+  animation: tudumBlackout 1s ease-in 8.6s both;
 }
 
 @keyframes tudumBlackout {
