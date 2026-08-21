@@ -1,0 +1,105 @@
+.sound-toggle {
+  position: fixed;
+  left: 28px;
+  bottom: 28px;
+  width: 46px;
+  height: 46px;
+  border-radius: 50%;
+  background: rgba(20, 20, 20, 0.85);
+  border: 1px solid rgba(229, 9, 20, 0.5);
+  color: #fff;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  z-index: 80;
+  backdrop-filter: blur(4px);
+  transition: background 0.3s ease, border-color 0.3s ease, box-shadow 0.3s ease,
+    transform 0.2s ease;
+}
+
+.sound-toggle:hover {
+  background: rgba(229, 9, 20, 0.92);
+  border-color: #e50914;
+  box-shadow: 0 8px 24px rgba(229, 9, 20, 0.5);
+  transform: translateY(-4px) scale(1.08);
+}
+
+.sound-toggle:active {
+  transform: translateY(-1px) scale(0.95);
+}
+
+.sound-toggle__bars {
+  display: flex;
+  align-items: flex-end;
+  justify-content: center;
+  gap: 3px;
+  width: 20px;
+  height: 18px;
+}
+
+.sound-toggle__bar {
+  width: 3px;
+  height: 6px;
+  border-radius: 2px;
+  background: #fff;
+  opacity: 0.55;
+  transform-origin: bottom;
+  transition: height 0.25s ease, opacity 0.25s ease, background 0.25s ease;
+}
+
+/* Muted / paused: bars settle flat and dim, no motion. */
+.sound-toggle--muted .sound-toggle__bar {
+  height: 3px;
+  opacity: 0.35;
+  animation: none !important;
+}
+
+/* Playing: each bar bounces on its own offset like a mini equalizer. */
+.sound-toggle__bar--live {
+  opacity: 1;
+  background: #e50914;
+  animation: sound-toggle-bounce 0.9s ease-in-out infinite;
+}
+
+.sound-toggle__bar--live:nth-child(1) {
+  animation-delay: -0.6s;
+}
+.sound-toggle__bar--live:nth-child(2) {
+  animation-delay: -0.3s;
+}
+.sound-toggle__bar--live:nth-child(3) {
+  animation-delay: -0.75s;
+}
+.sound-toggle__bar--live:nth-child(4) {
+  animation-delay: -0.15s;
+}
+
+@keyframes sound-toggle-bounce {
+  0%,
+  100% {
+    height: 5px;
+  }
+  50% {
+    height: 17px;
+  }
+}
+
+@media (max-width: 600px) {
+  .sound-toggle {
+    left: 16px;
+    bottom: 16px;
+    width: 42px;
+    height: 42px;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .sound-toggle {
+    transition-duration: 0.01s !important;
+  }
+  .sound-toggle__bar--live {
+    animation: none !important;
+    height: 12px;
+  }
+}
